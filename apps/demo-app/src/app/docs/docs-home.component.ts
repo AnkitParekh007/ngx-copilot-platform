@@ -27,6 +27,26 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       <p class="qi-note">Requires Angular ^20.0.0 and RxJS ^7.8.0</p>
     </div>
 
+    <!-- SDK stats row -->
+    <div class="sdk-stats">
+      <div class="stat-item">
+        <span class="stat-value">Angular 20</span>
+        <span class="stat-label">Required</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">Zero API Keys</span>
+        <span class="stat-label">Mock adapter</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">SSE Streaming</span>
+        <span class="stat-label">Token-by-token</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">MIT</span>
+        <span class="stat-label">Open Source</span>
+      </div>
+    </div>
+
     <h2 id="what-is">What is ngx-copilot-sdk?</h2>
     <p>
       <code>&#64;ankitparekh007/ngx-copilot-sdk</code> is a standalone Angular library that provides a
@@ -151,6 +171,21 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
     </div>
 
+    <!-- GitHub CTA -->
+    <div class="github-cta">
+      <div class="cta-content">
+        <strong>Open source &middot; MIT License</strong>
+        <span>Built in the open. PRs welcome. Star the repo if it helps you.</span>
+      </div>
+      <div class="cta-actions">
+        <a href="https://github.com/AnkitParekh007/ngx-copilot-platform" target="_blank" rel="noopener noreferrer" class="cta-star">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Star on GitHub
+        </a>
+        <a href="https://github.com/AnkitParekh007/ngx-copilot-platform/fork" target="_blank" rel="noopener noreferrer" class="cta-fork">Fork</a>
+      </div>
+    </div>
+
     <h2 id="retailops-demo">Live enterprise demo — RetailOps PXM</h2>
     <p>
       See every SDK feature working together in a realistic enterprise context. The <strong>RetailOps PXM</strong>
@@ -191,6 +226,138 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       font-size: 0.82rem;
       color: var(--text-subtle);
       margin: 0.25rem 0 0;
+    }
+
+    /* SDK stats row */
+    .sdk-stats {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.85rem 0.75rem;
+      border-right: 1px solid var(--border);
+      text-align: center;
+      background: var(--bg-subtle);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-value {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: monospace;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-subtle);
+      margin-top: 0.15rem;
+    }
+
+    /* GitHub CTA */
+    .github-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.1rem 1.35rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(99,102,241,0.3);
+      background: var(--bg-subtle);
+      margin: 2rem 0;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .github-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(79,70,229,0.06) 0%, rgba(124,58,237,0.06) 100%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .cta-content strong {
+      font-size: 0.925rem;
+      color: var(--text);
+    }
+
+    .cta-content span {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+
+    .cta-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .cta-star {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .cta-star:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .cta-fork {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-text);
+      background: var(--accent-light);
+      border: 1px solid rgba(99,102,241,0.3);
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .cta-fork:hover {
+      background: rgba(99,102,241,0.2);
+      border-color: rgba(99,102,241,0.5);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .sdk-stats { flex-wrap: wrap; }
+      .stat-item { flex: 1 1 45%; border-bottom: 1px solid var(--border); }
+      .github-cta { flex-direction: column; align-items: flex-start; }
     }
 
     .path-grid {

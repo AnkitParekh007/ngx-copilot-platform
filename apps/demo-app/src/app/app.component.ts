@@ -40,6 +40,15 @@ import { ThemeService } from './theme/theme.service';
             </svg>
           </a>
 
+          <!-- GitHub star CTA -->
+          <a href="https://github.com/AnkitParekh007/ngx-copilot-platform"
+             target="_blank" rel="noopener noreferrer" class="star-btn" aria-label="Star on GitHub">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Star
+          </a>
+
           <!-- GitHub -->
           <a href="https://github.com/AnkitParekh007/ngx-copilot-platform"
              target="_blank" rel="noopener noreferrer" class="icon-link" aria-label="View on GitHub">
@@ -77,9 +86,16 @@ import { ThemeService } from './theme/theme.service';
 
     @if (!isDocsRoute()) {
       <footer class="footer">
-        <span>&#64;ankitparekh007/ngx-copilot-sdk &middot; 0.1.0 preview &middot; MIT</span>
-        <span class="footer-sep">&middot;</span>
-        <span>RetailOps PXM is fictional demo data &mdash; not a real product or company.</span>
+        <div class="footer-inner">
+          <span class="footer-brand">ngx-copilot-sdk</span>
+          <span class="footer-dot">&middot;</span>
+          <span>0.1.0 preview &middot; MIT License</span>
+          <span class="footer-dot">&middot;</span>
+          <a href="https://github.com/AnkitParekh007/ngx-copilot-platform" target="_blank" rel="noopener">GitHub</a>
+          <span class="footer-dot">&middot;</span>
+          <a href="https://www.npmjs.com/package/@ankitparekh007/ngx-copilot-sdk" target="_blank" rel="noopener">npm</a>
+        </div>
+        <div class="footer-note">RetailOps PXM is fictional demo data &mdash; not a real product or company.</div>
       </footer>
     }
   `,
@@ -87,12 +103,15 @@ import { ThemeService } from './theme/theme.service';
     .top {
       display: flex;
       flex-direction: column;
-      background: #0f172a;
+      background: rgba(8,13,24,0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       color: #fff;
       position: sticky;
       top: 0;
       z-index: 200;
-      border-bottom: 1px solid rgba(148,163,184,0.15);
+      border-bottom: 1px solid rgba(99,102,241,0.2);
+      box-shadow: 0 1px 0 rgba(99,102,241,0.3);
       height: var(--topnav-height, 52px);
       justify-content: center;
       overflow: visible;
@@ -127,7 +146,7 @@ import { ThemeService } from './theme/theme.service';
 
     .logo-badge {
       font-size: 0.65rem;
-      background: rgba(99,102,241,0.35);
+      background: rgba(99,102,241,0.25);
       color: #a5b4fc;
       border: 1px solid rgba(99,102,241,0.4);
       padding: 0.15rem 0.5rem;
@@ -151,15 +170,32 @@ import { ThemeService } from './theme/theme.service';
       font-size: 0.875rem;
       white-space: nowrap;
       transition: background 0.12s, color 0.12s;
+      position: relative;
     }
 
-    .nav-links a:hover { background: rgba(255,255,255,0.07); color: #e2e8f0; text-decoration: none; }
-    .nav-links a.active { color: #fff; background: rgba(99,102,241,0.25); }
+    .nav-links a:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; text-decoration: none; }
+
+    .nav-links a.active {
+      color: #a5b4fc;
+      background: rgba(99,102,241,0.18);
+      font-weight: 500;
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0.65rem;
+      right: 0.65rem;
+      height: 2px;
+      background: linear-gradient(90deg, #818cf8, #a78bfa);
+      border-radius: 2px;
+    }
 
     .nav-end {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.35rem;
       margin-left: auto;
       flex-shrink: 0;
     }
@@ -176,6 +212,31 @@ import { ThemeService } from './theme/theme.service';
     }
 
     .icon-link:hover { background: rgba(255,255,255,0.08); color: #f8fafc; text-decoration: none; }
+
+    .star-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.35);
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .star-btn:hover {
+      background: rgba(99,102,241,0.28);
+      border-color: rgba(99,102,241,0.6);
+      transform: translateY(-1px);
+      text-decoration: none;
+      color: #fff;
+    }
 
     .mobile-menu-btn {
       display: none;
@@ -196,8 +257,8 @@ import { ThemeService } from './theme/theme.service';
     .mobile-nav {
       display: flex;
       flex-direction: column;
-      background: #0f172a;
-      border-top: 1px solid rgba(148,163,184,0.12);
+      background: #080d18;
+      border-top: 1px solid rgba(99,102,241,0.15);
       padding: 0.5rem 0;
     }
 
@@ -210,7 +271,7 @@ import { ThemeService } from './theme/theme.service';
       transition: background 0.1s;
     }
 
-    .mobile-nav a:hover { background: rgba(255,255,255,0.06); color: #f8fafc; text-decoration: none; }
+    .mobile-nav a:hover { background: rgba(99,102,241,0.08); color: #f8fafc; text-decoration: none; }
 
     .page { min-height: calc(100vh - 52px); }
 
@@ -221,23 +282,45 @@ import { ThemeService } from './theme/theme.service';
     }
 
     .footer {
-      padding: 1rem 1.25rem;
-      background: #0f172a;
+      padding: 0.85rem 1.25rem;
+      background: #080d18;
       color: #64748b;
       font-size: 0.82rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      border-top: 1px solid rgba(99,102,241,0.15);
+    }
+
+    .footer-inner {
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
       align-items: center;
-      border-top: 1px solid rgba(148,163,184,0.1);
     }
 
-    .footer-sep { color: #334155; }
+    .footer-brand {
+      font-weight: 700;
+      color: #94a3b8;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+
+    .footer-dot { color: #1e293b; }
+
+    .footer a { color: #64748b; text-decoration: none; }
+    .footer a:hover { color: #94a3b8; text-decoration: underline; }
+
+    .footer-note {
+      font-size: 0.75rem;
+      color: #475569;
+    }
 
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .mobile-menu-btn { display: flex; }
       .top { height: auto; }
+      .star-btn { display: none; }
     }
 
     /* Docs mode: let docs layout handle full height */

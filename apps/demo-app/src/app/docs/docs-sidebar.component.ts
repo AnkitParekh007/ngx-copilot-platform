@@ -7,11 +7,30 @@ import { SIDEBAR_NAV } from './docs-data';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   template: `
+    <!-- Brand header -->
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="18" height="18" rx="4" fill="url(#sb-grad)"/>
+          <path d="M8 12h8M8 8h5M8 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="sb-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#4f46e5"/>
+              <stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="sidebar-brand-name">ngx-copilot-sdk</span>
+      </div>
+      <span class="sidebar-brand-version">v0.1.0</span>
+    </div>
+
+    <!-- Nav sections -->
     <nav class="sidebar-nav" aria-label="Documentation navigation">
       @for (section of nav; track section.section) {
         <div class="nav-section">
           <div class="nav-section-heading">
-            <span class="nav-section-icon" aria-hidden="true">{{ section.icon }}</span>
+            <span class="nav-section-dot" aria-hidden="true"></span>
             {{ section.section }}
           </div>
           @for (item of section.items; track item.path) {
@@ -30,17 +49,65 @@ import { SIDEBAR_NAV } from './docs-data';
         </div>
       }
     </nav>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+      <a href="https://github.com/AnkitParekh007/ngx-copilot-platform" target="_blank" rel="noopener noreferrer" class="sidebar-footer-link">
+        Star on GitHub &#8599;
+      </a>
+      <a href="https://www.npmjs.com/package/@ankitparekh007/ngx-copilot-sdk" target="_blank" rel="noopener noreferrer" class="sidebar-footer-link">
+        View on npm &#8599;
+      </a>
+    </div>
   `,
   styles: [`
-    .sidebar-nav { padding: 0.25rem 0 1rem; }
+    /* ── Brand header ── */
+    .sidebar-brand {
+      padding: 1rem 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar-brand-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      font-family: monospace;
+    }
+
+    .sidebar-brand-version {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--accent-text);
+      background: var(--accent-light);
+      border: 1px solid rgba(99,102,241,0.3);
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    /* ── Nav ── */
+    .sidebar-nav { padding: 0.25rem 0 0.5rem; flex: 1; overflow-y: auto; }
 
     .nav-section { margin-bottom: 0.15rem; }
 
     .nav-section-heading {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      font-size: 0.7rem;
+      gap: 0.5rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.09em;
@@ -48,7 +115,15 @@ import { SIDEBAR_NAV } from './docs-data';
       padding: 1rem 1rem 0.3rem;
     }
 
-    .nav-section-icon { font-size: 0.8rem; }
+    .nav-section-dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
 
     .nav-item {
       display: flex;
@@ -72,9 +147,9 @@ import { SIDEBAR_NAV } from './docs-data';
     }
 
     .nav-item.active {
-      background: var(--accent-light);
-      color: var(--accent);
-      border-left-color: var(--accent);
+      background: linear-gradient(90deg, rgba(99,102,241,0.15), transparent);
+      color: #a5b4fc;
+      border-left-color: #818cf8;
       font-weight: 600;
     }
 
@@ -86,6 +161,29 @@ import { SIDEBAR_NAV } from './docs-data';
       border-radius: 999px;
       font-weight: 600;
       letter-spacing: 0.02em;
+    }
+
+    /* ── Sidebar footer ── */
+    .sidebar-footer {
+      border-top: 1px solid var(--border);
+      padding: 0.85rem 1rem;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer-link {
+      font-size: 0.78rem;
+      color: var(--text-subtle);
+      text-decoration: none;
+      transition: color 0.12s;
+    }
+
+    .sidebar-footer-link:hover {
+      color: var(--accent);
+      text-decoration: none;
     }
   `],
 })
