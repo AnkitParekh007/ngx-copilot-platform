@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
-  createIngestionJob,
   crawlBitbucketRepo,
   getBitbucketBranches,
   validateBitbucketCredentials,
 } from '@/lib/services/bitbucket-ingestion'
-import { getIngestionJobStatus } from '@/lib/services/documentation-ingestion'
+import { createIngestionJob, getIngestionJobStatus } from '@/lib/services/documentation-ingestion'
 
 export async function POST(req: NextRequest) {
   try {
