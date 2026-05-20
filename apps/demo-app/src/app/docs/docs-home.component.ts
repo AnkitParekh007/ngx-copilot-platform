@@ -14,8 +14,9 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
       <h1>ngx-copilot-sdk</h1>
       <p class="header-desc">
-        An Angular SDK for embedding AI copilot shells, RAG citation cards, tool timelines,
-        and approval workflows into enterprise applications — without putting provider secrets in the browser.
+        Production-ready Angular components for embedding agentic AI copilots — streaming chat,
+        grounded RAG citations, multi-step tool timelines, and human-in-the-loop approval gates —
+        all without exposing provider credentials to the browser.
       </p>
     </div>
 
@@ -28,139 +29,142 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
 
     <h2 id="what-is">What is ngx-copilot-sdk?</h2>
     <p>
-      <code>&#64;ankitparekh007/ngx-copilot-sdk</code> is a standalone Angular library that gives you a
-      production-ready copilot UI layer. You supply the backend; the SDK handles
-      streaming chat, RAG source cards, tool-step visualisation, and user-gated approval flows.
+      <code>&#64;ankitparekh007/ngx-copilot-sdk</code> is a standalone Angular library that provides a
+      production-ready agentic copilot UI layer. You wire in your backend; the SDK handles
+      streaming token delivery, grounded RAG source citation cards, multi-step tool-call
+      visualisation, and human-in-the-loop approval gates — all driven by reactive Angular Signals.
     </p>
     <p>
-      The adapter pattern keeps your LLM provider credentials on the server — the browser only
-      sees an <code>Observable&lt;CopilotEvent&gt;</code> stream from your own API.
+      The adapter pattern enforces a clean security boundary: your LLM provider credentials live
+      on the server. The browser only sees a typed <code>Observable&lt;CopilotEvent&gt;</code>
+      stream from your own authenticated API — never a raw provider response.
     </p>
 
     <h2 id="features">What's included</h2>
     <div class="doc-card-grid">
       <a routerLink="/docs/getting-started" class="doc-card">
         <strong>Copilot Shell</strong>
-        <span>Full chat UI with streaming, mode selector (ask / plan / execute / debug), and composer.</span>
+        <span>Full streaming chat UI with token-by-token delivery, mode selector (ask / plan / execute / debug), and a message composer — all driven by Angular Signals.</span>
       </a>
       <a routerLink="/docs/rag-sources" class="doc-card">
-        <strong>RAG Source Cards</strong>
-        <span>Citation cards for file-path references (codebase) and documentation URLs.</span>
+        <strong>Grounded RAG Citations</strong>
+        <span>Citation cards that show the exact file paths and documentation URLs the model grounded its answer in — giving users verifiable provenance.</span>
       </a>
       <a routerLink="/docs/tool-timeline" class="doc-card">
-        <strong>Tool Timeline</strong>
-        <span>Step-by-step visualisation of multi-tool agent operations with status and timing.</span>
+        <strong>Agent Tool Timeline</strong>
+        <span>Real-time step-by-step trace of multi-tool agentic operations — each step shows name, status, summary, and timing as events arrive.</span>
       </a>
       <a routerLink="/docs/approvals" class="doc-card">
-        <strong>Approval Gates</strong>
-        <span>User-gated confirmation cards — neutral, warning, or destructive tone.</span>
+        <strong>Human-in-the-Loop Gates</strong>
+        <span>Approval cards that pause execution and require explicit user confirmation before any destructive or irreversible agentic action proceeds.</span>
       </a>
       <a routerLink="/docs/adapters" class="doc-card">
-        <strong>Adapter Boundary</strong>
-        <span>Clean Observable interface between UI and your backend. Secrets never reach the browser.</span>
+        <strong>Security Adapter Boundary</strong>
+        <span>Observable-based interface that keeps LLM provider credentials on your server. The browser only sees a typed event stream from your own API.</span>
       </a>
       <a routerLink="/docs/adapters" class="doc-card">
-        <strong>Mock Adapter</strong>
-        <span>Simulate streaming, RAG, timeline, and approvals locally — no API keys needed.</span>
+        <strong>Zero-Credential Mock Adapter</strong>
+        <span>Simulate streaming, RAG source injection, tool timeline steps, and approval gates entirely in the browser — no backend, no API keys needed.</span>
       </a>
     </div>
 
-    <h2 id="choose-path">Choose your path</h2>
+    <h2 id="choose-path">Start here</h2>
     <div class="path-grid">
       <a routerLink="/docs/getting-started" class="path-card">
         <span class="path-icon">01</span>
-        <strong>I want to embed a copilot shell</strong>
-        <span>Install the SDK, call <code>provideCopilot()</code>, add <code>&lt;ngx-copilot-shell&gt;</code>.</span>
+        <strong>Embed a copilot in 5 minutes</strong>
+        <span>Install, call <code>provideCopilot()</code>, add <code>&lt;ngx-copilot-shell&gt;</code>, wire the mock adapter — no backend needed.</span>
       </a>
       <a routerLink="/docs/rag-sources" class="path-card">
         <span class="path-icon">02</span>
-        <strong>I want to show RAG citations</strong>
-        <span>Learn the <code>RagResult</code> model and how source cards render.</span>
+        <strong>Ground answers in your content</strong>
+        <span>Surface verifiable file-path and documentation citations using the <code>RagResult</code> model.</span>
       </a>
       <a routerLink="/docs/tool-timeline" class="path-card">
         <span class="path-icon">03</span>
-        <strong>I want to visualize agent tool steps</strong>
-        <span>Understand <code>ToolTimelineItem</code> and the timeline panel.</span>
+        <strong>Make agent reasoning transparent</strong>
+        <span>Show users every tool call, status, and timing the AI took to reach its answer.</span>
       </a>
       <a routerLink="/docs/approvals" class="path-card">
         <span class="path-icon">04</span>
-        <strong>I want approval workflows</strong>
-        <span>Gate destructive actions behind user-confirmed approval cards.</span>
+        <strong>Require human sign-off on actions</strong>
+        <span>Gate irreversible agentic operations behind explicit user-confirmation cards.</span>
       </a>
       <a routerLink="/docs/adapters" class="path-card">
         <span class="path-icon">05</span>
-        <strong>I want to connect a real backend</strong>
-        <span>Implement <code>CopilotBackendAdapter</code> and wire up your streaming endpoint.</span>
+        <strong>Connect your production backend</strong>
+        <span>Implement <code>CopilotBackendAdapter</code> to stream events from your own authenticated API.</span>
       </a>
       <a routerLink="/docs/api" class="path-card">
         <span class="path-icon">06</span>
-        <strong>I need the full API reference</strong>
-        <span>All exported interfaces, inputs, outputs, and service APIs.</span>
+        <strong>Full API reference</strong>
+        <span>Every exported interface, component input, output, Signal, and service method.</span>
       </a>
     </div>
 
     <h2 id="preview-status">Preview status</h2>
     <div class="callout callout-warning">
       <div>
-        <strong>0.1.0 preview:</strong> APIs are stabilising but may change before 1.0.
+        <strong>0.1.0 preview —</strong> APIs are stabilising but may change before 1.0.
         UI components, backend adapters, and <code>CopilotService</code> are marked <em>Preview</em>.
         Core config helpers (<code>provideCopilot</code>, model interfaces) target stable-intent.
-        Do not use in production without pinning the version.
+        Pin the version in production: <code>"&#64;ankitparekh007/ngx-copilot-sdk": "0.1.0"</code>.
       </div>
     </div>
 
-    <h2 id="screenshots">Screenshots to add before launch</h2>
-    <p class="ph-note">
-      These placeholders will be replaced with real screenshots when the GitHub Pages site is live.
-      Capture them by running <code>npm run start:demo</code> and visiting each route.
-    </p>
-    <div class="screenshot-grid">
-      <div class="screenshot-placeholder">
-        <span class="ph-icon">💬</span>
-        <strong>Copilot Shell</strong>
-        <span>Streaming chat + mode selector</span>
-      </div>
-      <div class="screenshot-placeholder">
-        <span class="ph-icon">📎</span>
-        <strong>RAG Source Cards</strong>
-        <span>File-path + documentation citations</span>
-      </div>
-      <div class="screenshot-placeholder">
-        <span class="ph-icon">🔧</span>
-        <strong>Tool Timeline</strong>
-        <span>5-step agent execution trace</span>
-      </div>
-      <div class="screenshot-placeholder">
-        <span class="ph-icon">✅</span>
-        <strong>Approval Gate</strong>
-        <span>Warning-tone confirmation card</span>
-      </div>
-      <div class="screenshot-placeholder">
-        <span class="ph-icon">🗂</span>
-        <strong>RetailOps Codebase Demo</strong>
-        <span>/samples/enterprise-codebase</span>
-      </div>
-      <div class="screenshot-placeholder">
-        <span class="ph-icon">📄</span>
-        <strong>RetailOps Docs Demo</strong>
-        <span>/samples/enterprise-docs</span>
-      </div>
-    </div>
-
-    <h2 id="retailops-demo">Live enterprise demo</h2>
+    <h2 id="how-it-works">How it works</h2>
     <p>
-      The <strong>RetailOps PXM</strong> fictional demo shows the SDK in a realistic enterprise context:
-      a 12-state SKU lifecycle, bulk upload, channel syndication, and an approval workflow — all with mock data.
-      No real API, no credentials, no real company.
+      The SDK sits between your Angular application and your backend. It never talks to LLM providers
+      directly — your server holds credentials and orchestrates AI provider calls. The browser only sees
+      a typed event stream from your own API.
+    </p>
+    <div class="flow-diagram">
+      <div class="flow-step flow-step-browser">
+        <div class="flow-step-label">Your Angular app</div>
+        <div class="flow-step-body">
+          <div class="flow-line"><code>provideCopilot()</code></div>
+          <div class="flow-line"><code>&lt;ngx-copilot-shell&gt;</code></div>
+          <div class="flow-line flow-dim">RAG cards · Timeline · Gates</div>
+        </div>
+      </div>
+      <div class="flow-arrow">
+        <span class="flow-arrow-label">CopilotBackendAdapter</span>
+        <span class="flow-arrow-sub">Observable&lt;CopilotEvent&gt;</span>
+      </div>
+      <div class="flow-step flow-step-server">
+        <div class="flow-step-label">Your backend</div>
+        <div class="flow-step-body">
+          <div class="flow-line"><code>POST /api/copilot/chat</code></div>
+          <div class="flow-line flow-dim">Auth · RAG retrieval · SSE stream</div>
+          <div class="flow-line flow-dim">Provider credentials (secret)</div>
+        </div>
+      </div>
+      <div class="flow-arrow">
+        <span class="flow-arrow-label">API key (never in browser)</span>
+      </div>
+      <div class="flow-step flow-step-provider">
+        <div class="flow-step-label">LLM Provider</div>
+        <div class="flow-step-body">
+          <div class="flow-line flow-dim">OpenAI · Anthropic</div>
+          <div class="flow-line flow-dim">Gemini · Cohere · ...</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="retailops-demo">Live enterprise demo — RetailOps PXM</h2>
+    <p>
+      See every SDK feature working together in a realistic enterprise context. The <strong>RetailOps PXM</strong>
+      fictional demo covers a 12-state SKU lifecycle, bulk upload, channel syndication, and a destructive
+      approval workflow — all running in the browser with zero real API calls or credentials.
     </p>
     <div class="doc-card-grid">
       <a routerLink="/samples/enterprise-codebase" class="doc-card">
         <strong>Codebase Copilot</strong>
-        <span>File-path RAG citations from <code>retailops-pxm-web</code> — Angular services, guards, components.</span>
+        <span>Ask questions about Angular architecture. Answers are grounded in file-path citations from <code>retailops-pxm-web</code> — services, guards, components, and models.</span>
       </a>
       <a routerLink="/samples/enterprise-docs" class="doc-card">
         <strong>Documentation Copilot</strong>
-        <span>Article URL citations from <code>docs.retailops-pxm.example</code> — PM, QA, and support queries.</span>
+        <span>Ask product and process questions. Answers cite article URLs from <code>docs.retailops-pxm.example</code> — onboarding, syndication, QA, and approval workflows.</span>
       </a>
     </div>
   `,
@@ -187,21 +191,6 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       font-size: 0.82rem;
       color: var(--text-subtle);
       margin: 0.25rem 0 0;
-    }
-
-    .ph-note {
-      font-size: 0.85rem;
-      color: var(--text-subtle);
-      margin: 0 0 0.85rem;
-    }
-
-    .ph-note code {
-      font-size: 0.8rem;
-      background: var(--code-inline-bg);
-      color: var(--code-inline-text);
-      padding: 0.1rem 0.35rem;
-      border-radius: 3px;
-      border: 1px solid var(--border);
     }
 
     .path-grid {
@@ -241,6 +230,90 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     .path-card strong { font-size: 0.9rem; color: var(--text); }
     .path-card span { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; }
     .path-card code { font-size: 0.78rem; background: var(--code-inline-bg); color: var(--code-inline-text); padding: 0.1rem 0.3rem; border-radius: 3px; }
+
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin: 1.25rem 0 2rem;
+      overflow-x: auto;
+    }
+
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      min-width: 160px;
+    }
+
+    .flow-step-label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-subtle);
+      margin-bottom: 0.25rem;
+    }
+
+    .flow-step-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+    }
+
+    .flow-step-browser .flow-step-body { border-color: var(--accent); }
+    .flow-step-server  .flow-step-body { border-color: var(--border-strong); }
+    .flow-step-provider .flow-step-body { border-color: var(--border); opacity: 0.75; }
+
+    .flow-line {
+      font-size: 0.8rem;
+      font-family: monospace;
+      color: var(--text);
+    }
+    .flow-line.flow-dim { color: var(--text-muted); font-size: 0.75rem; }
+
+    .flow-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+      padding: 0 0.75rem;
+      min-width: 110px;
+      padding-top: 1.5rem;
+    }
+
+    .flow-arrow::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1.5px;
+      background: var(--border-strong);
+      margin-bottom: 0.3rem;
+    }
+
+    .flow-arrow-label {
+      font-size: 0.66rem;
+      font-weight: 600;
+      color: var(--text-subtle);
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .flow-arrow-sub {
+      font-size: 0.6rem;
+      color: var(--text-subtle);
+      font-family: monospace;
+      white-space: nowrap;
+    }
   `],
 })
 export class DocsHomeComponent {

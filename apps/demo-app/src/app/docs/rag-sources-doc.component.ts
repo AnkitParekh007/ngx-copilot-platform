@@ -14,29 +14,29 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
       <h1>RAG Sources</h1>
       <p class="header-desc">
-        Retrieval-Augmented Generation citation cards — file-path references for codebase copilots,
-        documentation URLs for knowledge-base copilots.
+        Grounded citation cards that show users exactly which codebase files and documentation
+        articles the model used — giving AI answers verifiable provenance and building trust.
       </p>
     </div>
 
     <h2 id="how-it-works">How it works</h2>
     <p>
-      When your backend retrieves relevant chunks during a copilot response, it injects them
-      as <code>RagResult</code> objects into the event stream. The SDK attaches them to the
-      assistant message and renders <code>RagSourceCard</code> components below the answer.
+      When your backend retrieves relevant chunks during inference, it injects them as
+      <code>RagResult</code> objects into the SSE event stream. The SDK attaches them to the
+      assistant message and renders citation cards below the answer — each linked to its source.
     </p>
     <ol>
-      <li>User sends a message — SDK emits it through <code>CopilotBackendAdapter.send()</code>.</li>
-      <li>Your backend queries a vector store or search index for relevant chunks.</li>
-      <li>Backend emits a <code>rag_sources</code> event with <code>RagResult[]</code> payload.</li>
-      <li>SDK displays source cards — each linking to its file path or documentation URL.</li>
+      <li>User sends a message — SDK delivers it through <code>CopilotBackendAdapter.send()</code>.</li>
+      <li>Your backend performs vector retrieval against your codebase or documentation index.</li>
+      <li>Backend emits a <code>rag_sources</code> event with a ranked <code>RagResult[]</code> payload.</li>
+      <li>SDK renders source cards inline — each links to the originating file path or documentation URL.</li>
     </ol>
 
     <div class="callout callout-info">
       <div>
-        RAG source cards are a UI concern only. The SDK does not perform retrieval itself —
-        retrieval happens entirely on your backend. The browser only receives the formatted
-        <code>RagResult[]</code> payload to render.
+        <strong>UI rendering only.</strong> The SDK does not perform retrieval — that happens on your
+        backend. The browser only receives the typed <code>RagResult[]</code> payload to render.
+        This keeps your vector database and embedding model server-side.
       </div>
     </div>
 

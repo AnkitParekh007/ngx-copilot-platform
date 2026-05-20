@@ -13,17 +13,19 @@ import { RouterLink } from '@angular/router';
       </div>
       <h1>RetailOps PXM Demo</h1>
       <p class="header-desc">
-        A fictional enterprise Product Experience Management platform used to demonstrate
-        ngx-copilot-sdk in a realistic, complex Angular context.
+        A fictional enterprise Product Experience Management platform that demonstrates every SDK feature —
+        streaming chat, grounded RAG citations, agent tool timelines, and approval gates — in a
+        realistic, complex Angular context. Zero real API calls.
       </p>
     </div>
 
     <div class="callout callout-danger">
       <div>
         <strong>Fictional data only.</strong> RetailOps PXM is not a real product, company, or customer.
-        No live repository, LLM, vector database, or documentation service is called.
-        All examples use static client-side mock data. The domain
-        <code>docs.retailops-pxm.example</code> uses the RFC 2606 reserved <code>.example</code> TLD.
+        No LLM, vector database, embedding model, or documentation service is called at any point.
+        All copilot responses use static client-side mock data returned via RxJS <code>of()</code> with
+        simulated delays. The domain <code>docs.retailops-pxm.example</code> uses the RFC 2606 reserved
+        <code>.example</code> TLD and does not resolve.
       </div>
     </div>
 
@@ -140,19 +142,20 @@ import { RouterLink } from '@angular/router';
       </tbody>
     </table>
 
-    <h2 id="what-this-proves">What this proves about ngx-copilot-sdk</h2>
+    <h2 id="what-this-proves">What this demonstrates</h2>
     <ul>
-      <li>The SDK renders convincing copilot UIs with real streaming, RAG cards, and tool timelines.</li>
-      <li>Codebase and documentation copilots are both supported with different citation card types.</li>
-      <li>The mock adapter enables full development and demo flows without any backend or credentials.</li>
-      <li>The approval gate pattern works end-to-end with typed decision events.</li>
+      <li>Streaming token delivery renders convincingly with real chunk-by-chunk animation via the mock adapter.</li>
+      <li>Both citation types work side-by-side: file-path cards for codebase sources, URL cards for documentation sources.</li>
+      <li>The tool timeline renders incrementally in real time as each step arrives in the event stream.</li>
+      <li>The approval gate pauses execution and captures a typed <code>ApprovalDecision</code> event on user action.</li>
+      <li>The mock adapter enables full end-to-end development and demo workflows without any backend or credentials.</li>
     </ul>
 
     <div class="callout callout-info">
       <div>
-        <strong>Note:</strong> The RetailOps PXM demo does not claim that ngx-copilot-sdk includes
-        a real retrieval pipeline or LLM integration. Retrieval and orchestration happen on your backend.
-        The SDK provides the Angular UI layer only.
+        <strong>Scope reminder:</strong> ngx-copilot-sdk is a frontend Angular rendering SDK only.
+        It does not include a retrieval pipeline, vector database, or LLM integration.
+        RAG retrieval and AI orchestration happen on your backend — the SDK renders the results.
       </div>
     </div>
   `,

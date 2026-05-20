@@ -14,8 +14,8 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
       <h1>Installation</h1>
       <p class="header-desc">
-        Install the SDK, configure providers, add the copilot shell, and wire a mock backend —
-        all without any API keys.
+        Install the SDK, register the Angular provider, add <code>&lt;ngx-copilot-shell&gt;</code>,
+        and run a fully functional AI copilot locally — no backend, no API keys.
       </p>
     </div>
 
@@ -75,23 +75,25 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
     </div>
 
-    <h2 id="security">Security: provider secrets belong on your server</h2>
+    <h2 id="security">Security: provider credentials belong on your server</h2>
     <div class="callout callout-danger">
       <div>
-        <strong>Never put LLM provider API keys in Angular code.</strong>
-        OpenAI, Anthropic, Cohere, and similar credentials must stay on your backend.
-        <code>apiBaseUrl</code> points to <em>your</em> server, which holds provider keys securely
-        and streams results back. The browser only sees a session-scoped event stream.
+        <strong>Never embed LLM provider API keys in Angular.</strong>
+        OpenAI, Anthropic, Gemini, Cohere, and all similar credentials must stay on your backend.
+        <code>apiBaseUrl</code> points to <em>your</em> server — it holds credentials securely,
+        orchestrates provider calls, and streams a typed event sequence back to the SDK.
+        The browser never sees a raw provider response.
       </div>
     </div>
     <p>
       Your backend receives the <code>CopilotRequestPayload</code> and is responsible for:
     </p>
     <ul>
-      <li>Authenticating the user request</li>
-      <li>Calling the LLM provider with your server-side API key</li>
-      <li>Streaming <code>CopilotEvent</code> objects back to the SDK</li>
-      <li>Optionally running RAG retrieval and injecting source results</li>
+      <li>Authenticating and authorizing the user request</li>
+      <li>Orchestrating the LLM provider call with your server-side API key</li>
+      <li>Optionally running RAG retrieval and injecting <code>RagResult[]</code></li>
+      <li>Streaming typed <code>CopilotEvent</code> objects back to the SDK via SSE</li>
+      <li>Emitting approval gates for destructive agentic actions</li>
     </ul>
     <p>
       See <a routerLink="/docs/adapters">Backend Adapters</a> for the full event contract and

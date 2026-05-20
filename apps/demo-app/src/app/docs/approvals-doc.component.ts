@@ -14,16 +14,17 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
       <h1>Approval Workflows</h1>
       <p class="header-desc">
-        User-gated action confirmation gates for enterprise-safe agentic workflows —
-        essential before any destructive, irreversible, or high-impact agent operation.
+        Human-in-the-loop confirmation gates that pause AI agent execution and require explicit
+        user sign-off before any destructive, irreversible, or high-impact action proceeds.
       </p>
     </div>
 
-    <h2 id="use-cases">Why approvals matter</h2>
+    <h2 id="use-cases">Why agentic AI needs approval gates</h2>
     <p>
-      Agentic copilots can execute actions — not just answer questions. When an agent proposes
-      to bulk-delete records, publish to a live sales channel, or send emails on a user's behalf,
-      the user must have a clear, conscious opportunity to confirm or reject that action.
+      Agentic copilots can execute real-world actions — not just answer questions. When a model proposes
+      to bulk-delete records, publish to a live sales channel, or trigger an external API on a user's
+      behalf, the user must have a clear, intentional opportunity to confirm or reject that action.
+      This is the foundation of safe, enterprise-grade agentic AI.
     </p>
     <p>Approval gates are appropriate when the agent proposes to:</p>
     <ul>

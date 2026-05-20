@@ -14,9 +14,9 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
       <h1>Tool Timeline</h1>
       <p class="header-desc">
-        Visualise multi-step agent operations as an ordered list of tool calls,
-        each with a name, summary, status, and timing — so users understand
-        exactly what the copilot did to generate its answer.
+        Real-time visualisation of agentic tool calls — each step shows the tool name, human-readable
+        summary, live status, and elapsed timing, giving users full transparency into how the AI
+        reached its answer.
       </p>
     </div>
 
@@ -110,10 +110,11 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </a>
     </div>
 
-    <h2 id="why-timeline">Why this builds user trust</h2>
+    <h2 id="why-timeline">Why transparency builds trust in AI agents</h2>
     <p>
-      AI answers without provenance feel like magic — and not always in a good way.
-      The tool timeline shows users <em>exactly</em> what the agent did:
+      Opaque AI answers feel like magic — and for enterprise users, magic is not trustworthy.
+      The tool timeline gives users a verifiable reasoning chain: <em>exactly</em> what the agent did,
+      step by step, before producing its answer:
     </p>
     <ul>
       <li>Which tools were called and in what order</li>

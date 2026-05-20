@@ -155,15 +155,16 @@ data: {
       </div>
       <h1>Backend Contract</h1>
       <p class="header-desc">
-        The HTTP API and SSE event format your backend must implement for ngx-copilot-sdk to work in production.
-        The SDK's <code>HttpCopilotBackendAdapter</code> implements this contract on the frontend side.
+        The HTTP API and Server-Sent Events format your backend must implement for
+        <code>HttpCopilotBackendAdapter</code> to connect. Covers the request model, all SSE event
+        types (chunks, RAG sources, tool steps, approval gates, errors, done), and deployment headers.
       </p>
     </div>
 
     <div class="callout callout-info">
-      For local development, use <code>MockCopilotBackendAdapter</code> instead of wiring up a real backend.
-      Switch to <code>HttpCopilotBackendAdapter</code> pointing at your staging endpoint when you are
-      ready to test the full integration.
+      <strong>Local development:</strong> Use <code>MockCopilotBackendAdapter</code> to develop and test
+      without a backend. Switch to <code>HttpCopilotBackendAdapter</code> pointing at your staging endpoint
+      when you are ready to test the full integration end-to-end.
     </div>
 
     <!-- Chat endpoint -->

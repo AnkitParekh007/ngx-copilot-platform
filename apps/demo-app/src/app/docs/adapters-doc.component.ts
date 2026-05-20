@@ -14,16 +14,17 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
       <h1>Backend Adapters</h1>
       <p class="header-desc">
-        The adapter pattern separates copilot UI rendering from backend communication,
-        ensuring provider credentials never reach the browser.
+        The adapter pattern decouples AI copilot rendering from backend communication —
+        enforcing a hard security boundary that keeps all LLM provider credentials on the server.
       </p>
     </div>
 
     <h2 id="why-adapters">Why adapters?</h2>
     <p>
-      LLM providers require API keys that <strong>must never be exposed to the browser</strong>.
-      The adapter pattern enforces this boundary cleanly: your Angular app communicates only
-      with <em>your own</em> backend API, which holds credentials and orchestrates AI provider calls.
+      Agentic AI applications require API keys that <strong>must never be exposed to the browser</strong>.
+      The adapter pattern enforces this as an architectural constraint: your Angular app communicates only
+      with <em>your own</em> backend API, which authenticates requests, holds provider credentials, and
+      orchestrates model and RAG calls — then streams a typed event sequence back to the SDK.
     </p>
 
     <!-- Architecture diagram -->

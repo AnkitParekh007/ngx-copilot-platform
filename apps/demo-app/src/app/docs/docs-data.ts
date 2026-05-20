@@ -91,7 +91,7 @@ export const DOCS_PAGES: DocPage[] = [
       { id: 'features', label: "What's included", level: 2 },
       { id: 'choose-path', label: 'Choose your path', level: 2 },
       { id: 'preview-status', label: 'Preview status', level: 2 },
-      { id: 'screenshots', label: 'Screenshots (placeholders)', level: 2 },
+      { id: 'how-it-works', label: 'How it works', level: 2 },
       { id: 'retailops-demo', label: 'Live enterprise demo', level: 2 },
     ],
     editPath: 'projects/demo-app/src/app/docs/docs-home.component.ts',
