@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createComponent } from './test-bed.harness';
-import { CopilotShellComponent } from '../src/lib/components/copilot-shell/copilot-shell.component';
+import { CopilotShellComponent } from '../../src/lib/components/copilot-shell/copilot-shell.component';
 
 test('CopilotShellComponent renders with manual inputs', async () => {
   const fixture = await createComponent(CopilotShellComponent);

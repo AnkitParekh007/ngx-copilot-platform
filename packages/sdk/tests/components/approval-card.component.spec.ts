@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createComponent } from './test-bed.harness';
-import { ApprovalCardComponent } from '../src/lib/components/approval-card/approval-card.component';
+import { ApprovalCardComponent } from '../../src/lib/components/approval-card/approval-card.component';
 
 test('ApprovalCardComponent emits approve and reject', async () => {
   const fixture = await createComponent(ApprovalCardComponent);

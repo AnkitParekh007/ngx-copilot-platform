@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createComponent } from './test-bed.harness';
-import { RagSourceCardComponent } from '../src/lib/components/rag-source-card/rag-source-card.component';
+import { RagSourceCardComponent } from '../../src/lib/components/rag-source-card/rag-source-card.component';
 
 test('RagSourceCardComponent renders source title', async () => {
   const fixture = await createComponent(RagSourceCardComponent);

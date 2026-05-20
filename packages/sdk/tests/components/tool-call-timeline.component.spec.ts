@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createComponent } from './test-bed.harness';
-import { ToolCallTimelineComponent } from '../src/lib/components/tool-call-timeline/tool-call-timeline.component';
+import { ToolCallTimelineComponent } from '../../src/lib/components/tool-call-timeline/tool-call-timeline.component';
 
 test('ToolCallTimelineComponent renders empty list without crashing', async () => {
   const fixture = await createComponent(ToolCallTimelineComponent);

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createComponent } from './test-bed.harness';
-import { CopilotChatComponent } from '../src/lib/components/copilot-chat/copilot-chat.component';
+import { CopilotChatComponent } from '../../src/lib/components/copilot-chat/copilot-chat.component';
 
 test('CopilotChatComponent renders empty state', async () => {
   const fixture = await createComponent(CopilotChatComponent);
