@@ -1,0 +1,107 @@
+[
+  {
+    "category": "Documentation - Getting Started",
+    "questions": [
+      "How do I get started with RetailOps PXM?",
+      "What are the system requirements for RetailOps?",
+      "How do I create my first product?",
+      "What is the difference between a product and a SKU?"
+    ]
+  },
+  {
+    "category": "Product Management",
+    "questions": [
+      "How do I create a new product?",
+      "How do I add SKUs to a product?",
+      "What fields are required for a product?",
+      "How do I bulk upload products?",
+      "How do I import products from a CSV file?",
+      "What image formats are supported for product images?",
+      "How do I set up product categories?",
+      "Can I duplicate an existing product?"
+    ]
+  },
+  {
+    "category": "SKU Management",
+    "questions": [
+      "How do I manage SKU inventory?",
+      "What is the SKU status lifecycle?",
+      "How do I set pricing for a SKU?",
+      "How do I add variant attributes like size and color?",
+      "What happens when a SKU goes out of stock?",
+      "How do I set up reorder points?",
+      "Can I have multiple warehouses per SKU?"
+    ]
+  },
+  {
+    "category": "Approval Workflow",
+    "questions": [
+      "How does the approval workflow work?",
+      "Who can approve products?",
+      "How do I submit a product for approval?",
+      "What happens when a product is rejected?",
+      "Can I configure custom approval rules?",
+      "How do I see pending approvals?",
+      "Can I approve multiple products at once?"
+    ]
+  },
+  {
+    "category": "Channel Syndication",
+    "questions": [
+      "How do I publish products to a channel?",
+      "What channels are supported?",
+      "How do I set up attribute mappings for a channel?",
+      "Why did my syndication fail?",
+      "How often does syndication run?",
+      "Can I syndicate a single SKU?",
+      "How do I check syndication status?",
+      "What is the difference between full and incremental syndication?"
+    ]
+  },
+  {
+    "category": "Validation & Errors",
+    "questions": [
+      "Why is my product showing validation errors?",
+      "What are the required fields for Amazon?",
+      "How do I fix image size validation errors?",
+      "What does the 'missing required attribute' error mean?",
+      "How do I validate products before publishing?"
+    ]
+  },
+  {
+    "category": "Code & Implementation",
+    "questions": [
+      "Where is the product list component?",
+      "How does the SKU editor work?",
+      "Where are the API services defined?",
+      "How do I find the route for the channel syndication page?",
+      "Which component handles bulk upload?",
+      "Where is the approval queue implemented?",
+      "How does the validation service work?"
+    ]
+  },
+  {
+    "category": "Agent Mode Actions",
+    "questions": [
+      "Navigate to the product list page",
+      "Create a new product with the name 'Test Product'",
+      "Open the SKU editor for SKU-001",
+      "Submit product PRD-123 for approval",
+      "Run syndication for the Amazon channel",
+      "Check the status of my last bulk upload",
+      "Show me all pending approvals",
+      "Validate all draft products"
+    ]
+  },
+  {
+    "category": "Complex Workflows",
+    "questions": [
+      "Walk me through creating and publishing a new product to Amazon",
+      "Help me set up a new channel with custom attribute mappings",
+      "Test the product onboarding workflow from start to finish",
+      "Check if all products meet Amazon's validation requirements",
+      "Find all SKUs that are low on inventory and need reordering",
+      "Compare the implementation with the documentation for approval workflow"
+    ]
+  }
+]

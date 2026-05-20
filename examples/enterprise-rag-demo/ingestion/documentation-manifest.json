@@ -1,0 +1,67 @@
+{
+  "name": "RetailOps PXM Documentation",
+  "version": "1.0.0",
+  "description": "Documentation ingestion manifest for RetailOps Product Experience Management",
+  "sources": [
+    {
+      "type": "documentation",
+      "baseUrl": "https://retailops-pxm.example.com/docs",
+      "crawlConfig": {
+        "maxDepth": 3,
+        "maxPages": 100,
+        "includePatterns": [
+          "/docs/**"
+        ],
+        "excludePatterns": [
+          "/docs/api/**",
+          "/docs/changelog/**"
+        ],
+        "respectRobotsTxt": true,
+        "rateLimit": {
+          "requestsPerSecond": 2,
+          "delayBetweenRequests": 500
+        }
+      },
+      "contentExtraction": {
+        "titleSelector": "h1, .doc-title",
+        "contentSelector": "main, .doc-content, article",
+        "removeSelectors": [
+          "nav",
+          ".sidebar",
+          ".toc",
+          "footer",
+          ".edit-link"
+        ]
+      },
+      "metadata": {
+        "product": "RetailOps PXM",
+        "category": "user-documentation",
+        "language": "en"
+      }
+    }
+  ],
+  "chunkingConfig": {
+    "strategy": "semantic",
+    "maxChunkSize": 1000,
+    "minChunkSize": 100,
+    "overlapSize": 100,
+    "preserveHeadings": true,
+    "splitOnHeadings": ["h1", "h2", "h3"]
+  },
+  "embeddingConfig": {
+    "model": "text-embedding-3-small",
+    "dimensions": 1536,
+    "batchSize": 100
+  },
+  "schedule": {
+    "enabled": true,
+    "frequency": "daily",
+    "time": "02:00",
+    "timezone": "UTC"
+  },
+  "notifications": {
+    "onSuccess": false,
+    "onError": true,
+    "channels": ["email", "slack"]
+  }
+}

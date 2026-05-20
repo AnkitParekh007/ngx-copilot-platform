@@ -1,0 +1,61 @@
+name: Publish SDK to npm
+
+# Trigger on GitHub release published or manual dispatch.
+#
+# NPM TRUSTED PUBLISHING SETUP (no NPM_TOKEN needed):
+# 1. Log in to npmjs.com → your package page (@ngx-copilot/sdk).
+# 2. Navigate to "Settings" → "Publishing" → "Trusted Publishers".
+# 3. Add a new Trusted Publisher:
+#    - Ecosystem: npm
+#    - Repository owner: AnkitParekh007
+#    - Repository name: ngx-copilot-platform
+#    - Workflow filename: publish-npm.yml
+#    - Environment name: npm-publish (optional)
+# 4. The "id-token: write" permission below handles OIDC token exchange.
+#
+# Reference: https://docs.npmjs.com/generating-provenance-statements
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # environment: npm-publish  # Uncomment to add approval gate
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm --filter @ngx-copilot/sdk test
+
+      - name: Build SDK
+        run: pnpm --filter @ngx-copilot/sdk build
+
+      - name: Dry-run publish
+        working-directory: dist/sdk
+        run: npm publish --dry-run
+
+      - name: Publish to npm
+        working-directory: dist/sdk
+        run: npm publish --provenance --access public

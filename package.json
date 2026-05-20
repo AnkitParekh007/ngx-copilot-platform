@@ -1,0 +1,38 @@
+{
+  "name": "ngx-copilot-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Full-stack Angular copilot platform — SDK library, RAG backend, and enterprise demo apps",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnkitParekh007/ngx-copilot-platform.git"
+  },
+  "author": {
+    "name": "Ankit Parekh",
+    "url": "https://github.com/AnkitParekh007"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "dev": "turbo dev --parallel",
+    "build:sdk": "pnpm --filter @ngx-copilot/sdk build",
+    "build:demo": "pnpm --filter demo-app build",
+    "build:admin": "pnpm --filter admin-ui build",
+    "build:backend": "pnpm --filter @ngx-copilot/backend build",
+    "test:sdk": "pnpm --filter @ngx-copilot/sdk test",
+    "lint:sdk": "pnpm --filter @ngx-copilot/sdk lint",
+    "pack:sdk": "pnpm --filter @ngx-copilot/sdk pack:dry",
+    "deploy:pages": "pnpm --filter demo-app build:gh-pages",
+    "verify": "pnpm test:sdk && pnpm lint:sdk && pnpm build:sdk && pnpm pack:sdk"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

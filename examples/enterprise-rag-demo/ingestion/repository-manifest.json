@@ -1,0 +1,100 @@
+{
+  "name": "RetailOps PXM Angular Codebase",
+  "version": "1.0.0",
+  "description": "Repository ingestion manifest for RetailOps Angular application",
+  "repository": {
+    "provider": "github",
+    "owner": "example-org",
+    "repo": "retailops-pxm-frontend",
+    "branch": "main",
+    "alternateProvider": {
+      "provider": "bitbucket",
+      "workspace": "example-workspace",
+      "repoSlug": "retailops-pxm-frontend"
+    }
+  },
+  "scanConfig": {
+    "framework": "angular",
+    "frameworkVersion": "17+",
+    "rootPath": "src/app",
+    "includePatterns": [
+      "**/*.ts",
+      "**/*.html",
+      "**/*.scss"
+    ],
+    "excludePatterns": [
+      "**/*.spec.ts",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/*.d.ts"
+    ]
+  },
+  "angularConfig": {
+    "extractComponents": true,
+    "extractServices": true,
+    "extractRoutes": true,
+    "extractGuards": true,
+    "extractResolvers": true,
+    "extractModels": true,
+    "extractPipes": true,
+    "extractDirectives": true
+  },
+  "selectorExtraction": {
+    "enabled": true,
+    "patterns": {
+      "dataTestId": "data-testid=\"([^\"]+)\"",
+      "dataTest": "data-test=\"([^\"]+)\"",
+      "id": "id=\"([^\"]+)\"",
+      "class": "class=\"([^\"]+)\"",
+      "formControlName": "formControlName=\"([^\"]+)\"",
+      "routerLink": "routerLink=\"([^\"]+)\""
+    },
+    "priorityOrder": [
+      "dataTestId",
+      "dataTest",
+      "id",
+      "formControlName"
+    ]
+  },
+  "routeExtraction": {
+    "enabled": true,
+    "routeFiles": [
+      "**/app.routes.ts",
+      "**/*-routing.module.ts",
+      "**/*.routes.ts"
+    ],
+    "extractParams": true,
+    "extractGuards": true,
+    "extractResolvers": true
+  },
+  "dependencyAnalysis": {
+    "enabled": true,
+    "trackImports": true,
+    "trackInjections": true,
+    "buildDependencyGraph": true
+  },
+  "chunkingConfig": {
+    "strategy": "component",
+    "maxChunkSize": 2000,
+    "includeContext": true,
+    "contextLines": 5
+  },
+  "embeddingConfig": {
+    "model": "text-embedding-3-small",
+    "dimensions": 1536,
+    "batchSize": 50,
+    "includeMetadata": true
+  },
+  "schedule": {
+    "enabled": true,
+    "frequency": "on-push",
+    "branches": ["main", "develop"],
+    "fallbackFrequency": "daily"
+  },
+  "metadata": {
+    "product": "RetailOps PXM",
+    "type": "frontend",
+    "language": "typescript",
+    "framework": "angular"
+  }
+}

@@ -1,0 +1,56 @@
+name: Deploy Backend to Vercel
+
+# Deploys packages/backend (Next.js RAG API) to Vercel.
+#
+# SETUP:
+# 1. Install Vercel CLI: npm i -g vercel
+# 2. Run `vercel link` inside packages/backend/ to link to your Vercel project
+# 3. Add these GitHub Secrets:
+#    - VERCEL_TOKEN: from https://vercel.com/account/tokens
+#    - VERCEL_ORG_ID: from .vercel/project.json (orgId)
+#    - VERCEL_PROJECT_ID: from .vercel/project.json (projectId)
+# 4. Add your backend env vars in the Vercel dashboard (Settings → Environment Variables)
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'packages/backend/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel environment
+        working-directory: packages/backend
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build backend for Vercel
+        working-directory: packages/backend
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy to Vercel production
+        working-directory: packages/backend
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
