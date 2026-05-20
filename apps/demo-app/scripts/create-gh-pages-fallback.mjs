@@ -7,9 +7,10 @@
 import { existsSync, copyFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+// Script runs from apps/demo-app/; Angular outputs to ../../dist/demo-app (monorepo root)
 const candidates = [
-  join('dist', 'demo-app', 'browser'),
-  join('dist', 'demo-app'),
+  join('..', '..', 'dist', 'demo-app', 'browser'),
+  join('..', '..', 'dist', 'demo-app'),
 ];
 
 let outDir = null;
