@@ -296,4 +296,4 @@ export const DOCS_PAGES: DocPage[] = [
 ];
 
 export const GITHUB_EDIT_BASE =
-  'https://github.com/AnkitParekh007/ngx-copilot-sdk/edit/master/';
+  'https://github.com/AnkitParekh007/ngx-copilot-platform/edit/main/';

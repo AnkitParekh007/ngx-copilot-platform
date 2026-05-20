@@ -22,9 +22,9 @@ pnpm install
 
 ```
 packages/sdk/       — @ngx-copilot/sdk Angular library (publishable)
-packages/backend/   — Next.js RAG API backend (private, Vercel-deployed)
+packages/backend/   — Next.js RAG API backend (private, self-hosted)
 apps/demo-app/      — Angular docs + showcase site (GitHub Pages)
-apps/admin-ui/      — Next.js admin panel (Vercel-deployed)
+apps/admin-ui/      — Next.js admin panel (self-hosted)
 apps/example-consumer/ — Angular integration example (local dev)
 examples/           — Standalone ingestion and integration examples
 ```

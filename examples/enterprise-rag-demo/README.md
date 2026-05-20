@@ -6,7 +6,7 @@
 
 ## What is RetailOps PXM?
 
-RetailOps PXM is a fictional enterprise **Product Experience Management (PXM)** platform. It is designed to illustrate how a large, realistic Angular codebase combined with rich product documentation behaves when indexed and queried by a **Codebase + Documentation Copilot** built with [ngx-copilot-sdk](https://github.com/AnkitParekh007/ngx-copilot-sdk).
+RetailOps PXM is a fictional enterprise **Product Experience Management (PXM)** platform. It is designed to illustrate how a large, realistic Angular codebase combined with rich product documentation behaves when indexed and queried by a **Codebase + Documentation Copilot** built with [ngx-copilot-platform](https://github.com/AnkitParekh007/ngx-copilot-platform).
 
 The platform simulates a real-world scenario: a mid-to-large retail organization managing thousands of product SKUs across multiple channels (Amazon, Shopify, Google Shopping, and a B2B portal). The fictional platform covers the full product data lifecycle — from initial draft creation, through validation and multi-step approval, all the way to channel syndication.
 

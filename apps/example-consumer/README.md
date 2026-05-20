@@ -1,9 +1,9 @@
 # example-consumer
 
 Minimal Angular 20 app demonstrating the full-stack integration:
-**`@ngx-copilot/sdk`** (Angular library) + **`packages/backend`** (Next.js RAG API).
+**`@ankitparekh007/ngx-copilot-sdk`** (Angular library) + **`packages/backend`** (Next.js RAG API).
 
-This app closes [ngx-copilot-sdk#2](https://github.com/AnkitParekh007/ngx-copilot-sdk/issues/2) — a typed backend adapter example for real copilot integrations.
+This app closes [ngx-copilot-platform#2](https://github.com/AnkitParekh007/ngx-copilot-platform/issues/2) — a typed backend adapter example for real copilot integrations.
 
 ## What it shows
 
@@ -67,7 +67,7 @@ For local development without a running backend:
 
 ```ts
 // app.config.ts
-import { MockCopilotBackendAdapter } from '@ngx-copilot/sdk';
+import { MockCopilotBackendAdapter } from '@ankitparekh007/ngx-copilot-sdk';
 
 provideCopilot(
   { mode: 'ask', theme: 'system' },

@@ -24,7 +24,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       <div class="hero-actions">
         <a routerLink="/docs/getting-started" class="btn-primary">Get started &rarr;</a>
         <a routerLink="/docs" class="btn-secondary">Documentation</a>
-        <a href="https://github.com/AnkitParekh007/ngx-copilot-sdk"
+        <a href="https://github.com/AnkitParekh007/ngx-copilot-platform"
            target="_blank" rel="noopener noreferrer" class="btn-ghost">
           GitHub &#8599;
         </a>

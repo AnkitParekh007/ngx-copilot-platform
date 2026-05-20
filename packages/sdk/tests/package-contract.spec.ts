@@ -1,12 +1,15 @@
 import '@angular/compiler';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const root = resolve(process.cwd());
-const rootPkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf-8'));
-const libPkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf-8'));
+const cwd = resolve(process.cwd());
+const repoRoot = existsSync(resolve(cwd, 'packages', 'sdk', 'package.json'))
+  ? cwd
+  : resolve(cwd, '..', '..');
+const rootPkg = JSON.parse(readFileSync(resolve(repoRoot, 'package.json'), 'utf-8'));
+const libPkg = JSON.parse(readFileSync(resolve(repoRoot, 'packages', 'sdk', 'package.json'), 'utf-8'));
 
 // --- Root package ---
 
@@ -36,8 +39,8 @@ test('root package.json has verify script', () => {
 
 // --- Library package ---
 
-test('library package name is @ngx-copilot/sdk', () => {
-  assert.equal(libPkg.name, '@ngx-copilot/sdk');
+test('library package name is @ankitparekh007/ngx-copilot-sdk', () => {
+  assert.equal(libPkg.name, '@ankitparekh007/ngx-copilot-sdk');
 });
 
 test('library package.json does not have private:true', () => {
@@ -97,7 +100,7 @@ test('library has description field', () => {
 test('LICENSE file exists at repo root', () => {
   let licenseContent: string;
   try {
-    licenseContent = readFileSync(resolve(root, 'LICENSE'), 'utf-8');
+    licenseContent = readFileSync(resolve(repoRoot, 'LICENSE'), 'utf-8');
   } catch {
     assert.fail('LICENSE file must exist at repo root');
     return;
@@ -108,9 +111,9 @@ test('LICENSE file exists at repo root', () => {
 // --- README install command ---
 
 test('README install command references scoped package name', () => {
-  const readme = readFileSync(resolve(root, 'README.md'), 'utf-8');
+  const readme = readFileSync(resolve(repoRoot, 'README.md'), 'utf-8');
   assert.ok(
-    readme.includes('@ngx-copilot/sdk'),
-    'README must reference the scoped package name @ngx-copilot/sdk',
+    readme.includes('@ankitparekh007/ngx-copilot-sdk'),
+    'README must reference the scoped package name @ankitparekh007/ngx-copilot-sdk',
   );
 });

@@ -199,7 +199,7 @@ export default function Home() {
 
 // Request (option 2: full URL)
 {
-  "repoUrl": "https://github.com/AnkitParekh007/ngx-copilot-sdk",
+  "repoUrl": "https://github.com/AnkitParekh007/ngx-copilot-platform",
   "branch": "main",
   "token": "ghp_xxx" // optional for public repos
 }
@@ -263,7 +263,7 @@ export default function Home() {
 export const appConfig = {
   providers: [
     provideCopilotConfig({
-      apiBaseUrl: '${typeof window !== 'undefined' ? window.location.origin : 'https://your-backend.vercel.app'}/api/copilot',
+      apiBaseUrl: '${typeof window !== 'undefined' ? window.location.origin : 'https://your-backend.example.com'}/api/copilot',
       defaultMode: 'ask',
       enableApprovals: true,
       enableRagSources: true,

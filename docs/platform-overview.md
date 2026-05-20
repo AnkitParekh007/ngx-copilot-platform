@@ -9,7 +9,7 @@
 │  Angular App (your enterprise app)                               │
 │                                                                  │
 │  ┌─────────────────────────────────────┐                        │
-│  │  @ngx-copilot/sdk                   │                        │
+│  │  @ankitparekh007/ngx-copilot-sdk   │                        │
 │  │  ┌─────────────────────────────┐    │                        │
 │  │  │  <ngx-copilot-shell>        │    │                        │
 │  │  │  CopilotShellComponent      │    │                        │
@@ -27,7 +27,7 @@
                      │  HTTPS + SSE
                      ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│  packages/backend  (Next.js on Vercel)                           │
+│  packages/backend  (Next.js — self-hosted, any platform)         │
 │                                                                  │
 │  /api/copilot/chat/stream   ← SSE streaming chat                │
 │  /api/copilot/rag/query     ← Vector search                     │

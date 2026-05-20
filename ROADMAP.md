@@ -20,7 +20,7 @@
 - [x] GitHub repository ingestion
 - [x] Bitbucket repository ingestion
 - [x] Documentation / web crawling ingestion
-- [x] LLM orchestration (Vercel AI SDK + OpenAI)
+- [x] LLM orchestration (`ai` npm SDK for streaming + OpenAI)
 - [x] `cpk_` API key authentication
 - [x] Rate limiting (Upstash Redis)
 - [x] Audit logging
@@ -28,7 +28,7 @@
 
 ### Platform
 - [x] pnpm monorepo with Turborepo task caching
-- [x] 4 CI/CD workflows (CI, GH Pages, npm publish, Vercel backend deploy)
+- [x] 4 CI/CD workflows (CI, GH Pages, npm publish, backend deploy template)
 - [x] `apps/example-consumer` — full-stack Angular integration example
 - [x] MIT license, community docs, good first issues
 

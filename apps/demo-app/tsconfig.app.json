@@ -1,10 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/demo-app",
     "types": [],
     "paths": {
-      "@ankitparekh007/ngx-copilot-sdk": ["../ngx-copilot-sdk/src/public-api.ts"]
+      "@ankitparekh007/ngx-copilot-sdk": ["../../packages/sdk/src/public-api.ts"]
     }
   },
   "files": ["src/main.ts"],

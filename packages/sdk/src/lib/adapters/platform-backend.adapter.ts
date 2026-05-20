@@ -11,7 +11,7 @@ import { createAdapterError } from './copilot-adapter-error.model';
 export interface NgxCopilotPlatformConfig {
   /**
    * Base URL of the ngx-copilot-platform backend (packages/backend).
-   * Example: 'http://localhost:3001' or 'https://your-platform.vercel.app'
+   * Example: 'http://localhost:3001' or 'https://your-backend.example.com'
    */
   apiUrl: string;
 
@@ -41,8 +41,8 @@ export const NGX_COPILOT_PLATFORM_CONFIG =
  * @example
  * ```ts
  * // app.config.ts
- * import { provideCopilot } from '@ngx-copilot/sdk';
- * import { providePlatformBackend } from '@ngx-copilot/sdk';
+ * import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
+ * import { providePlatformBackend } from '@ankitparekh007/ngx-copilot-sdk';
  * import { environment } from './environments/environment';
  *
  * export const appConfig: ApplicationConfig = {

@@ -3,11 +3,11 @@ import { generateText } from 'ai'
 const EMBEDDING_MODEL = 'openai/text-embedding-3-small'
 
 export async function generateEmbedding(text: string): Promise<number[]> {
-  // Use AI Gateway for embeddings
-  const response = await fetch('https://ai-gateway.vercel.sh/v1/embeddings', {
+  const response = await fetch('https://api.openai.com/v1/embeddings', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
     },
     body: JSON.stringify({
       model: 'text-embedding-3-small',
@@ -30,10 +30,11 @@ export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
 
   for (let i = 0; i < texts.length; i += batchSize) {
     const batch = texts.slice(i, i + batchSize)
-    const response = await fetch('https://ai-gateway.vercel.sh/v1/embeddings', {
+    const response = await fetch('https://api.openai.com/v1/embeddings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: 'text-embedding-3-small',

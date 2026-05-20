@@ -5,7 +5,7 @@ Complete API reference for the ngx-copilot-sdk backend.
 ## Base URL
 
 ```
-https://your-deployment.vercel.app/api/copilot
+https://your-backend.example.com/api/copilot
 ```
 
 ---
@@ -427,7 +427,7 @@ interface ErrorResponse {
 For real-time bidirectional communication, a WebSocket endpoint is also available:
 
 ```
-wss://your-deployment.vercel.app/api/copilot/ws
+wss://your-backend.example.com/api/copilot/ws
 ```
 
 **Message Format:**

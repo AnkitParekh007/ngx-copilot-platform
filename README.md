@@ -1,67 +1,72 @@
 # ngx-copilot-platform
 
-> Full-stack Angular copilot platform — Angular 20 SDK + Next.js RAG backend + enterprise demos
+> Angular AI copilot platform with a publishable SDK, a production-shaped RAG backend, and enterprise-style demos.
 
 [![CI](https://github.com/AnkitParekh007/ngx-copilot-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/AnkitParekh007/ngx-copilot-platform/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/@ngx-copilot/sdk.svg)](https://www.npmjs.com/package/@ngx-copilot/sdk)
+[![npm](https://img.shields.io/npm/v/@ankitparekh007/ngx-copilot-sdk.svg)](https://www.npmjs.com/package/@ankitparekh007/ngx-copilot-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A production-shaped monorepo that combines:
+This repository demonstrates the full stack behind a serious Angular copilot experience:
 
-- **`@ngx-copilot/sdk`** — Reusable Angular 20 components for AI chat, RAG citations, tool timelines, and approval workflows
-- **`packages/backend`** — Next.js RAG API with Supabase vector store, OpenAI embeddings, GitHub/Bitbucket ingestion, and rate limiting
-- **`apps/example-consumer`** — Minimal Angular app showing the full-stack wiring
-- **`apps/demo-app`** — Live documentation and component showcase
+- **Frontend SDK:** `@ankitparekh007/ngx-copilot-sdk` ships Angular 20 components for chat, streaming, RAG citations, tool timelines, and approval workflows.
+- **Backend platform:** a Next.js RAG service handles ingestion, embeddings, retrieval, streaming, auth boundaries, and rate limiting.
+- **Proof through execution:** runnable demos, an example consumer, tests, docs, and deployment workflows validate the architecture end to end.
+
+If you are reviewing this as a recruiter, hiring manager, or engineering lead, the signal is in the combination:
+
+- Angular library design with typed provider and adapter boundaries
+- Real backend integration patterns for OpenAI, Supabase pgvector, SSE streaming, and ingestion
+- Enterprise UX patterns like approvals, source citations, and tool execution timelines
+- Monorepo packaging, CI, publish preparation, and documentation discipline
 
 ---
 
 ## What this platform proves
 
 - Typed adapter pattern decouples Angular UI from any backend
-- Real RAG pipeline: ingest → embed → retrieve → stream
+- Real RAG pipeline: ingest -> embed -> retrieve -> stream
 - `cpk_` API key auth keeps LLM credentials off the browser
 - SSE streaming from Next.js to Angular via `NgxCopilotPlatformBackendAdapter`
 - Enterprise patterns: approval gates, tool timelines, multi-mode copilot shell
 
-**Status:** v0.1.0 preview — SDK is buildable, tested (18 specs), and documented. Backend is functional but requires your own Supabase/OpenAI credentials.
+**Status:** v0.1.0 preview. The SDK is buildable, tested, and documented. The backend is functional and ready to run with your own Supabase/OpenAI credentials.
 
 ---
 
 ## Monorepo structure
 
-```
+```text
 ngx-copilot-platform/
-├── packages/
-│   ├── sdk/              @ngx-copilot/sdk — Angular library (publishable)
-│   └── backend/          Next.js RAG API (Vercel-deployed)
-├── apps/
-│   ├── demo-app/         Angular docs + showcase → GitHub Pages
-│   ├── admin-ui/         Next.js shadcn/ui admin panel
-│   └── example-consumer/ Angular app wired to real backend ← start here
-├── examples/
-│   ├── github-ingestion/
-│   ├── bitbucket-ingestion/
-│   └── enterprise-rag-demo/
-├── docs/
-│   ├── sdk/              23 SDK documentation files
-│   ├── backend/          Backend API docs
-│   └── platform-overview.md
-└── supabase/             Database migrations (pgvector schema)
+|-- packages/
+|   |-- sdk/              @ankitparekh007/ngx-copilot-sdk - Angular library (publishable)
+|   `-- backend/          Next.js RAG API (self-hosted)
+|-- apps/
+|   |-- demo-app/         Angular docs and showcase
+|   |-- admin-ui/         Next.js shadcn/ui admin panel
+|   `-- example-consumer/ Angular app wired to the real backend
+|-- examples/
+|   |-- github-ingestion/
+|   |-- bitbucket-ingestion/
+|   `-- enterprise-rag-demo/
+|-- docs/
+|   |-- sdk/
+|   |-- backend/
+|   `-- platform-overview.md
+`-- supabase/             Database migrations and pgvector schema
 ```
 
 ---
 
 ## Quick start
 
-### Option A — SDK only (mock backend, zero setup)
+### Option A - SDK only
 
 ```bash
-npm install @ngx-copilot/sdk
+npm install @ankitparekh007/ngx-copilot-sdk
 ```
 
 ```ts
-// app.config.ts
-import { provideCopilot } from '@ngx-copilot/sdk';
+import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -71,32 +76,28 @@ export const appConfig: ApplicationConfig = {
 ```
 
 ```html
-<!-- app.component.html -->
 <ngx-copilot-shell />
 ```
 
-### Option B — Full stack (SDK + platform backend)
+### Option B - Full stack
 
 ```bash
-# 1. Clone the monorepo
 git clone https://github.com/AnkitParekh007/ngx-copilot-platform.git
 cd ngx-copilot-platform
 pnpm install
 
-# 2. Configure the backend
 cp packages/backend/.env.example packages/backend/.env.local
 # Fill in: SUPABASE_*, KV_REST_*, COPILOT_API_KEYS, OPENAI_API_KEY
 
-# 3. Start the backend
-pnpm --filter @ngx-copilot/backend dev    # http://localhost:3001
-
-# 4. Start the example consumer
-pnpm --filter example-consumer dev        # http://localhost:4201
+pnpm --filter @ngx-copilot/backend dev
+pnpm --filter example-consumer dev
 ```
 
 ```ts
-// apps/example-consumer/src/app/app.config.ts
-import { provideCopilot, NgxCopilotPlatformBackendAdapter } from '@ngx-copilot/sdk';
+import {
+  provideCopilot,
+  NgxCopilotPlatformBackendAdapter,
+} from '@ankitparekh007/ngx-copilot-sdk';
 
 const adapter = new NgxCopilotPlatformBackendAdapter({
   apiUrl: 'http://localhost:3001',
@@ -116,13 +117,13 @@ export const appConfig: ApplicationConfig = {
 
 | Component | Description |
 |---|---|
-| `<ngx-copilot-shell>` | Full chat shell with streaming, sources, timeline, approvals |
+| `<ngx-copilot-shell>` | Full chat shell with streaming, sources, timeline, and approvals |
 | `<ngx-copilot-chat>` | Message list and composer |
 | `<ngx-streaming-message>` | Character-by-character streaming renderer |
-| `<ngx-rag-source-card>` | RAG citation card (file path, URL, snippet, score) |
+| `<ngx-rag-source-card>` | RAG citation card with file path, URL, snippet, and score |
 | `<ngx-tool-call-timeline>` | Multi-step agent tool execution visualization |
 | `<ngx-approval-card>` | User approval gate with risk indicators and tone |
-| `<ngx-agent-mode-selector>` | Mode switcher: ask / plan / execute / debug |
+| `<ngx-agent-mode-selector>` | Mode switcher for ask, plan, execute, and debug |
 
 ## Backend ingestion endpoints
 
@@ -138,13 +139,13 @@ export const appConfig: ApplicationConfig = {
 ## Development commands
 
 ```bash
-pnpm build           # Build all packages (Turborepo cached)
-pnpm test            # Run all tests
-pnpm lint            # Lint all packages
-pnpm build:sdk       # Build @ngx-copilot/sdk only
-pnpm test:sdk        # Run SDK tests (18 spec files)
-pnpm pack:sdk        # Dry-run npm publish
-pnpm deploy:pages    # Build demo-app for GitHub Pages
+pnpm build
+pnpm test
+pnpm lint
+pnpm build:sdk
+pnpm test:sdk
+pnpm pack:sdk
+pnpm deploy:pages
 ```
 
 ---
@@ -153,17 +154,17 @@ pnpm deploy:pages    # Build demo-app for GitHub Pages
 
 | Workflow | Trigger | Action |
 |---|---|---|
-| `ci.yml` | Every push/PR | Lint, test, build all packages |
-| `deploy-pages.yml` | Push to master | Deploy demo-app to GitHub Pages |
-| `publish-npm.yml` | GitHub Release | Publish `@ngx-copilot/sdk` to npm (OIDC) |
-| `deploy-backend.yml` | Push to master (backend changed) | Deploy backend to Vercel |
+| `ci.yml` | Every push or PR | Lint, test, and build workspace targets |
+| `deploy-pages.yml` | Push to `main` or manual | Build and deploy the demo app to GitHub Pages |
+| `publish-npm.yml` | GitHub Release | Publish `@ankitparekh007/ngx-copilot-sdk` to npm with OIDC |
+| `deploy-backend.yml` | Backend changes | Build backend (deploy step is a configurable template) |
 
 ---
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md). Good first issues in [GOOD_FIRST_ISSUES.md](./GOOD_FIRST_ISSUES.md).
+See [CONTRIBUTING.md](./CONTRIBUTING.md). Good first issues live in [GOOD_FIRST_ISSUES.md](./GOOD_FIRST_ISSUES.md).
 
 ## License
 
-[MIT](./LICENSE) — Ankit Parekh
+[MIT](./LICENSE) - Ankit Parekh

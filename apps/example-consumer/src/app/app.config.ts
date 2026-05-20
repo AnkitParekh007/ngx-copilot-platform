@@ -4,7 +4,7 @@ import {
   provideCopilot,
   NgxCopilotPlatformBackendAdapter,
   COPILOT_BACKEND_ADAPTER,
-} from '@ngx-copilot/sdk';
+} from '@ankitparekh007/ngx-copilot-sdk';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 

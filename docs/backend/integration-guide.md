@@ -1,6 +1,6 @@
 # Integration Guide
 
-This guide explains how to integrate the ngx-copilot-sdk backend with your Angular application using the [ngx-copilot-sdk](https://github.com/AnkitParekh007/ngx-copilot-sdk) frontend library.
+This guide explains how to integrate the ngx-copilot-platform backend with your Angular application using the [ngx-copilot-platform](https://github.com/AnkitParekh007/ngx-copilot-platform) frontend SDK and example apps.
 
 ## Prerequisites
 
@@ -11,16 +11,22 @@ This guide explains how to integrate the ngx-copilot-sdk backend with your Angul
 
 ## 1. Deploy the Backend
 
-### Option A: Deploy to Vercel
+The backend (`packages/backend`) is a standard Next.js app that runs on any Node.js host. Choose any platform:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/AnkitParekh007/AnkitParekh007-ngx-copilot-sdk)
+| Platform | Notes |
+|---|---|
+| **Railway** | `railway up` from `packages/backend/` |
+| **Fly.io** | `flyctl deploy` from `packages/backend/` |
+| **Render** | Connect repo, set root dir to `packages/backend` |
+| **Docker** | `docker build -t ngx-copilot-backend packages/backend` |
+| **Self-hosted** | See below |
 
-### Option B: Self-Host
+### Self-host
 
 ```bash
 # Clone the repository
-git clone https://github.com/AnkitParekh007/AnkitParekh007-ngx-copilot-sdk.git
-cd AnkitParekh007-ngx-copilot-sdk
+git clone https://github.com/AnkitParekh007/ngx-copilot-platform.git
+cd ngx-copilot-platform
 
 # Install dependencies
 pnpm install
@@ -124,7 +130,7 @@ CREATE INDEX code_chunks_embedding_idx ON code_chunks USING ivfflat (embedding v
 ## 3. Install the Angular SDK
 
 ```bash
-npm install @anthropic-ai/ngx-copilot-sdk
+npm install @ankitparekh007/ngx-copilot-sdk
 ```
 
 ## 4. Configure the Angular Application
@@ -135,14 +141,14 @@ npm install @anthropic-ai/ngx-copilot-sdk
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideCopilot } from '@anthropic-ai/ngx-copilot-sdk';
+import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
     provideCopilot({
-      apiBaseUrl: 'https://your-backend.vercel.app/api/copilot',
+      apiBaseUrl: 'https://your-backend.example.com/api/copilot',
       defaultMode: 'ask',
       features: {
         approvals: true,
@@ -166,7 +172,7 @@ export const appConfig: ApplicationConfig = {
 // app.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CopilotShellComponent } from '@anthropic-ai/ngx-copilot-sdk';
+import { CopilotShellComponent } from '@ankitparekh007/ngx-copilot-sdk';
 
 @Component({
   selector: 'app-root',
@@ -187,7 +193,7 @@ export class AppComponent {}
 ### Ingest Documentation
 
 ```bash
-curl -X POST https://your-backend.vercel.app/api/ingestion/documentation \
+curl -X POST https://your-backend.example.com/api/ingestion/documentation \
   -H "Content-Type: application/json" \
   -d '{
     "url": "https://your-docs.example.com",
@@ -199,7 +205,7 @@ curl -X POST https://your-backend.vercel.app/api/ingestion/documentation \
 ### Ingest GitHub Repository
 
 ```bash
-curl -X POST https://your-backend.vercel.app/api/ingestion/github \
+curl -X POST https://your-backend.example.com/api/ingestion/github \
   -H "Content-Type: application/json" \
   -d '{
     "owner": "your-org",
@@ -212,7 +218,7 @@ curl -X POST https://your-backend.vercel.app/api/ingestion/github \
 ### Ingest Bitbucket Repository
 
 ```bash
-curl -X POST https://your-backend.vercel.app/api/ingestion/bitbucket \
+curl -X POST https://your-backend.example.com/api/ingestion/bitbucket \
   -H "Content-Type: application/json" \
   -d '{
     "workspace": "your-workspace",
@@ -229,7 +235,7 @@ The copilot works best when it has context about the current application state:
 
 ```typescript
 // In your feature components
-import { CopilotService } from '@anthropic-ai/ngx-copilot-sdk';
+import { CopilotService } from '@ankitparekh007/ngx-copilot-sdk';
 
 @Component({...})
 export class ProductDetailComponent {

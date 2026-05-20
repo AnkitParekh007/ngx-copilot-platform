@@ -1,26 +1,19 @@
-name: Deploy Backend to Vercel
+name: Deploy Backend
 
-# Deploys packages/backend (Next.js RAG API) to Vercel.
-#
-# SETUP:
-# 1. Install Vercel CLI: npm i -g vercel
-# 2. Run `vercel link` inside packages/backend/ to link to your Vercel project
-# 3. Add these GitHub Secrets:
-#    - VERCEL_TOKEN: from https://vercel.com/account/tokens
-#    - VERCEL_ORG_ID: from .vercel/project.json (orgId)
-#    - VERCEL_PROJECT_ID: from .vercel/project.json (projectId)
-# 4. Add your backend env vars in the Vercel dashboard (Settings → Environment Variables)
+# Builds and verifies the backend on every master push that touches packages/backend/.
+# Deployment step is intentionally left as a commented template — uncomment and adapt
+# for whichever hosting platform you use (Railway, Fly.io, Render, Docker/SSH, etc.).
 
 on:
   push:
-    branches: [master]
+    branches: [main, master]
     paths:
       - 'packages/backend/**'
       - '.github/workflows/deploy-backend.yml'
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,26 +24,71 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
-      - name: Pull Vercel environment
-        working-directory: packages/backend
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Build backend for Vercel
-        working-directory: packages/backend
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build backend
+        run: pnpm --filter @ngx-copilot/backend build
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          # Stub values — real values live in your deployment platform's env/secrets UI.
+          # Never commit real credentials here.
+          NEXT_PUBLIC_SUPABASE_URL: https://stub.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: stub-anon-key
+          SUPABASE_SERVICE_ROLE_KEY: stub-service-role-key
+          KV_REST_API_URL: https://stub.upstash.io
+          KV_REST_API_TOKEN: stub-token
+          COPILOT_API_KEYS: cpk_stub_key
+          OPENAI_API_KEY: sk-stub
 
-      - name: Deploy to Vercel production
-        working-directory: packages/backend
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      # ------------------------------------------------------------------
+      # DEPLOYMENT — uncomment ONE of the options below and add the
+      # required secrets in your GitHub repo Settings → Secrets.
+      # ------------------------------------------------------------------
+
+      # ── Option A: Railway ──────────────────────────────────────────────
+      # Secrets needed: RAILWAY_TOKEN, RAILWAY_SERVICE_ID
+      #
+      # - name: Deploy to Railway
+      #   uses: railwayapp/github-actions@v1
+      #   with:
+      #     railway-token: ${{ secrets.RAILWAY_TOKEN }}
+      #     service: ${{ secrets.RAILWAY_SERVICE_ID }}
+      #     root-directory: packages/backend
+
+      # ── Option B: Fly.io ───────────────────────────────────────────────
+      # Secrets needed: FLY_API_TOKEN
+      # Requires a fly.toml inside packages/backend/
+      #
+      # - name: Deploy to Fly.io
+      #   uses: superfly/flyctl-actions/setup-flyctl@master
+      # - run: flyctl deploy --remote-only
+      #   working-directory: packages/backend
+      #   env:
+      #     FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      # ── Option C: Render ───────────────────────────────────────────────
+      # Secrets needed: RENDER_DEPLOY_HOOK_URL (from Render dashboard)
+      #
+      # - name: Deploy to Render
+      #   run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+      # ── Option D: Self-hosted via SSH + Docker ─────────────────────────
+      # Secrets needed: SSH_HOST, SSH_USER, SSH_KEY
+      #
+      # - name: Deploy via SSH
+      #   uses: appleboy/ssh-action@v1
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_KEY }}
+      #     script: |
+      #       cd /srv/ngx-copilot-platform
+      #       git pull origin master
+      #       docker build -t ngx-copilot-backend packages/backend
+      #       docker stop copilot-backend || true
+      #       docker run -d --name copilot-backend --env-file .env -p 3001:3001 ngx-copilot-backend

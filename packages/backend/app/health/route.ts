@@ -81,9 +81,10 @@ async function checkCache(): Promise<DependencyStatus> {
 async function checkAI(): Promise<DependencyStatus> {
   const start = Date.now();
   try {
-    // Just check if the AI gateway endpoint is reachable
-    const response = await fetch('https://ai-gateway.vercel.sh/v1/models', {
+    // Check if the OpenAI API is reachable
+    const response = await fetch('https://api.openai.com/v1/models', {
       method: 'GET',
+      headers: { 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` },
       signal: AbortSignal.timeout(5000),
     });
     
