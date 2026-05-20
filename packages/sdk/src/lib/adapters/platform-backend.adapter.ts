@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 import { CopilotBackendAdapter } from './copilot-backend.adapter';
 import { CopilotEvent } from './copilot-event.model';
@@ -53,7 +53,6 @@ export const NGX_COPILOT_PLATFORM_CONFIG =
  * };
  * ```
  */
-@Injectable()
 export class NgxCopilotPlatformBackendAdapter implements CopilotBackendAdapter {
   private readonly config: NgxCopilotPlatformConfig;
 
