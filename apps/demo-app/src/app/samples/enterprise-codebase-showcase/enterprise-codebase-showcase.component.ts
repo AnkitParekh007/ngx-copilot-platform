@@ -337,9 +337,8 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       flex-wrap: wrap;
     }
     .crumb { font-size: 0.85rem; color: var(--text-subtle, #64748b); }
-    .crumb a { color: #1d4ed8; text-decoration: none; }
+    .crumb a { color: var(--accent); text-decoration: none; }
     .crumb a:hover { text-decoration: underline; }
-    :root[data-resolved-theme="dark"] .crumb a { color: #93c5fd; }
     .sep { margin: 0 0.3rem; }
     .header-meta { display: flex; align-items: center; gap: 0.5rem; }
     .repo-badge {
@@ -365,12 +364,11 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       font-size: 0.7rem;
       padding: 0.18rem 0.5rem;
       border-radius: 999px;
-      background: #fffbeb;
-      color: #92400e;
-      border: 1px solid #fde68a;
+      background: var(--callout-warning-bg);
+      color: var(--callout-warning-text);
+      border: 1px solid var(--callout-warning-border);
       font-weight: 600;
     }
-    :root[data-resolved-theme="dark"] .mock-pill { background: rgba(120,53,15,0.3); color: #fcd34d; border-color: rgba(245,158,11,0.3); }
     .three-pane {
       display: flex;
       flex: 1;
@@ -423,8 +421,8 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
     }
     .feature-tab:hover { color: var(--text, #0f172a); }
     .feature-tab.active {
-      color: #1d4ed8;
-      border-bottom-color: #1d4ed8;
+      color: var(--accent);
+      border-bottom-color: var(--accent);
       font-weight: 600;
     }
     .tab-content {
@@ -460,10 +458,10 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       vertical-align: middle;
     }
     .data-table tr:hover td { background: var(--bg-muted, #f8fafc); }
-    .sku-cell { font-family: monospace; font-size: 0.72rem; color: #475569; white-space: nowrap; }
+    .sku-cell { font-family: monospace; font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
     .name-cell { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .channels-cell { text-align: center; }
-    .date-cell { font-size: 0.68rem; color: #64748b; white-space: nowrap; }
+    .date-cell { font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; }
     .issue-cell { max-width: 120px; font-size: 0.7rem; }
     .field-code {
       font-family: monospace;
@@ -485,10 +483,10 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
     .upload-hint { margin: 0 0 0.65rem; font-size: 0.75rem; }
     .upload-btn {
       padding: 0.32rem 0.8rem;
-      border: 1px solid #1d4ed8;
+      border: 1px solid var(--accent);
       border-radius: 6px;
-      background: #eff6ff;
-      color: #1d4ed8;
+      background: var(--accent-light);
+      color: var(--accent-text, var(--accent));
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
@@ -539,8 +537,8 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       font-size: 0.75rem;
       font-family: inherit;
     }
-    .tree-file:hover { background: rgba(29,78,216,0.06); }
-    .tree-file.selected { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
+    .tree-file:hover { background: var(--accent-light); }
+    .tree-file.selected { background: var(--accent-light); color: var(--accent); font-weight: 600; }
     .file-icon { font-size: 0.75rem; flex-shrink: 0; }
     .tree-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .code-preview {
@@ -597,9 +595,9 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       font-family: inherit;
     }
     .prompt-chip:hover, .prompt-chip.active {
-      border-color: #1d4ed8;
-      box-shadow: 0 2px 8px rgba(29,78,216,0.12);
-      color: #1d4ed8;
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px var(--glow);
+      color: var(--accent);
     }
     .copilot-shell-wrap {
       flex: 1;
@@ -607,15 +605,6 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       display: flex;
       flex-direction: column;
     }
-    :root[data-resolved-theme="dark"] .pane-tree { background: #0f172a; }
-    :root[data-resolved-theme="dark"] .repo-badge { background: #1e293b; color: #e2e8f0; border-color: #334155; }
-    :root[data-resolved-theme="dark"] .upload-dropzone { border-color: #334155; }
-    :root[data-resolved-theme="dark"] .job-row { background: #1e293b; border-color: #334155; }
-    :root[data-resolved-theme="dark"] .tree-file:hover { background: rgba(96,165,250,0.08); }
-    :root[data-resolved-theme="dark"] .tree-file.selected { background: rgba(29,78,216,0.2); color: #93c5fd; }
-    :root[data-resolved-theme="dark"] .field-code { background: #1e293b; }
-    :root[data-resolved-theme="dark"] .prompt-chip:hover,
-    :root[data-resolved-theme="dark"] .prompt-chip.active { border-color: #93c5fd; color: #93c5fd; box-shadow: 0 2px 8px rgba(147,197,253,0.12); }
   `],
 })
 export class EnterpriseCodebaseShowcaseComponent {

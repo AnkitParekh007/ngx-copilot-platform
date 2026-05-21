@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
@@ -30,7 +29,6 @@ type ShowcaseState =
   selector: 'app-showcase',
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
     CopilotChatComponent,
     StreamingMessageComponent,
@@ -50,36 +48,47 @@ type ShowcaseState =
       <p class="lead">Preview SDK UI states for local visual review (no hosted Storybook).</p>
 
       <div class="picker" role="tablist" aria-label="Showcase states">
-        <button
-          *ngFor="let option of states"
-          type="button"
-          [class.active]="active() === option.id"
-          (click)="active.set(option.id)">
-          {{ option.label }}
-        </button>
+        @for (option of states; track option.id) {
+          <button
+            type="button"
+            [class.active]="active() === option.id"
+            (click)="active.set(option.id)">
+            {{ option.label }}
+          </button>
+        }
       </div>
 
       <div class="preview">
-        <ngx-copilot-chat
-          *ngIf="showChat()"
-          [messages]="messages()"
-          [isStreaming]="active() === 'streaming'"
-          [streamingContent]="streamingText"
-          [errorMessage]="active() === 'error' ? 'Mock backend unavailable. Retry when your API is wired.' : undefined"
-          [showComposer]="active() === 'empty'" />
+        @if (showChat()) {
+          <ngx-copilot-chat
+            [messages]="messages()"
+            [isStreaming]="active() === 'streaming'"
+            [streamingContent]="streamingText"
+            [errorMessage]="active() === 'error' ? 'Mock backend unavailable. Retry when your API is wired.' : undefined"
+            [showComposer]="active() === 'empty'" />
+        }
 
-        <ngx-streaming-message
-          *ngIf="active() === 'streaming'"
-          [content]="streamingText"
-          [loading]="true" />
+        @if (active() === 'streaming') {
+          <ngx-streaming-message
+            [content]="streamingText"
+            [loading]="true" />
+        }
 
-        <div class="cards" *ngIf="active() === 'rag'">
-          <ngx-rag-source-card *ngFor="let source of sampleSources" [source]="source" />
-        </div>
+        @if (active() === 'rag') {
+          <div class="cards">
+            @for (source of sampleSources; track source.id) {
+              <ngx-rag-source-card [source]="source" />
+            }
+          </div>
+        }
 
-        <ngx-tool-call-timeline *ngIf="showTimeline()" [items]="timeline()" />
+        @if (showTimeline()) {
+          <ngx-tool-call-timeline [items]="timeline()" />
+        }
 
-        <ngx-approval-card *ngIf="showApproval()" [request]="approval()" />
+        @if (showApproval()) {
+          <ngx-approval-card [request]="approval()" />
+        }
 
         <ngx-agent-mode-selector
           class="mode"
@@ -110,8 +119,8 @@ type ShowcaseState =
       font-family: inherit;
       font-size: 0.875rem;
     }
-    .picker button:hover { border-color: var(--accent, #4f46e5); color: var(--accent, #4f46e5); }
-    .picker button.active { background: var(--accent, #0f172a); color: #fff; border-color: var(--accent, #0f172a); }
+    .picker button:hover { border-color: var(--accent); color: var(--accent); }
+    .picker button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
     .preview {
       display: grid;
       gap: 1rem;

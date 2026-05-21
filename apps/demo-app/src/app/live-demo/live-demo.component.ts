@@ -106,7 +106,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
           <div class="arch-chip"><code>provideCopilot(config)</code></div>
         </div>
         <div class="arch-arrow">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span>CopilotBackendAdapter</span>
         </div>
         <div class="arch-layer arch-backend">
@@ -334,9 +334,9 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
 
     /* Section shared */
     .section { margin-bottom: 2.5rem; }
-    .section-title { font-size: 1.4rem; font-weight: 700; color: #0f172a; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
-    .section-desc { color: #64748b; font-size: 0.95rem; margin: 0 0 1.25rem; line-height: 1.6; }
-    .section-desc code { background: #f1f5f9; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.85rem; }
+    .section-title { font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+    .section-desc { color: var(--text-muted); font-size: 0.95rem; margin: 0 0 1.25rem; line-height: 1.6; }
+    .section-desc code { background: var(--bg-subtle); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-muted); }
 
     /* Feature grid */
     .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.85rem; }
@@ -344,13 +344,15 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     .feature-card {
       padding: 1.1rem 1.15rem;
       border-radius: 1rem;
-      border: 1px solid #e2e8f0;
-      background: #fff;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: grid;
       gap: 0.35rem;
       transition: box-shadow 0.15s, border-color 0.15s;
     }
-    .feature-card:hover { box-shadow: 0 8px 24px rgba(15,23,42,0.08); border-color: #c7d2e4; }
+    .feature-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
 
     .feat-icon-wrap {
       width: 36px;
@@ -361,16 +363,16 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       justify-content: center;
       margin-bottom: 0.15rem;
     }
-    .feat-blue   { background: #eff6ff; color: #2563eb; }
-    .feat-violet { background: #f5f3ff; color: #7c3aed; }
-    .feat-amber  { background: #fffbeb; color: #d97706; }
-    .feat-green  { background: #f0fdf4; color: #16a34a; }
-    .feat-slate  { background: #f8fafc; color: #475569; }
-    .feat-indigo { background: #eef2ff; color: #4f46e5; }
+    .feat-blue   { background: rgba(91,140,255,0.15);  color: #5b8cff; }
+    .feat-violet { background: rgba(167,139,250,0.15); color: #a78bfa; }
+    .feat-amber  { background: rgba(251,146,60,0.15);  color: #fb923c; }
+    .feat-green  { background: rgba(52,211,153,0.15);  color: #34d399; }
+    .feat-slate  { background: rgba(148,163,184,0.12); color: var(--text-muted); }
+    .feat-indigo { background: rgba(99,102,241,0.15);  color: #818cf8; }
 
-    .feature-card strong { font-size: 0.95rem; color: #0f172a; }
-    .feature-card span { font-size: 0.85rem; color: #64748b; line-height: 1.5; }
-    .feature-card code { font-size: 0.8rem; background: #f1f5f9; padding: 0.1rem 0.3rem; border-radius: 3px; }
+    .feature-card strong { font-size: 0.95rem; color: var(--text); }
+    .feature-card span { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+    .feature-card code { font-size: 0.8rem; background: var(--bg-subtle); color: var(--text-muted); padding: 0.1rem 0.3rem; border-radius: 3px; }
 
     /* Architecture */
     .arch-section { }
@@ -390,28 +392,28 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       gap: 0.5rem;
     }
 
-    .arch-app { background: #eef2ff; border: 1px solid #c7d2fe; }
-    .arch-backend { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .arch-app { background: rgba(91,140,255,0.08); border: 1px solid rgba(91,140,255,0.22); }
+    .arch-backend { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.22); }
 
     .arch-label {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: #64748b;
+      color: var(--text-muted);
       margin-bottom: 0.15rem;
     }
 
     .arch-chip {
-      background: #fff;
-      border: 1px solid #e2e8f0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 6px;
       padding: 0.35rem 0.65rem;
       font-size: 0.82rem;
-      color: #334155;
+      color: var(--text-muted);
     }
 
-    .chip-backend { border-color: #bbf7d0; background: #dcfce7; color: #166534; }
+    .chip-backend { border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.12); color: #34d399; }
 
     .arch-arrow {
       display: flex;
@@ -420,7 +422,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       gap: 0.35rem;
       flex-shrink: 0;
       font-size: 0.72rem;
-      color: #6366f1;
+      color: var(--accent);
       font-weight: 600;
       letter-spacing: 0.04em;
     }
@@ -434,14 +436,16 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       align-items: flex-start;
       padding: 1rem 1.1rem;
       border-radius: 0.875rem;
-      border: 1px solid #e2e8f0;
-      background: #fafafa;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .why-check {
       font-size: 1rem;
-      color: #16a34a;
-      background: #dcfce7;
+      color: #34d399;
+      background: rgba(52,211,153,0.15);
       width: 24px;
       height: 24px;
       border-radius: 50%;
@@ -453,9 +457,9 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       margin-top: 0.15rem;
     }
 
-    .why-item strong { display: block; font-size: 0.9rem; color: #0f172a; margin-bottom: 0.2rem; }
-    .why-item span { font-size: 0.84rem; color: #64748b; line-height: 1.5; }
-    .why-item code { font-size: 0.78rem; background: #f1f5f9; padding: 0.1rem 0.3rem; border-radius: 3px; }
+    .why-item strong { display: block; font-size: 0.9rem; color: var(--text); margin-bottom: 0.2rem; }
+    .why-item span { font-size: 0.84rem; color: var(--text-muted); line-height: 1.5; }
+    .why-item code { font-size: 0.78rem; background: var(--bg-subtle); color: var(--text-muted); padding: 0.1rem 0.3rem; border-radius: 3px; }
 
     /* Demo callout */
     .demo-callout {
@@ -536,14 +540,15 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     /* Disclaimer */
     .disclaimer {
       padding: 0.85rem 1.1rem;
-      background: #fffbeb;
-      border: 1px solid #fde68a;
+      background: var(--callout-warning-bg);
+      border: 1px solid var(--callout-warning-border);
       border-radius: 0.75rem;
       font-size: 0.87rem;
-      color: #92400e;
+      color: var(--callout-warning-text);
       line-height: 1.55;
       margin-bottom: 2.5rem;
     }
+    .disclaimer strong { color: var(--callout-warning-text); }
   `],
 })
 export class LiveDemoComponent {

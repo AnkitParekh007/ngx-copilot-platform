@@ -170,31 +170,29 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       flex-wrap: wrap;
     }
     .crumb { font-size: 0.85rem; color: var(--text-subtle, #64748b); }
-    .crumb a { color: #0369a1; text-decoration: none; }
+    .crumb a { color: var(--accent); text-decoration: none; }
     .crumb a:hover { text-decoration: underline; }
-    :root[data-resolved-theme="dark"] .crumb a { color: #38bdf8; }
     .sep { margin: 0 0.3rem; }
     .header-meta { display: flex; align-items: center; gap: 0.5rem; }
     .site-badge {
       display: inline-flex; align-items: center;
       padding: 0.2rem 0.55rem;
-      border: 1px solid #bae6fd;
+      border: 1px solid var(--border-strong);
       border-radius: 6px;
       font-size: 0.78rem; font-weight: 600;
-      color: #0e7490;
-      background: #f0f9ff;
+      color: var(--accent-text, var(--accent));
+      background: var(--accent-light);
       font-family: monospace;
     }
     .mock-pill {
       font-size: 0.7rem;
       padding: 0.18rem 0.5rem;
       border-radius: 999px;
-      background: #fffbeb;
-      color: #92400e;
-      border: 1px solid #fde68a;
+      background: var(--callout-warning-bg);
+      color: var(--callout-warning-text);
+      border: 1px solid var(--callout-warning-border);
       font-weight: 600;
     }
-    :root[data-resolved-theme="dark"] .mock-pill { background: rgba(120,53,15,0.3); color: #fcd34d; border-color: rgba(245,158,11,0.3); }
     .three-pane {
       display: flex;
       flex: 1;
@@ -251,12 +249,12 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       transition: background 0.1s, color 0.1s;
       font-family: inherit;
     }
-    .nav-item:hover { background: rgba(14,116,144,0.06); color: #0e7490; }
+    .nav-item:hover { background: var(--accent-light); color: var(--accent); }
     .nav-item.active {
-      background: #e0f2fe;
-      color: #0369a1;
+      background: var(--accent-light);
+      color: var(--accent);
       font-weight: 600;
-      border-left: 3px solid #0369a1;
+      border-left: 3px solid var(--accent);
       padding-left: calc(0.85rem - 3px);
     }
 
@@ -284,11 +282,10 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       font-weight: 600;
       padding: 0.12rem 0.45rem;
       border-radius: 999px;
-      background: #e0f2fe;
-      color: #0369a1;
-      border: 1px solid #bae6fd;
+      background: var(--pill-accent-bg);
+      color: var(--pill-accent-text);
+      border: 1px solid var(--pill-accent-border);
     }
-    :root[data-resolved-theme="dark"] .nav-item.active { padding-left: calc(0.85rem - 3px); }
     .article-title {
       font-size: 1.35rem;
       font-weight: 800;
@@ -302,7 +299,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       color: var(--text-muted, #475569);
       line-height: 1.7;
       margin: 0 0 1.25rem;
-      border-left: 3px solid #bae6fd;
+      border-left: 3px solid var(--accent);
       padding-left: 0.85rem;
     }
     .article-section { margin-bottom: 1.25rem; }
@@ -383,26 +380,16 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       font-family: inherit;
     }
     .prompt-chip:hover, .prompt-chip.active {
-      border-color: #0891b2;
-      box-shadow: 0 2px 8px rgba(8,145,178,0.12);
-      color: #0891b2;
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px var(--glow);
+      color: var(--accent);
     }
-    :root[data-resolved-theme="dark"] .prompt-chip:hover,
-    :root[data-resolved-theme="dark"] .prompt-chip.active { border-color: #38bdf8; color: #38bdf8; box-shadow: 0 2px 8px rgba(56,189,248,0.12); }
     .copilot-shell-wrap {
       flex: 1;
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
-
-    /* Dark mode */
-    :root[data-resolved-theme="dark"] .pane-sidebar { background: #0f172a; }
-    :root[data-resolved-theme="dark"] .site-badge { background: #0c2a3a; color: #38bdf8; border-color: #164e63; }
-    :root[data-resolved-theme="dark"] .nav-item:hover { background: rgba(56,189,248,0.08); color: #38bdf8; }
-    :root[data-resolved-theme="dark"] .nav-item.active { background: rgba(3,105,161,0.2); color: #38bdf8; border-left-color: #0891b2; }
-    :root[data-resolved-theme="dark"] .article-badge { background: rgba(14,116,144,0.2); color: #38bdf8; border-color: rgba(14,116,144,0.3); }
-    :root[data-resolved-theme="dark"] .article-intro { border-left-color: #164e63; }
   `],
 })
 export class EnterpriseDocsWebsiteComponent {
