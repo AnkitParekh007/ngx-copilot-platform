@@ -59,27 +59,35 @@ ngx-copilot-platform/
 
 ## Quick start
 
-### Option A - SDK only
+### Option A — SDK only (mock backend, no server required)
 
 ```bash
 npm install @ankitparekh007/ngx-copilot-sdk
 ```
 
 ```ts
+// app.config.ts
 import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideCopilot({ mode: 'ask', theme: 'system' }, { useMockBackend: true }),
+    // All config fields are optional. The mock adapter is used by default.
+    provideCopilot({ defaultMode: 'ask' }),
   ],
 };
 ```
 
 ```html
+<!-- any component template -->
 <ngx-copilot-shell />
 ```
 
-### Option B - Full stack
+The mock adapter simulates streaming, RAG citations, tool timelines, and approval gates
+without any backend or API keys. Use this for local development and UI work.
+
+---
+
+### Option B — Full stack (real backend integration)
 
 ```bash
 git clone https://github.com/AnkitParekh007/ngx-copilot-platform.git
@@ -89,26 +97,61 @@ pnpm install
 cp packages/backend/.env.example packages/backend/.env.local
 # Fill in: SUPABASE_*, KV_REST_*, COPILOT_API_KEYS, OPENAI_API_KEY
 
-pnpm --filter @ngx-copilot/backend dev
-pnpm --filter example-consumer dev
+pnpm --filter @ngx-copilot/backend dev    # starts Next.js API on :3001
+pnpm --filter example-consumer dev        # starts Angular consumer on :4200
 ```
 
 ```ts
-import {
-  provideCopilot,
-  NgxCopilotPlatformBackendAdapter,
-} from '@ankitparekh007/ngx-copilot-sdk';
-
-const adapter = new NgxCopilotPlatformBackendAdapter({
-  apiUrl: 'http://localhost:3001',
-  apiKey: 'cpk_dev_your_key',
-});
+// app.config.ts — wires the Angular SDK to the platform backend
+import { provideCopilot, providePlatformBackend } from '@ankitparekh007/ngx-copilot-sdk';
+import { environment } from './environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideCopilot({ mode: 'ask', theme: 'system' }, { backendAdapter: adapter }),
+    provideCopilot({ defaultMode: 'ask' }, { useMockBackend: false }),
+    providePlatformBackend({
+      apiUrl: environment.apiUrl,   // 'http://localhost:3001' in dev
+      apiKey: environment.apiKey,   // 'cpk_dev_your_key' — never hardcode in production
+    }),
   ],
 };
+```
+
+```ts
+// environments/environment.ts  (development — committed)
+export const environment = {
+  apiUrl: 'http://localhost:3001',
+  apiKey: 'cpk_dev_replace_with_your_key',
+};
+
+// environments/environment.prod.ts  (production — values injected at build time)
+export const environment = {
+  apiUrl: process.env['API_URL'] ?? '',
+  apiKey: process.env['API_KEY'] ?? '',
+};
+```
+
+> **Security note:** `cpk_` API keys authenticate with the backend, not with OpenAI or Supabase.
+> The backend holds those provider secrets. Never embed production keys in Angular source code.
+
+---
+
+### Option C — Custom backend adapter
+
+Implement `CopilotBackendAdapter` to connect any backend:
+
+```ts
+import { CopilotBackendAdapter, CopilotRequest, CopilotEvent } from '@ankitparekh007/ngx-copilot-sdk';
+import { Observable } from 'rxjs';
+
+class MyAdapter implements CopilotBackendAdapter {
+  send(request: CopilotRequest): Observable<CopilotEvent> {
+    // return an Observable<CopilotEvent> from your own API
+  }
+}
+
+// app.config.ts
+provideCopilot({ defaultMode: 'ask' }, { backendAdapter: new MyAdapter() })
 ```
 
 ---

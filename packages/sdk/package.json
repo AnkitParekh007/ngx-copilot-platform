@@ -35,7 +35,8 @@
   },
   "homepage": "https://github.com/AnkitParekh007/ngx-copilot-platform#readme",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "../../dist/sdk"
   },
   "peerDependencies": {
     "@angular/common": "^20.0.0",

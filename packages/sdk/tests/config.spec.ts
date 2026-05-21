@@ -4,6 +4,15 @@ import assert from 'node:assert/strict';
 
 import { normalizeCopilotConfig } from '../src/public-api';
 
+test('normalizeCopilotConfig applies all defaults when no config provided (mock-only setup)', () => {
+  const config = normalizeCopilotConfig();
+  assert.equal(config.apiBaseUrl, '');
+  assert.equal(config.defaultMode, 'ask');
+  assert.equal(config.enableApprovals, true);
+  assert.equal(config.enableRagSources, true);
+  assert.equal(config.enableToolTimeline, true);
+});
+
 test('normalizeCopilotConfig applies all defaults when only apiBaseUrl is provided', () => {
   const config = normalizeCopilotConfig({ apiBaseUrl: '/api/copilot' });
   assert.equal(config.apiBaseUrl, '/api/copilot');
@@ -36,7 +45,13 @@ test('normalizeCopilotConfig statusLabel default matches architecture reference 
 
 test('normalizeCopilotConfig accepts all valid CopilotMode values', () => {
   for (const mode of ['ask', 'plan', 'execute', 'debug'] as const) {
-    const config = normalizeCopilotConfig({ apiBaseUrl: '/api', defaultMode: mode });
+    const config = normalizeCopilotConfig({ defaultMode: mode });
     assert.equal(config.defaultMode, mode);
   }
+});
+
+test('normalizeCopilotConfig empty object is identical to no-arg call', () => {
+  const a = normalizeCopilotConfig({});
+  const b = normalizeCopilotConfig();
+  assert.deepEqual(a, b);
 });

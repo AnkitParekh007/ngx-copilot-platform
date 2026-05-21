@@ -107,7 +107,7 @@ importers:
         version: 20.3.21(@angular/common@20.3.21(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.3.21(@angular/animations@20.3.21(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1)))(@angular/common@20.3.21(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@ankitparekh007/ngx-copilot-sdk':
         specifier: workspace:*
-        version: link:../../packages/sdk
+        version: link:../../dist/sdk
       marked:
         specifier: ^12.0.0
         version: 12.0.2
@@ -195,7 +195,7 @@ importers:
         version: 20.3.21(@angular/common@20.3.21(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.3.21(@angular/animations@20.3.21(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1)))(@angular/common@20.3.21(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.21(@angular/compiler@20.3.21)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@ankitparekh007/ngx-copilot-sdk':
         specifier: workspace:*
-        version: link:../../packages/sdk
+        version: link:../../dist/sdk
       rxjs:
         specifier: ^7.8.0
         version: 7.8.2
@@ -481,6 +481,7 @@ importers:
       zone.js:
         specifier: ^0.15.1
         version: 0.15.1
+    publishDirectory: ../../dist/sdk
 
 packages:
 

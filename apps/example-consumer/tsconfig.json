@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app"
+    "outDir": "./out-tsc/app",
+    "preserveSymlinks": true
   },
   "files": ["src/main.ts"],
   "include": ["src/**/*.ts"]

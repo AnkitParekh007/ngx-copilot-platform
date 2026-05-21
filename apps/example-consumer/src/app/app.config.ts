@@ -2,30 +2,32 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {
   provideCopilot,
-  NgxCopilotPlatformBackendAdapter,
-  COPILOT_BACKEND_ADAPTER,
+  providePlatformBackend,
 } from '@ankitparekh007/ngx-copilot-sdk';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
-
-const platformAdapter = new NgxCopilotPlatformBackendAdapter({
-  apiUrl: environment.apiUrl,
-  apiKey: environment.apiKey,
-});
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
 
-    // Configure the copilot SDK with the real platform backend adapter.
-    // Replace NgxCopilotPlatformBackendAdapter with MockCopilotBackendAdapter
-    // for local development without a running backend.
-    provideCopilot(
-      { mode: 'ask', theme: 'system' },
-      { backendAdapter: platformAdapter },
-    ),
+    // SDK configuration — mode, feature flags, status label.
+    // apiBaseUrl is not required here because the adapter manages its own URL.
+    provideCopilot({
+      defaultMode: 'ask',
+      statusLabel: 'Connected to platform backend',
+    }, {
+      // Disable the built-in mock so the platform adapter is used exclusively.
+      useMockBackend: false,
+    }),
 
-    // Explicitly provide the adapter for direct injection if needed
-    { provide: COPILOT_BACKEND_ADAPTER, useValue: platformAdapter },
+    // Wire the production platform backend adapter as COPILOT_BACKEND_ADAPTER.
+    // ⚠️ Never hardcode production apiKey in source. Use environment files
+    //    injected at build time via CI secrets.
+    // For local mock-only development, remove this block and drop useMockBackend: false.
+    ...providePlatformBackend({
+      apiUrl: environment.apiUrl,
+      apiKey: environment.apiKey,
+    }),
   ],
 };

@@ -7,6 +7,7 @@ import { RagQuery } from './rag-query.model';
 import { RagResult } from '../models/rag-result.model';
 import { ToolExecutionEvent, ToolExecutionRequest } from './tool-execution.model';
 import { createAdapterError } from './copilot-adapter-error.model';
+import { COPILOT_BACKEND_ADAPTER } from '../tokens/copilot-backend-adapter.token';
 
 export interface NgxCopilotPlatformConfig {
   /**
@@ -41,13 +42,12 @@ export const NGX_COPILOT_PLATFORM_CONFIG =
  * @example
  * ```ts
  * // app.config.ts
- * import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
- * import { providePlatformBackend } from '@ankitparekh007/ngx-copilot-sdk';
+ * import { provideCopilot, providePlatformBackend } from '@ankitparekh007/ngx-copilot-sdk';
  * import { environment } from './environments/environment';
  *
  * export const appConfig: ApplicationConfig = {
  *   providers: [
- *     provideCopilot({ mode: 'ask', theme: 'system' }),
+ *     provideCopilot({ defaultMode: 'ask' }),
  *     providePlatformBackend({ apiUrl: environment.apiUrl, apiKey: environment.apiKey }),
  *   ],
  * };
@@ -239,22 +239,49 @@ export class NgxCopilotPlatformBackendAdapter implements CopilotBackendAdapter {
 }
 
 /**
- * Angular provider helper for NgxCopilotPlatformBackendAdapter.
+ * Angular provider helper for the production platform backend.
+ *
+ * Registers `NgxCopilotPlatformBackendAdapter` as the `COPILOT_BACKEND_ADAPTER`
+ * that `CopilotService` injects. Use alongside `provideCopilot()` in `app.config.ts`.
+ *
+ * ⚠️  Never hardcode production API keys in source files. Use Angular environment files
+ * and inject secrets at build time via CI environment variables.
  *
  * @example
  * ```ts
  * // app.config.ts
- * providers: [
- *   providePlatformBackend({ apiUrl: environment.apiUrl, apiKey: environment.apiKey })
- * ]
+ * import { provideCopilot, providePlatformBackend } from '@ankitparekh007/ngx-copilot-sdk';
+ * import { environment } from './environments/environment';
+ *
+ * export const appConfig: ApplicationConfig = {
+ *   providers: [
+ *     provideCopilot({ defaultMode: 'ask' }),
+ *     providePlatformBackend({ apiUrl: environment.apiUrl, apiKey: environment.apiKey }),
+ *   ],
+ * };
  * ```
+ *
+ * This is equivalent to:
+ * ```ts
+ * const adapter = new NgxCopilotPlatformBackendAdapter({ apiUrl, apiKey });
+ * provideCopilot({ defaultMode: 'ask' }, { backendAdapter: adapter })
+ * ```
+ * but keeps adapter construction out of the call site.
  */
 export function providePlatformBackend(config: NgxCopilotPlatformConfig) {
   return [
+    // Store config in DI so it can be inspected or overridden in tests.
     { provide: NGX_COPILOT_PLATFORM_CONFIG, useValue: config },
+    // Create the adapter instance and make it available by its own class token.
     {
       provide: NgxCopilotPlatformBackendAdapter,
       useFactory: () => new NgxCopilotPlatformBackendAdapter(config),
+    },
+    // Wire the adapter to the token that CopilotService injects.
+    // Without this, CopilotService falls back to the MockCopilotBackendAdapter.
+    {
+      provide: COPILOT_BACKEND_ADAPTER,
+      useExisting: NgxCopilotPlatformBackendAdapter,
     },
   ];
 }

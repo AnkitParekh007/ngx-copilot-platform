@@ -60,7 +60,10 @@ export class CopilotService {
     if (!backend) {
       this._error.set({
         code: 'COPILOT_NOT_CONFIGURED',
-        message: 'Copilot is not configured. Call provideCopilot() in your app config.',
+        message:
+          'No copilot backend is configured. ' +
+          'Add provideCopilot() to your app.config.ts providers. ' +
+          'For a local demo without a server, provideCopilot() uses the mock adapter by default.',
         recoverable: true,
       });
       return;
