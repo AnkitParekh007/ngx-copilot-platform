@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, HostListener } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet, NavigationEnd } from '@angular/router';
 import { ThemeToggleComponent } from './theme/theme-toggle.component';
 import { ThemeService } from './theme/theme.service';
@@ -8,12 +8,18 @@ import { ThemeService } from './theme/theme.service';
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive, ThemeToggleComponent],
   template: `
-    <header class="top" [class.docs-mode]="isDocsRoute()">
+    <header class="top" [class.docs-mode]="isDocsRoute()" [class.is-scrolled]="isScrolled()">
       <div class="top-inner">
         <a routerLink="/" class="logo" aria-label="ngx-copilot demo home">
           <span class="logo-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="18" height="18" rx="4" fill="#4f46e5"/>
+              <defs>
+                <linearGradient id="nav-grad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#5b8cff"/>
+                  <stop offset="100%" stop-color="#a78bfa"/>
+                </linearGradient>
+              </defs>
+              <rect x="3" y="3" width="18" height="18" rx="4" fill="url(#nav-grad)"/>
               <path d="M8 12h8M8 8h5M8 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
           </span>
@@ -100,21 +106,29 @@ import { ThemeService } from './theme/theme.service';
     }
   `,
   styles: [`
+    /* ── Top nav ──────────────────────────────────────── */
     .top {
       display: flex;
       flex-direction: column;
-      background: rgba(8,13,24,0.9);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: #fff;
+      background: transparent;
+      color: var(--text);
       position: sticky;
       top: 0;
       z-index: 200;
-      border-bottom: 1px solid rgba(99,102,241,0.2);
-      box-shadow: 0 1px 0 rgba(99,102,241,0.3);
-      height: var(--topnav-height, 52px);
+      border-bottom: 1px solid transparent;
+      height: var(--topnav-height, 56px);
       justify-content: center;
       overflow: visible;
+      transition: background 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+                  backdrop-filter 0.35s,
+                  border-color 0.35s;
+    }
+
+    .top.is-scrolled {
+      background: var(--nav-scrolled);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom-color: var(--border);
     }
 
     .top-inner {
@@ -122,9 +136,10 @@ import { ThemeService } from './theme/theme.service';
       align-items: center;
       gap: 0.5rem;
       padding: 0 1.25rem;
-      height: 52px;
+      height: var(--topnav-height, 56px);
     }
 
+    /* ── Logo ─────────────────────────────────────────── */
     .logo {
       display: flex;
       align-items: center;
@@ -140,21 +155,22 @@ import { ThemeService } from './theme/theme.service';
     .logo-text {
       font-size: 0.95rem;
       font-weight: 700;
-      color: #f8fafc;
+      color: var(--text);
       letter-spacing: -0.01em;
     }
 
     .logo-badge {
       font-size: 0.65rem;
-      background: rgba(99,102,241,0.25);
-      color: #a5b4fc;
-      border: 1px solid rgba(99,102,241,0.4);
+      background: var(--pill-accent-bg, rgba(91, 140, 255, 0.1));
+      color: var(--pill-accent-text, #c5d4ff);
+      border: 1px solid var(--pill-accent-border, rgba(91, 140, 255, 0.38));
       padding: 0.15rem 0.5rem;
       border-radius: 999px;
       font-weight: 600;
       letter-spacing: 0.03em;
     }
 
+    /* ── Nav links ────────────────────────────────────── */
     .nav-links {
       display: flex;
       align-items: center;
@@ -163,35 +179,52 @@ import { ThemeService } from './theme/theme.service';
     }
 
     .nav-links a {
-      color: #94a3b8;
+      color: var(--text-muted);
       text-decoration: none;
-      padding: 0.3rem 0.65rem;
+      padding: 0.45rem 0.7rem;
       border-radius: 6px;
-      font-size: 0.875rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
       white-space: nowrap;
-      transition: background 0.12s, color 0.12s;
       position: relative;
+      transition: color 0.15s ease;
     }
 
-    .nav-links a:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; text-decoration: none; }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0.65rem;
+      right: 0.65rem;
+      bottom: -2px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 1px;
+      transform: scaleX(0);
+      transition: transform 0.2s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+      transform-origin: left;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
 
     .nav-links a.active {
-      color: #a5b4fc;
-      background: rgba(99,102,241,0.18);
-      font-weight: 500;
+      color: var(--text);
+      font-weight: 600;
     }
 
     .nav-links a.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0.65rem;
-      right: 0.65rem;
-      height: 2px;
-      background: linear-gradient(90deg, #818cf8, #a78bfa);
-      border-radius: 2px;
+      transform: scaleX(1);
     }
 
+    /* ── Nav end ──────────────────────────────────────── */
     .nav-end {
       display: flex;
       align-items: center;
@@ -207,11 +240,15 @@ import { ThemeService } from './theme/theme.service';
       width: 32px;
       height: 32px;
       border-radius: 6px;
-      color: #94a3b8;
-      transition: background 0.12s, color 0.12s;
+      color: var(--text-muted);
+      transition: color 0.12s, background 0.12s;
     }
 
-    .icon-link:hover { background: rgba(255,255,255,0.08); color: #f8fafc; text-decoration: none; }
+    .icon-link:hover {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      text-decoration: none;
+    }
 
     .star-btn {
       display: flex;
@@ -219,9 +256,9 @@ import { ThemeService } from './theme/theme.service';
       gap: 0.4rem;
       font-size: 0.8rem;
       font-weight: 600;
-      color: #e2e8f0;
-      background: rgba(99,102,241,0.15);
-      border: 1px solid rgba(99,102,241,0.35);
+      color: var(--accent-text);
+      background: var(--accent-light);
+      border: 1px solid var(--pill-accent-border, rgba(91, 140, 255, 0.38));
       padding: 0.3rem 0.7rem;
       border-radius: 6px;
       text-decoration: none;
@@ -231,13 +268,14 @@ import { ThemeService } from './theme/theme.service';
     }
 
     .star-btn:hover {
-      background: rgba(99,102,241,0.28);
-      border-color: rgba(99,102,241,0.6);
+      background: var(--glow);
+      border-color: var(--accent);
       transform: translateY(-1px);
       text-decoration: none;
-      color: #fff;
+      color: var(--text);
     }
 
+    /* ── Mobile ───────────────────────────────────────── */
     .mobile-menu-btn {
       display: none;
       align-items: center;
@@ -246,34 +284,41 @@ import { ThemeService } from './theme/theme.service';
       height: 32px;
       border: none;
       background: transparent;
-      color: #94a3b8;
+      color: var(--text-muted);
       cursor: pointer;
       border-radius: 6px;
       transition: background 0.12s, color 0.12s;
     }
 
-    .mobile-menu-btn:hover { background: rgba(255,255,255,0.08); color: #f8fafc; }
+    .mobile-menu-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 
     .mobile-nav {
       display: flex;
       flex-direction: column;
-      background: #080d18;
-      border-top: 1px solid rgba(99,102,241,0.15);
+      background: var(--nav-scrolled);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
       padding: 0.5rem 0;
     }
 
     .mobile-nav a {
       display: block;
       padding: 0.65rem 1.25rem;
-      color: #cbd5e1;
+      color: var(--text-muted);
       text-decoration: none;
       font-size: 0.9rem;
-      transition: background 0.1s;
+      transition: background 0.1s, color 0.1s;
     }
 
-    .mobile-nav a:hover { background: rgba(99,102,241,0.08); color: #f8fafc; text-decoration: none; }
+    .mobile-nav a:hover {
+      background: var(--accent-light);
+      color: var(--text);
+      text-decoration: none;
+    }
 
-    .page { min-height: calc(100vh - 52px); }
+    /* ── Page ─────────────────────────────────────────── */
+    .page { min-height: calc(100vh - var(--topnav-height, 56px)); }
 
     .page:not(.docs-main) {
       padding: 1.5rem 1.25rem;
@@ -281,15 +326,16 @@ import { ThemeService } from './theme/theme.service';
       margin: 0 auto;
     }
 
+    /* ── Footer ───────────────────────────────────────── */
     .footer {
       padding: 0.85rem 1.25rem;
-      background: #080d18;
-      color: #64748b;
+      background: var(--bg-card-solid);
+      color: var(--text-subtle);
       font-size: 0.82rem;
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-      border-top: 1px solid rgba(99,102,241,0.15);
+      border-top: 1px solid var(--border);
     }
 
     .footer-inner {
@@ -301,19 +347,19 @@ import { ThemeService } from './theme/theme.service';
 
     .footer-brand {
       font-weight: 700;
-      color: #94a3b8;
-      font-family: monospace;
+      color: var(--text-muted);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
       font-size: 0.85rem;
     }
 
-    .footer-dot { color: #1e293b; }
+    .footer-dot { color: var(--border-strong); }
 
-    .footer a { color: #64748b; text-decoration: none; }
-    .footer a:hover { color: #94a3b8; text-decoration: underline; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a:hover { color: var(--accent-2); text-decoration: underline; }
 
     .footer-note {
       font-size: 0.75rem;
-      color: #475569;
+      color: var(--text-subtle);
     }
 
     @media (max-width: 768px) {
@@ -334,6 +380,12 @@ export class AppComponent {
 
   isDocsRoute = signal(false);
   mobileNavOpen = signal(false);
+  isScrolled = signal(false);
+
+  @HostListener('window:scroll')
+  onScroll(): void {
+    this.isScrolled.set(window.scrollY > 10);
+  }
 
   constructor() {
     this.router.events.subscribe(e => {

@@ -90,7 +90,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
       display: grid;
       grid-template-columns: var(--sidebar-width) 1fr var(--toc-width);
       min-height: calc(100vh - var(--topnav-height));
-      background: var(--bg);
+      background: transparent;
     }
 
     /* ── Left sidebar ─────────────────────────────── */
@@ -101,6 +101,8 @@ import { DOCS_PAGES, DocPage } from './docs-data';
       overflow-y: auto;
       overflow-x: hidden;
       background: var(--sidebar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-right: 1px solid var(--border);
       scrollbar-width: thin;
       scrollbar-color: var(--border-strong) transparent;
@@ -125,7 +127,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
       min-width: 0;
       display: flex;
       flex-direction: column;
-      background: var(--bg);
+      background: transparent;
     }
 
     .docs-mobile-bar {
@@ -134,7 +136,9 @@ import { DOCS_PAGES, DocPage } from './docs-data';
       gap: 0.75rem;
       padding: 0.55rem 1rem;
       border-bottom: 1px solid var(--border);
-      background: var(--bg);
+      background: var(--nav-scrolled);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       position: sticky;
       top: var(--topnav-height);
       z-index: 10;
@@ -163,7 +167,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
     /* ── Right TOC ────────────────────────────────── */
     .docs-toc-col {
       border-left: 1px solid var(--border);
-      background: var(--bg);
+      background: transparent;
     }
 
     .toc-sticky {

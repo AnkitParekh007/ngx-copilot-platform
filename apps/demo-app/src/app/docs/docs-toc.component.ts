@@ -30,7 +30,7 @@ import { DocHeading } from './docs-data';
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.09em;
-      color: var(--text-subtle);
+      color: var(--accent-2);
       margin: 0 0 0.65rem;
     }
 
@@ -61,6 +61,7 @@ import { DocHeading } from './docs-data';
       border-left-color: var(--accent);
       font-weight: 600;
       background: var(--accent-light);
+      text-decoration: none;
     }
   `],
 })

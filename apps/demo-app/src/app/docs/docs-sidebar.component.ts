@@ -65,6 +65,9 @@ import { SIDEBAR_NAV } from './docs-data';
     .sidebar-brand {
       padding: 1rem 1rem 0.75rem;
       border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -89,9 +92,9 @@ import { SIDEBAR_NAV } from './docs-data';
     .sidebar-brand-version {
       font-size: 0.65rem;
       font-weight: 600;
-      color: var(--accent-text);
-      background: var(--accent-light);
-      border: 1px solid rgba(99,102,241,0.3);
+      color: var(--pill-accent-text, var(--accent-text));
+      background: var(--pill-accent-bg, var(--accent-light));
+      border: 1px solid var(--pill-accent-border, rgba(91,140,255,0.38));
       padding: 0.1rem 0.45rem;
       border-radius: 999px;
       letter-spacing: 0.02em;
@@ -120,8 +123,8 @@ import { SIDEBAR_NAV } from './docs-data';
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.5;
+      background: var(--accent-2);
+      opacity: 0.7;
       flex-shrink: 0;
     }
 
@@ -147,9 +150,9 @@ import { SIDEBAR_NAV } from './docs-data';
     }
 
     .nav-item.active {
-      background: linear-gradient(90deg, rgba(99,102,241,0.15), transparent);
-      color: #a5b4fc;
-      border-left-color: #818cf8;
+      background: linear-gradient(90deg, rgba(91, 140, 255, 0.12), transparent);
+      color: var(--accent-text);
+      border-left-color: var(--accent);
       font-weight: 600;
     }
 
@@ -166,6 +169,7 @@ import { SIDEBAR_NAV } from './docs-data';
     /* ── Sidebar footer ── */
     .sidebar-footer {
       border-top: 1px solid var(--border);
+      background: transparent;
       padding: 0.85rem 1rem;
       margin-top: auto;
       display: flex;
@@ -182,7 +186,7 @@ import { SIDEBAR_NAV } from './docs-data';
     }
 
     .sidebar-footer-link:hover {
-      color: var(--accent);
+      color: var(--accent-2);
       text-decoration: none;
     }
   `],
