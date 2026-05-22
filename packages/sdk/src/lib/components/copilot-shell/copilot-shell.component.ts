@@ -138,7 +138,7 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
       word-break: break-word;
       font-size: 0.86rem;
       line-height: 1.65;
-      color: var(--text, #334155);
+      color: var(--code-text, #e6edf3);
       background: var(--code-bg, #111827);
       border: 1px solid var(--border, #dbe4f0);
       border-radius: 0.95rem;
