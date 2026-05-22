@@ -61,7 +61,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     </p>
 
     <h2 id="features">What's included</h2>
-    <div class="doc-card-grid">
+    <div class="doc-card-grid included-grid">
       <a routerLink="/docs/getting-started" class="doc-card">
         <strong>Copilot Shell</strong>
         <span>Full streaming chat UI with token-by-token delivery, mode selector (ask / plan / execute / debug), and a message composer — all driven by Angular Signals.</span>
@@ -192,7 +192,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       fictional demo covers a 12-state SKU lifecycle, bulk upload, channel syndication, and a destructive
       approval workflow — all running in the browser with zero real API calls or credentials.
     </p>
-    <div class="doc-card-grid">
+    <div class="doc-card-grid demo-grid">
       <a routerLink="/samples/enterprise-codebase" class="doc-card">
         <strong>Codebase Copilot</strong>
         <span>Ask questions about Angular architecture. Answers are grounded in file-path citations from <code>retailops-pxm-web</code> — services, guards, components, and models.</span>
@@ -367,6 +367,20 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       margin: 1.25rem 0 2rem;
     }
 
+    .included-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .demo-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    .demo-grid .doc-card {
+      height: 100%;
+      align-content: start;
+    }
+
     .path-card {
       display: grid;
       gap: 0.3rem;
@@ -401,7 +415,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     .flow-diagram {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 0;
       padding: 1.25rem 1.5rem;
       background: var(--bg-subtle);
@@ -415,7 +429,8 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
-      min-width: 160px;
+      min-width: 0;
+      flex: 1 1 0;
     }
 
     .flow-step-label {
@@ -454,7 +469,8 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       align-items: center;
       gap: 0.15rem;
       padding: 0 0.75rem;
-      min-width: 110px;
+      min-width: 96px;
+      flex: 0 0 96px;
       padding-top: 1.5rem;
     }
 
@@ -480,6 +496,21 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       color: var(--text-subtle);
       font-family: monospace;
       white-space: nowrap;
+    }
+
+    @media (max-width: 1100px) {
+      .included-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .flow-diagram { flex-wrap: wrap; }
+      .flow-step { min-width: 220px; flex: 1 1 220px; }
+      .flow-arrow { flex: 1 1 100%; min-width: 0; }
+    }
+
+    @media (max-width: 700px) {
+      .included-grid,
+      .demo-grid { grid-template-columns: 1fr; }
     }
   `],
 })
