@@ -127,6 +127,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
       min-width: 0;
       display: flex;
       flex-direction: column;
+      align-items: stretch;
       background: transparent;
     }
 
@@ -160,8 +161,9 @@ import { DOCS_PAGES, DocPage } from './docs-data';
     }
 
     .docs-article {
+      width: 100%;
       padding: 2.35rem 3.2rem 3rem;
-      max-width: var(--article-max);
+      max-width: none;
     }
 
     /* ── Right TOC ────────────────────────────────── */
