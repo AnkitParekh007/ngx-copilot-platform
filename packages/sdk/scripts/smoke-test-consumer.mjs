@@ -137,7 +137,7 @@ bootstrapApplication(SmokeComponent, appConfig).catch(console.error);
 write(
   'src/app.config.ts',
   `import { ApplicationConfig } from '@angular/core';
-import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
+import { provideCopilot } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -159,7 +159,7 @@ import {
   getApprovalTone,
   normalizeCopilotConfig,
   provideCopilot,
-} from '@ankitparekh007/ngx-copilot-sdk';
+} from '@ankit-parekh-007/ngx-copilot-sdk';
 
 @Component({
   selector: 'app-root',

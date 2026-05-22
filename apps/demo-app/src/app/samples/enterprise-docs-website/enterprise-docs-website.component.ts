@@ -5,7 +5,7 @@ import {
   CopilotShellComponent,
   RagResult,
   ToolTimelineItem,
-} from '@ankitparekh007/ngx-copilot-sdk';
+} from '@ankit-parekh-007/ngx-copilot-sdk';
 import {
   DOCS_ARTICLES,
   DOCS_PROMPTS,

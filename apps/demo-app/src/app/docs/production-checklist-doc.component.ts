@@ -18,7 +18,7 @@ export class MyCopilotComponent {
 }`;
 
 const TESTING_SNIPPET = `// Unit test with MockCopilotBackendAdapter
-import { MockCopilotBackendAdapter } from '@ankitparekh007/ngx-copilot-sdk';
+import { MockCopilotBackendAdapter } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 describe('MyCopilotComponent', () => {
   let adapter: MockCopilotBackendAdapter;

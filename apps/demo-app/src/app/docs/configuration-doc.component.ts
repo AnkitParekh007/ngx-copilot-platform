@@ -91,7 +91,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
   `,
 })
 export class ConfigurationDocComponent {
-  readonly fullExample = `import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
+  readonly fullExample = `import { provideCopilot } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig = {
   providers: [

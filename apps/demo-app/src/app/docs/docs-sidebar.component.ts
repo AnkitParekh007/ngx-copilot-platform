@@ -55,7 +55,7 @@ import { SIDEBAR_NAV } from './docs-data';
       <a href="https://github.com/AnkitParekh007/ngx-copilot-platform" target="_blank" rel="noopener noreferrer" class="sidebar-footer-link">
         Star on GitHub &#8599;
       </a>
-      <a href="https://www.npmjs.com/package/@ankitparekh007/ngx-copilot-sdk" target="_blank" rel="noopener noreferrer" class="sidebar-footer-link">
+      <a href="https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk" target="_blank" rel="noopener noreferrer" class="sidebar-footer-link">
         View on npm &#8599;
       </a>
     </div>

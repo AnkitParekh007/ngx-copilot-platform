@@ -1,5 +1,5 @@
 /**
- * Types aligned with @ankitparekh007/ngx-copilot-sdk contract
+ * Types aligned with @ankit-parekh-007/ngx-copilot-sdk contract
  * These types ensure compatibility with HttpCopilotBackendAdapter
  */
 

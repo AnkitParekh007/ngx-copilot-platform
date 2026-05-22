@@ -1,10 +1,10 @@
 # npm Publishing Guide
 
-This document explains how `@ankitparekh007/ngx-copilot-sdk` is published to npm, including the Trusted Publishing setup.
+This document explains how `@ankit-parekh-007/ngx-copilot-sdk` is published to npm, including the Trusted Publishing setup.
 
 ## Package identity
 
-- **Scoped name:** `@ankitparekh007/ngx-copilot-sdk`
+- **Scoped name:** `@ankit-parekh-007/ngx-copilot-sdk`
 - **Access:** public
 - **Registry:** https://registry.npmjs.org
 
@@ -21,7 +21,7 @@ This package uses [npm Trusted Publishing](https://docs.npmjs.com/generating-pro
 ### One-time setup on npmjs.com
 
 1. Log in to [npmjs.com](https://npmjs.com).
-2. Navigate to the `@ankitparekh007/ngx-copilot-sdk` package page.
+2. Navigate to the `@ankit-parekh-007/ngx-copilot-sdk` package page.
 3. Go to **Settings → Publishing → Trusted Publishers**.
 4. Click **Add Trusted Publisher** and fill in:
    - **Ecosystem:** npm
@@ -60,8 +60,8 @@ You will be prompted for credentials or a token.
 ## Verification after publish
 
 ```bash
-npm info @ankitparekh007/ngx-copilot-sdk
-npm install @ankitparekh007/ngx-copilot-sdk --dry-run
+npm info @ankit-parekh-007/ngx-copilot-sdk
+npm install @ankit-parekh-007/ngx-copilot-sdk --dry-run
 ```
 
 Then run the consumer smoke test in [docs/smoke-test.md](./smoke-test.md).

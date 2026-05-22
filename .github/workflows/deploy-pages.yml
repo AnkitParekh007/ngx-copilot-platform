@@ -33,13 +33,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Test SDK
-        run: pnpm --filter @ankitparekh007/ngx-copilot-sdk test
+        run: pnpm --filter @ankit-parekh-007/ngx-copilot-sdk test
 
       - name: Lint SDK
-        run: pnpm --filter @ankitparekh007/ngx-copilot-sdk lint
+        run: pnpm --filter @ankit-parekh-007/ngx-copilot-sdk lint
 
       - name: Build SDK
-        run: pnpm --filter @ankitparekh007/ngx-copilot-sdk build
+        run: pnpm --filter @ankit-parekh-007/ngx-copilot-sdk build
 
       - name: Build demo app (GitHub Pages)
         run: pnpm --filter demo-app build:gh-pages

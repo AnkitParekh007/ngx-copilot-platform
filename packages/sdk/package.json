@@ -1,5 +1,5 @@
 {
-  "name": "@ankitparekh007/ngx-copilot-sdk",
+  "name": "@ankit-parekh-007/ngx-copilot-sdk",
   "version": "0.1.0",
   "description": "Angular 20 SDK for AI copilot chat, streaming responses, RAG citations, tool timelines, and approval workflows in enterprise apps.",
   "keywords": [
@@ -48,7 +48,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "ng-packagr -p ng-package.json",
+    "build": "ng-packagr -p ng-package.json && node scripts/strip-publish-dir.mjs",
     "test": "node --import tsx --test --test-concurrency=1 tests/**/*.spec.ts tests/components/**/*.spec.ts",
     "test:components": "node --import tsx --test --test-concurrency=1 tests/components/**/*.spec.ts",
     "lint": "eslint .",

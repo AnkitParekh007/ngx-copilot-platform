@@ -322,7 +322,7 @@ export class HomeComponent {
   "message": "Started ingesting angular-app (branch: main)"
 }`;
 
-  readonly sdkConfigExample = `import { provideCopilotConfig } from '@ankitparekh007/ngx-copilot-sdk';
+  readonly sdkConfigExample = `import { provideCopilotConfig } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig = {
   providers: [
@@ -336,7 +336,7 @@ export const appConfig = {
   ],
 };`;
 
-  readonly sdkUsageExample = `import { CopilotShellComponent } from '@ankitparekh007/ngx-copilot-sdk';
+  readonly sdkUsageExample = `import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 @Component({
   imports: [CopilotShellComponent],

@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copilot-sdk';
+import { CopilotContext, CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 @Component({
   selector: 'app-live-demo',
@@ -563,7 +563,7 @@ export class LiveDemoComponent {
   installCopied = signal(false);
 
   copyInstall(): void {
-    navigator.clipboard.writeText('npm install @ankitparekh007/ngx-copilot-sdk').then(() => {
+    navigator.clipboard.writeText('npm install @ankit-parekh-007/ngx-copilot-sdk').then(() => {
       this.installCopied.set(true);
       setTimeout(() => this.installCopied.set(false), 2000);
     });

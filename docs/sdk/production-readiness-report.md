@@ -1,6 +1,6 @@
 # Production readiness report
 
-**Package:** `@ankitparekh007/ngx-copilot-sdk` v0.1.0  
+**Package:** `@ankit-parekh-007/ngx-copilot-sdk` v0.1.0  
 **Date:** 2026-05-15  
 **Verdict:** **npm-preview ready** (not production SDK ready)
 

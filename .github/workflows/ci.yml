@@ -37,13 +37,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build SDK
-        run: pnpm --filter @ankitparekh007/ngx-copilot-sdk build
+        run: pnpm --filter @ankit-parekh-007/ngx-copilot-sdk build
 
       - name: Lint SDK
-        run: pnpm --filter @ankitparekh007/ngx-copilot-sdk lint
+        run: pnpm --filter @ankit-parekh-007/ngx-copilot-sdk lint
 
       - name: Test SDK
-        run: pnpm --filter @ankitparekh007/ngx-copilot-sdk test
+        run: pnpm --filter @ankit-parekh-007/ngx-copilot-sdk test
 
       - name: Dry-run pack SDK
         run: cd dist/sdk && npm publish --dry-run

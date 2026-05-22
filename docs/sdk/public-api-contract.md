@@ -1,6 +1,6 @@
 # Public API Contract
 
-**Package:** `@ankitparekh007/ngx-copilot-sdk`  
+**Package:** `@ankit-parekh-007/ngx-copilot-sdk`  
 **Version:** 0.1.x  
 **Entry point:** `projects/ngx-copilot-sdk/src/public-api.ts`
 
@@ -103,7 +103,7 @@ These exist in the source but are intentionally not part of the public API.
 - Internal component template logic and styling
 - Any `private` or `protected` class members
 
-Do not reference these via deep imports (e.g., `@ankitparekh007/ngx-copilot-sdk/lib/...`). Only the barrel export `@ankitparekh007/ngx-copilot-sdk` is supported.
+Do not reference these via deep imports (e.g., `@ankit-parekh-007/ngx-copilot-sdk/lib/...`). Only the barrel export `@ankit-parekh-007/ngx-copilot-sdk` is supported.
 
 ---
 

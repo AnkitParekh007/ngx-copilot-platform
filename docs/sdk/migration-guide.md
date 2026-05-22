@@ -13,10 +13,10 @@ import { provideCopilot } from 'ngx-copilot-sdk';
 
 **After (0.1.0 npm release):**
 ```ts
-import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
+import { provideCopilot } from '@ankit-parekh-007/ngx-copilot-sdk';
 ```
 
-Update any `import` statements and `package.json` references to the scoped name `@ankitparekh007/ngx-copilot-sdk`.
+Update any `import` statements and `package.json` references to the scoped name `@ankit-parekh-007/ngx-copilot-sdk`.
 
 ## Future migration guides
 

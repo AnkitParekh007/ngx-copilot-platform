@@ -32,7 +32,7 @@ Only required once before the first publish:
 
 ## Post-publish verification
 
-- [ ] `npm info @ankitparekh007/ngx-copilot-sdk` shows version `0.1.0`
+- [ ] `npm info @ankit-parekh-007/ngx-copilot-sdk` shows version `0.1.0`
 - [ ] Package provenance attestation visible on npmjs.com
 - [ ] Fresh install smoke test passes (see [docs/smoke-test.md](docs/smoke-test.md))
 - [ ] GitHub Release page shows published status
@@ -44,7 +44,7 @@ Only required once before the first publish:
 ```markdown
 ## v0.1.0 — 0.1.0 Preview
 
-**Package:** `@ankitparekh007/ngx-copilot-sdk`
+**Package:** `@ankit-parekh-007/ngx-copilot-sdk`
 
 This is the first npm-published preview release of the Angular copilot SDK.
 
@@ -74,7 +74,7 @@ A 0.1.0 preview package. Not production-stable. APIs marked as Preview in
 ### Install
 
 ```bash
-npm install @ankitparekh007/ngx-copilot-sdk
+npm install @ankit-parekh-007/ngx-copilot-sdk
 ```
 
 Requires Angular ^20.0.0 and RxJS ^7.8.0.

@@ -1,6 +1,6 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
+import { provideCopilot } from '@ankit-parekh-007/ngx-copilot-sdk';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {

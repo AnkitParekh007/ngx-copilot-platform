@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { CopilotShellComponent } from '@ankitparekh007/ngx-copilot-sdk';
+import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 /**
  * Example consumer demonstrating the full-stack integration:
- * Angular SDK (@ankitparekh007/ngx-copilot-sdk) + Next.js backend (packages/backend).
+ * Angular SDK (@ankit-parekh-007/ngx-copilot-sdk) + Next.js backend (packages/backend).
  *
  * The NgxCopilotPlatformBackendAdapter is wired in app.config.ts via
  * provideCopilot() — this component needs no adapter-specific code.

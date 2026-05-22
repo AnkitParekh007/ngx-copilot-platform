@@ -3,12 +3,12 @@
 > Angular AI copilot platform with a publishable SDK, a production-shaped RAG backend, and enterprise-style demos.
 
 [![CI](https://github.com/AnkitParekh007/ngx-copilot-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/AnkitParekh007/ngx-copilot-platform/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/@ankitparekh007/ngx-copilot-sdk.svg)](https://www.npmjs.com/package/@ankitparekh007/ngx-copilot-sdk)
+[![npm](https://img.shields.io/npm/v/@ankit-parekh-007/ngx-copilot-sdk.svg)](https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 This repository demonstrates the full stack behind a serious Angular copilot experience:
 
-- **Frontend SDK:** `@ankitparekh007/ngx-copilot-sdk` ships Angular 20 components for chat, streaming, RAG citations, tool timelines, and approval workflows.
+- **Frontend SDK:** `@ankit-parekh-007/ngx-copilot-sdk` ships Angular 20 components for chat, streaming, RAG citations, tool timelines, and approval workflows.
 - **Backend platform:** a Next.js RAG service handles ingestion, embeddings, retrieval, streaming, auth boundaries, and rate limiting.
 - **Proof through execution:** runnable demos, an example consumer, tests, docs, and deployment workflows validate the architecture end to end.
 
@@ -38,7 +38,7 @@ If you are reviewing this as a recruiter, hiring manager, or engineering lead, t
 ```text
 ngx-copilot-platform/
 |-- packages/
-|   |-- sdk/              @ankitparekh007/ngx-copilot-sdk - Angular library (publishable)
+|   |-- sdk/              @ankit-parekh-007/ngx-copilot-sdk - Angular library (publishable)
 |   `-- backend/          Next.js RAG API (self-hosted)
 |-- apps/
 |   |-- demo-app/         Angular docs and showcase
@@ -62,12 +62,12 @@ ngx-copilot-platform/
 ### Option A — SDK only (mock backend, no server required)
 
 ```bash
-npm install @ankitparekh007/ngx-copilot-sdk
+npm install @ankit-parekh-007/ngx-copilot-sdk
 ```
 
 ```ts
 // app.config.ts
-import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
+import { provideCopilot } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -103,7 +103,7 @@ pnpm --filter example-consumer dev        # starts Angular consumer on :4200
 
 ```ts
 // app.config.ts — wires the Angular SDK to the platform backend
-import { provideCopilot, providePlatformBackend } from '@ankitparekh007/ngx-copilot-sdk';
+import { provideCopilot, providePlatformBackend } from '@ankit-parekh-007/ngx-copilot-sdk';
 import { environment } from './environments/environment';
 
 export const appConfig: ApplicationConfig = {
@@ -141,7 +141,7 @@ export const environment = {
 Implement `CopilotBackendAdapter` to connect any backend:
 
 ```ts
-import { CopilotBackendAdapter, CopilotRequest, CopilotEvent } from '@ankitparekh007/ngx-copilot-sdk';
+import { CopilotBackendAdapter, CopilotRequest, CopilotEvent } from '@ankit-parekh-007/ngx-copilot-sdk';
 import { Observable } from 'rxjs';
 
 class MyAdapter implements CopilotBackendAdapter {
@@ -199,7 +199,7 @@ pnpm deploy:pages
 |---|---|---|
 | `ci.yml` | Every push or PR | Lint, test, and build workspace targets |
 | `deploy-pages.yml` | Push to `main` or manual | Build and deploy the demo app to GitHub Pages |
-| `publish-npm.yml` | GitHub Release | Publish `@ankitparekh007/ngx-copilot-sdk` to npm with OIDC |
+| `publish-npm.yml` | GitHub Release | Publish `@ankit-parekh-007/ngx-copilot-sdk` to npm with OIDC |
 | `deploy-backend.yml` | Backend changes | Build backend (deploy step is a configurable template) |
 
 ---

@@ -5,7 +5,7 @@ import {
   CopilotShellComponent,
   RagResult,
   ToolTimelineItem,
-} from '@ankitparekh007/ngx-copilot-sdk';
+} from '@ankit-parekh-007/ngx-copilot-sdk';
 import {
   APPROVAL_QUEUE,
   CODEBASE_PROMPTS,

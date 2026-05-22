@@ -3,7 +3,7 @@ import {
   CopilotMessage,
   RagResult,
   ToolTimelineItem,
-} from '@ankitparekh007/ngx-copilot-sdk';
+} from '@ankit-parekh-007/ngx-copilot-sdk';
 
 /** Documentation host used for the mock scenario (illustrative .example domain only). */
 export const DOCS_SITE_HOST = 'docs.retailops-pxm.example';

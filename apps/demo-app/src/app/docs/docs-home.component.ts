@@ -515,5 +515,5 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
   `],
 })
 export class DocsHomeComponent {
-  readonly installCmd = `npm install @ankitparekh007/ngx-copilot-sdk`;
+  readonly installCmd = `npm install @ankit-parekh-007/ngx-copilot-sdk`;
 }

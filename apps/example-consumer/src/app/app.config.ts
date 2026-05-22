@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import {
   provideCopilot,
   providePlatformBackend,
-} from '@ankitparekh007/ngx-copilot-sdk';
+} from '@ankit-parekh-007/ngx-copilot-sdk';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 

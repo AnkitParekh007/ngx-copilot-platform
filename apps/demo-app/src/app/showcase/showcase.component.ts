@@ -12,7 +12,7 @@ import {
   StreamingMessageComponent,
   ToolCallTimelineComponent,
   ToolTimelineItem,
-} from '@ankitparekh007/ngx-copilot-sdk';
+} from '@ankit-parekh-007/ngx-copilot-sdk';
 
 type ShowcaseState =
   | 'empty'

@@ -4,7 +4,7 @@ Automated smoke test: `npm run smoke:consumer`
 
 ## What it does
 
-1. Builds `@ankitparekh007/ngx-copilot-sdk`
+1. Builds `@ankit-parekh-007/ngx-copilot-sdk`
 2. Runs `npm pack` in `dist/ngx-copilot-sdk`
 3. Creates a temporary Angular 20 app under `tmp/consumer-smoke/`
 4. Installs the packed tarball

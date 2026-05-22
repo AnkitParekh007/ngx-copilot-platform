@@ -39,8 +39,8 @@ test('root package.json has verify script', () => {
 
 // --- Library package ---
 
-test('library package name is @ankitparekh007/ngx-copilot-sdk', () => {
-  assert.equal(libPkg.name, '@ankitparekh007/ngx-copilot-sdk');
+test('library package name is @ankit-parekh-007/ngx-copilot-sdk', () => {
+  assert.equal(libPkg.name, '@ankit-parekh-007/ngx-copilot-sdk');
 });
 
 test('library package.json does not have private:true', () => {
@@ -113,7 +113,7 @@ test('LICENSE file exists at repo root', () => {
 test('README install command references scoped package name', () => {
   const readme = readFileSync(resolve(repoRoot, 'README.md'), 'utf-8');
   assert.ok(
-    readme.includes('@ankitparekh007/ngx-copilot-sdk'),
-    'README must reference the scoped package name @ankitparekh007/ngx-copilot-sdk',
+    readme.includes('@ankit-parekh-007/ngx-copilot-sdk'),
+    'README must reference the scoped package name @ankit-parekh-007/ngx-copilot-sdk',
   );
 });

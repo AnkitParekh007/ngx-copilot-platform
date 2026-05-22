@@ -1,6 +1,6 @@
 # Versioning Policy
 
-`@ankitparekh007/ngx-copilot-sdk` follows [Semantic Versioning 2.0.0](https://semver.org/).
+`@ankit-parekh-007/ngx-copilot-sdk` follows [Semantic Versioning 2.0.0](https://semver.org/).
 
 ## Pre-1.0 policy (current)
 

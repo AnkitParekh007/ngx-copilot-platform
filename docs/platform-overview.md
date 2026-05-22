@@ -9,7 +9,7 @@
 │  Angular App (your enterprise app)                               │
 │                                                                  │
 │  ┌─────────────────────────────────────┐                        │
-│  │  @ankitparekh007/ngx-copilot-sdk   │                        │
+│  │  @ankit-parekh-007/ngx-copilot-sdk   │                        │
 │  │  ┌─────────────────────────────┐    │                        │
 │  │  │  <ngx-copilot-shell>        │    │                        │
 │  │  │  CopilotShellComponent      │    │                        │

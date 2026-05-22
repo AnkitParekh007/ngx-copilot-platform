@@ -3,7 +3,7 @@ import {
   CopilotMessage,
   RagResult,
   ToolTimelineItem,
-} from '@ankitparekh007/ngx-copilot-sdk';
+} from '@ankit-parekh-007/ngx-copilot-sdk';
 
 /** Normalized workspace metadata for the mock scenario (no real-repo access). */
 export const ENTERPRISE_REPO = 'retailops-pxm-web';

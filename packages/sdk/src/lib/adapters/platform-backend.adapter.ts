@@ -42,7 +42,7 @@ export const NGX_COPILOT_PLATFORM_CONFIG =
  * @example
  * ```ts
  * // app.config.ts
- * import { provideCopilot, providePlatformBackend } from '@ankitparekh007/ngx-copilot-sdk';
+ * import { provideCopilot, providePlatformBackend } from '@ankit-parekh-007/ngx-copilot-sdk';
  * import { environment } from './environments/environment';
  *
  * export const appConfig: ApplicationConfig = {
@@ -250,7 +250,7 @@ export class NgxCopilotPlatformBackendAdapter implements CopilotBackendAdapter {
  * @example
  * ```ts
  * // app.config.ts
- * import { provideCopilot, providePlatformBackend } from '@ankitparekh007/ngx-copilot-sdk';
+ * import { provideCopilot, providePlatformBackend } from '@ankit-parekh-007/ngx-copilot-sdk';
  * import { environment } from './environments/environment';
  *
  * export const appConfig: ApplicationConfig = {

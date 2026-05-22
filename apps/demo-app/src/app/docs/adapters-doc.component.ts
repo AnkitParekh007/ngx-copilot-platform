@@ -198,7 +198,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
   `],
 })
 export class AdaptersDocComponent {
-  readonly mockAdapterExample = `import { provideCopilot, MockCopilotBackendAdapter } from '@ankitparekh007/ngx-copilot-sdk';
+  readonly mockAdapterExample = `import { provideCopilot, MockCopilotBackendAdapter } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig = {
   providers: [
@@ -213,7 +213,7 @@ export const appConfig = {
   CopilotBackendAdapter,
   CopilotRequestPayload,
   CopilotEvent,
-} from '@ankitparekh007/ngx-copilot-sdk';
+} from '@ankit-parekh-007/ngx-copilot-sdk';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 

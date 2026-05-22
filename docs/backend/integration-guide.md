@@ -130,7 +130,7 @@ CREATE INDEX code_chunks_embedding_idx ON code_chunks USING ivfflat (embedding v
 ## 3. Install the Angular SDK
 
 ```bash
-npm install @ankitparekh007/ngx-copilot-sdk
+npm install @ankit-parekh-007/ngx-copilot-sdk
 ```
 
 ## 4. Configure the Angular Application
@@ -141,7 +141,7 @@ npm install @ankitparekh007/ngx-copilot-sdk
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
+import { provideCopilot } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -172,7 +172,7 @@ export const appConfig: ApplicationConfig = {
 // app.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CopilotShellComponent } from '@ankitparekh007/ngx-copilot-sdk';
+import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 @Component({
   selector: 'app-root',
@@ -235,7 +235,7 @@ The copilot works best when it has context about the current application state:
 
 ```typescript
 // In your feature components
-import { CopilotService } from '@ankitparekh007/ngx-copilot-sdk';
+import { CopilotService } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 @Component({...})
 export class ProductDetailComponent {

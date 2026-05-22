@@ -102,11 +102,11 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
   `,
 })
 export class GettingStartedDocComponent {
-  readonly installCmd = `npm install @ankitparekh007/ngx-copilot-sdk`;
+  readonly installCmd = `npm install @ankit-parekh-007/ngx-copilot-sdk`;
 
   readonly peersCmd = `npm install @angular/core@^20 @angular/common@^20 rxjs@^7.8`;
 
-  readonly configExample = `import { provideCopilot } from '@ankitparekh007/ngx-copilot-sdk';
+  readonly configExample = `import { provideCopilot } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig = {
   providers: [
@@ -120,7 +120,7 @@ export const appConfig = {
   ],
 };`;
 
-  readonly shellExample = `import { CopilotShellComponent } from '@ankitparekh007/ngx-copilot-sdk';
+  readonly shellExample = `import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 @Component({
   standalone: true,
@@ -134,7 +134,7 @@ export const appConfig = {
 })
 export class ProductPageComponent {}`;
 
-  readonly mockExample = `import { provideCopilot, MockCopilotBackendAdapter } from '@ankitparekh007/ngx-copilot-sdk';
+  readonly mockExample = `import { provideCopilot, MockCopilotBackendAdapter } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig = {
   providers: [
