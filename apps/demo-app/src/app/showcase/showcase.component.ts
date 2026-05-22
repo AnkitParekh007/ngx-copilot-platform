@@ -117,7 +117,7 @@ type ShowcaseState =
       cursor: pointer;
       transition: background 0.15s, color 0.15s, border-color 0.15s;
       font-family: inherit;
-      font-size: 0.875rem;
+      font-size: 0.92rem;
     }
     .picker button:hover { border-color: var(--accent); color: var(--accent); }
     .picker button.active { background: var(--accent); color: #fff; border-color: var(--accent); }

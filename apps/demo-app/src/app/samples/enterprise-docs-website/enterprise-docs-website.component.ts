@@ -169,7 +169,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       gap: 1rem;
       flex-wrap: wrap;
     }
-    .crumb { font-size: 0.85rem; color: var(--text-subtle, #64748b); }
+    .crumb { font-size: 0.92rem; color: var(--text-muted, #475569); }
     .crumb a { color: var(--accent); text-decoration: none; }
     .crumb a:hover { text-decoration: underline; }
     .sep { margin: 0 0.3rem; }
@@ -179,13 +179,13 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       padding: 0.2rem 0.55rem;
       border: 1px solid var(--border-strong);
       border-radius: 6px;
-      font-size: 0.78rem; font-weight: 600;
+      font-size: 0.84rem; font-weight: 600;
       color: var(--accent-text, var(--accent));
       background: var(--accent-light);
       font-family: monospace;
     }
     .mock-pill {
-      font-size: 0.7rem;
+      font-size: 0.76rem;
       padding: 0.18rem 0.5rem;
       border-radius: 999px;
       background: var(--callout-warning-bg);
@@ -209,7 +209,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
     .pane-article { flex: 1; min-width: 280px; background: var(--bg, #fff); }
     .pane-copilot { width: 340px; min-width: 280px; flex-shrink: 0; }
     .pane-label {
-      font-size: 0.7rem;
+      font-size: 0.76rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.07em;
@@ -228,7 +228,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
     }
     .nav-section { margin-bottom: 0.5rem; }
     .nav-section-title {
-      font-size: 0.67rem;
+      font-size: 0.74rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.07em;
@@ -242,7 +242,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       text-align: left;
       border: none;
       background: none;
-      font-size: 0.8rem;
+      font-size: 0.88rem;
       cursor: pointer;
       color: var(--text, #374151);
       border-radius: 0;
@@ -271,14 +271,14 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       margin-bottom: 0.5rem;
     }
     .article-category {
-      font-size: 0.7rem;
+      font-size: 0.76rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-subtle, #64748b);
     }
     .article-badge {
-      font-size: 0.68rem;
+      font-size: 0.74rem;
       font-weight: 600;
       padding: 0.12rem 0.45rem;
       border-radius: 999px;
@@ -321,7 +321,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
     /* Tables */
     .article-table-wrap { margin-top: 1rem; }
     .table-caption {
-      font-size: 0.78rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: var(--text-subtle, #64748b);
       margin: 0 0 0.5rem;
@@ -339,7 +339,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       padding: 0.45rem 0.7rem;
       background: var(--bg-muted, #f8fafc);
       font-weight: 700;
-      font-size: 0.73rem;
+      font-size: 0.79rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: var(--text-subtle, #64748b);
@@ -370,7 +370,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       padding: 0.28rem 0.65rem;
       border: 1px solid var(--border, #cbd5e1);
       border-radius: 999px;
-      font-size: 0.72rem;
+      font-size: 0.79rem;
       font-weight: 500;
       cursor: pointer;
       background: var(--bg, #fff);

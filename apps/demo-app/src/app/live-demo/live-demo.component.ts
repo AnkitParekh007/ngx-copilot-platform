@@ -219,7 +219,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     .hero-eyebrow { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
 
     .eyebrow-chip {
-      font-size: 0.7rem;
+      font-size: 0.76rem;
       font-weight: 600;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -294,7 +294,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     }
 
     .install-label {
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -308,7 +308,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
 
     .install-cmd {
       font-family: 'Fira Code', 'Cascadia Code', monospace;
-      font-size: 0.82rem;
+      font-size: 0.9rem;
       color: #86efac;
       flex: 1;
     }
@@ -330,12 +330,12 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     .copy-btn:hover { background: rgba(255,255,255,0.15); color: #f8fafc; }
     .copy-btn.copied { background: rgba(34,197,94,0.15); }
 
-    .install-req { font-size: 0.75rem; color: rgba(148,163,184,0.6); margin: 0.5rem 0 0; }
+    .install-req { font-size: 0.82rem; color: rgba(148,163,184,0.82); margin: 0.6rem 0 0; }
 
     /* Section shared */
     .section { margin-bottom: 2.5rem; }
     .section-title { font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 0 0 0.4rem; letter-spacing: -0.01em; }
-    .section-desc { color: var(--text-muted); font-size: 0.95rem; margin: 0 0 1.25rem; line-height: 1.6; }
+    .section-desc { color: var(--text-muted); font-size: 1rem; margin: 0 0 1.3rem; line-height: 1.72; }
     .section-desc code { background: var(--bg-subtle); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-muted); }
 
     /* Feature grid */
@@ -370,9 +370,9 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     .feat-slate  { background: rgba(148,163,184,0.12); color: var(--text-muted); }
     .feat-indigo { background: rgba(99,102,241,0.15);  color: #818cf8; }
 
-    .feature-card strong { font-size: 0.95rem; color: var(--text); }
-    .feature-card span { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
-    .feature-card code { font-size: 0.8rem; background: var(--bg-subtle); color: var(--text-muted); padding: 0.1rem 0.3rem; border-radius: 3px; }
+    .feature-card strong { font-size: 1rem; color: var(--text); }
+    .feature-card span { font-size: 0.93rem; color: var(--text-muted); line-height: 1.58; }
+    .feature-card code { font-size: 0.86rem; background: var(--bg-subtle); color: var(--text); padding: 0.1rem 0.3rem; border-radius: 3px; }
 
     /* Architecture */
     .arch-section { }
@@ -396,7 +396,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     .arch-backend { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.22); }
 
     .arch-label {
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -409,7 +409,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 0.35rem 0.65rem;
-      font-size: 0.82rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
     }
 
@@ -421,7 +421,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       align-items: center;
       gap: 0.35rem;
       flex-shrink: 0;
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       color: var(--accent);
       font-weight: 600;
       letter-spacing: 0.04em;
@@ -457,9 +457,9 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       margin-top: 0.15rem;
     }
 
-    .why-item strong { display: block; font-size: 0.9rem; color: var(--text); margin-bottom: 0.2rem; }
-    .why-item span { font-size: 0.84rem; color: var(--text-muted); line-height: 1.5; }
-    .why-item code { font-size: 0.78rem; background: var(--bg-subtle); color: var(--text-muted); padding: 0.1rem 0.3rem; border-radius: 3px; }
+    .why-item strong { display: block; font-size: 0.98rem; color: var(--text); margin-bottom: 0.25rem; }
+    .why-item span { font-size: 0.92rem; color: var(--text-muted); line-height: 1.58; }
+    .why-item code { font-size: 0.84rem; background: var(--bg-subtle); color: var(--text); padding: 0.1rem 0.3rem; border-radius: 3px; }
 
     /* Demo callout */
     .demo-callout {
@@ -478,7 +478,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
 
     .demo-callout-badge {
       display: inline-block;
-      font-size: 0.68rem;
+      font-size: 0.74rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.07em;
@@ -500,7 +500,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       padding: 0.5rem 1.1rem;
       border-radius: 999px;
       text-decoration: none;
-      font-size: 0.88rem;
+      font-size: 0.94rem;
       font-weight: 600;
       transition: background 0.15s;
     }
@@ -524,7 +524,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 6px;
       padding: 0.4rem 0.75rem;
-      font-size: 0.78rem;
+      font-size: 0.84rem;
       color: #c7d2fe;
       font-family: monospace;
     }
@@ -543,7 +543,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
       background: var(--callout-warning-bg);
       border: 1px solid var(--callout-warning-border);
       border-radius: 0.75rem;
-      font-size: 0.87rem;
+      font-size: 0.94rem;
       color: var(--callout-warning-text);
       line-height: 1.55;
       margin-bottom: 2.5rem;

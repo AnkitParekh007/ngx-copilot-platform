@@ -90,7 +90,7 @@ import { SIDEBAR_NAV } from './docs-data';
     }
 
     .sidebar-brand-version {
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       font-weight: 600;
       color: var(--pill-accent-text, var(--accent-text));
       background: var(--pill-accent-bg, var(--accent-light));
@@ -110,7 +110,7 @@ import { SIDEBAR_NAV } from './docs-data';
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.68rem;
+      font-size: 0.74rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.09em;
@@ -133,7 +133,7 @@ import { SIDEBAR_NAV } from './docs-data';
       align-items: center;
       justify-content: space-between;
       padding: 0.4rem 1rem 0.4rem 1.5rem;
-      font-size: 0.865rem;
+      font-size: 0.93rem;
       color: var(--text-muted);
       text-decoration: none;
       border-left: 2px solid transparent;
@@ -157,7 +157,7 @@ import { SIDEBAR_NAV } from './docs-data';
     }
 
     .nav-item-badge {
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       background: var(--accent-light);
       color: var(--accent-text);
       padding: 0.08rem 0.4rem;
@@ -179,8 +179,8 @@ import { SIDEBAR_NAV } from './docs-data';
     }
 
     .sidebar-footer-link {
-      font-size: 0.78rem;
-      color: var(--text-subtle);
+      font-size: 0.84rem;
+      color: var(--text-muted);
       text-decoration: none;
       transition: color 0.12s;
     }

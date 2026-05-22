@@ -213,7 +213,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .qi-label {
-      font-size: 0.7rem;
+      font-size: 0.76rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -223,7 +223,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .qi-note {
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       color: var(--text-subtle);
       margin: 0.25rem 0 0;
     }
@@ -259,7 +259,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .stat-label {
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       color: var(--text-subtle);
       margin-top: 0.15rem;
     }
@@ -301,7 +301,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .cta-content span {
-      font-size: 0.83rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
     }
 
@@ -316,7 +316,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      font-size: 0.85rem;
+      font-size: 0.92rem;
       font-weight: 600;
       color: #fff;
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
@@ -335,7 +335,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .cta-fork {
-      font-size: 0.85rem;
+      font-size: 0.92rem;
       font-weight: 600;
       color: var(--accent-text);
       background: var(--accent-light);
@@ -387,7 +387,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .path-icon {
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       font-weight: 800;
       color: var(--accent);
       letter-spacing: 0.04em;
@@ -395,8 +395,8 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .path-card strong { font-size: 0.9rem; color: var(--text); }
-    .path-card span { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; }
-    .path-card code { font-size: 0.78rem; background: var(--code-inline-bg); color: var(--code-inline-text); padding: 0.1rem 0.3rem; border-radius: 3px; }
+    .path-card span { font-size: 0.9rem; color: var(--text-muted); line-height: 1.55; }
+    .path-card code { font-size: 0.84rem; background: var(--code-inline-bg); color: var(--code-inline-text); padding: 0.1rem 0.3rem; border-radius: 3px; }
 
     .flow-diagram {
       display: flex;
@@ -419,7 +419,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .flow-step-label {
-      font-size: 0.67rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.07em;
@@ -442,11 +442,11 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     .flow-step-provider .flow-step-body { border-color: var(--border); opacity: 0.75; }
 
     .flow-line {
-      font-size: 0.8rem;
+      font-size: 0.88rem;
       font-family: monospace;
       color: var(--text);
     }
-    .flow-line.flow-dim { color: var(--text-muted); font-size: 0.75rem; }
+    .flow-line.flow-dim { color: var(--text-muted); font-size: 0.82rem; }
 
     .flow-arrow {
       display: flex;
@@ -468,7 +468,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .flow-arrow-label {
-      font-size: 0.66rem;
+      font-size: 0.72rem;
       font-weight: 600;
       color: var(--text-subtle);
       white-space: nowrap;
@@ -476,7 +476,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     .flow-arrow-sub {
-      font-size: 0.6rem;
+      font-size: 0.68rem;
       color: var(--text-subtle);
       font-family: monospace;
       white-space: nowrap;

@@ -80,23 +80,23 @@ interface ThemeOption {
       padding: 0.3rem 0.5rem;
       border: 1px solid rgba(148, 163, 184, 0.25);
       border-radius: var(--radius-md, 0.5rem);
-      background: transparent;
-      color: #94a3b8;
+      background: var(--bg-card);
+      color: var(--text-muted);
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.86rem;
       transition: background 0.12s, color 0.12s, border-color 0.12s;
       height: 32px;
     }
 
     .theme-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #f8fafc;
+      background: var(--accent-light);
+      color: var(--text);
       border-color: rgba(148, 163, 184, 0.4);
     }
 
     .theme-toggle-wrap.open .theme-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: #f8fafc;
+      background: var(--accent-light);
+      color: var(--text);
     }
 
     .theme-icon { display: flex; align-items: center; }
@@ -135,7 +135,7 @@ interface ThemeOption {
       border-radius: var(--radius-sm, 0.375rem);
       cursor: pointer;
       color: var(--text, #f1f5f9);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       text-align: left;
       transition: background 0.1s;
     }

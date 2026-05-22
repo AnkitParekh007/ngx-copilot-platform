@@ -160,7 +160,7 @@ import { ThemeService } from './theme/theme.service';
     }
 
     .logo-badge {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       background: var(--pill-accent-bg, rgba(91, 140, 255, 0.1));
       color: var(--pill-accent-text, #c5d4ff);
       border: 1px solid var(--pill-accent-border, rgba(91, 140, 255, 0.38));
@@ -183,9 +183,9 @@ import { ThemeService } from './theme/theme.service';
       text-decoration: none;
       padding: 0.45rem 0.7rem;
       border-radius: 6px;
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       font-weight: 600;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       white-space: nowrap;
       position: relative;
@@ -237,8 +237,8 @@ import { ThemeService } from './theme/theme.service';
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 6px;
       color: var(--text-muted);
       transition: color 0.12s, background 0.12s;
@@ -254,7 +254,7 @@ import { ThemeService } from './theme/theme.service';
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      font-size: 0.8rem;
+      font-size: 0.86rem;
       font-weight: 600;
       color: var(--accent-text);
       background: var(--accent-light);
@@ -331,7 +331,7 @@ import { ThemeService } from './theme/theme.service';
       padding: 0.85rem 1.25rem;
       background: var(--bg-card-solid);
       color: var(--text-subtle);
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
@@ -358,7 +358,7 @@ import { ThemeService } from './theme/theme.service';
     .footer a:hover { color: var(--accent-2); text-decoration: underline; }
 
     .footer-note {
-      font-size: 0.75rem;
+      font-size: 0.82rem;
       color: var(--text-subtle);
     }
 

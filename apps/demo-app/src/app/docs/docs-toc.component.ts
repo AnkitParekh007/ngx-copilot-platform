@@ -26,7 +26,7 @@ import { DocHeading } from './docs-data';
     .toc { padding: 0.5rem 0.25rem; }
 
     .toc-heading {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.09em;
@@ -36,7 +36,7 @@ import { DocHeading } from './docs-data';
 
     .toc-link {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       color: var(--text-subtle);
       text-decoration: none;
       padding: 0.3rem 0.6rem;
@@ -47,7 +47,7 @@ import { DocHeading } from './docs-data';
       border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
     }
 
-    .toc-link-h3 { padding-left: 1.2rem; font-size: 0.78rem; }
+    .toc-link-h3 { padding-left: 1.2rem; font-size: 0.84rem; }
 
     .toc-link:hover {
       color: var(--accent);

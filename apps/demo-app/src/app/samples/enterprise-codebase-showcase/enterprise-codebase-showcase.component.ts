@@ -336,7 +336,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       gap: 1rem;
       flex-wrap: wrap;
     }
-    .crumb { font-size: 0.85rem; color: var(--text-subtle, #64748b); }
+    .crumb { font-size: 0.92rem; color: var(--text-muted, #475569); }
     .crumb a { color: var(--accent); text-decoration: none; }
     .crumb a:hover { text-decoration: underline; }
     .sep { margin: 0 0.3rem; }
@@ -346,7 +346,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       padding: 0.2rem 0.55rem;
       border: 1px solid var(--border, #e2e8f0);
       border-radius: 6px;
-      font-size: 0.78rem; font-weight: 600;
+      font-size: 0.84rem; font-weight: 600;
       color: var(--text, #0f172a);
       background: var(--bg-muted, #f8fafc);
     }
@@ -356,12 +356,12 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       padding: 0.2rem 0.5rem;
       border: 1px solid var(--border, #d1d5db);
       border-radius: 6px;
-      font-size: 0.72rem; font-weight: 600;
+      font-size: 0.78rem; font-weight: 700;
       color: var(--text-muted, #374151);
       background: var(--bg-subtle, #f9fafb);
     }
     .mock-pill {
-      font-size: 0.7rem;
+      font-size: 0.76rem;
       padding: 0.18rem 0.5rem;
       border-radius: 999px;
       background: var(--callout-warning-bg);
@@ -408,7 +408,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
     .feature-tab {
       flex-shrink: 0;
       padding: 0.45rem 0.75rem;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 500;
       border: none;
       background: none;
@@ -439,13 +439,13 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.74rem;
+      font-size: 0.8rem;
     }
     .data-table th {
       padding: 0.4rem 0.5rem;
       text-align: left;
       font-weight: 600;
-      font-size: 0.68rem;
+      font-size: 0.74rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-subtle, #64748b);
@@ -458,14 +458,14 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       vertical-align: middle;
     }
     .data-table tr:hover td { background: var(--bg-muted, #f8fafc); }
-    .sku-cell { font-family: monospace; font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+    .sku-cell { font-family: monospace; font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
     .name-cell { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .channels-cell { text-align: center; }
-    .date-cell { font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; }
-    .issue-cell { max-width: 120px; font-size: 0.7rem; }
+    .date-cell { font-size: 0.74rem; color: var(--text-muted); white-space: nowrap; }
+    .issue-cell { max-width: 120px; font-size: 0.78rem; }
     .field-code {
       font-family: monospace;
-      font-size: 0.7rem;
+      font-size: 0.76rem;
       background: var(--bg-muted, #f1f5f9);
       padding: 0.1rem 0.35rem;
       border-radius: 4px;
@@ -480,20 +480,20 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
     }
     .upload-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
     .upload-label { margin: 0 0 0.2rem; font-size: 0.85rem; font-weight: 600; color: var(--text, #0f172a); }
-    .upload-hint { margin: 0 0 0.65rem; font-size: 0.75rem; }
+    .upload-hint { margin: 0 0 0.65rem; font-size: 0.82rem; }
     .upload-btn {
       padding: 0.32rem 0.8rem;
       border: 1px solid var(--accent);
       border-radius: 6px;
       background: var(--accent-light);
       color: var(--accent-text, var(--accent));
-      font-size: 0.78rem;
+      font-size: 0.84rem;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
     }
     .recent-jobs { display: flex; flex-direction: column; gap: 0.35rem; }
-    .section-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-subtle, #94a3b8); margin-bottom: 0.25rem; }
+    .section-title { font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-subtle, #94a3b8); margin-bottom: 0.25rem; }
     .job-row {
       display: flex;
       align-items: center;
@@ -503,13 +503,13 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       border-radius: 6px;
       background: var(--bg, #fff);
     }
-    .job-name { flex: 1; font-size: 0.72rem; font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .job-rows { font-size: 0.68rem; color: var(--text-subtle, #64748b); white-space: nowrap; }
+    .job-name { flex: 1; font-size: 0.78rem; font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .job-rows { font-size: 0.74rem; color: var(--text-subtle, #64748b); white-space: nowrap; }
     .file-tree {
       flex: 1;
       overflow: auto;
       padding: 0.4rem 0;
-      font-size: 0.78rem;
+      font-size: 0.84rem;
     }
     .tree-folder {
       display: flex;
@@ -518,7 +518,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       padding: 0.22rem 0.5rem;
       color: var(--text-subtle, #475569);
       user-select: none;
-      font-size: 0.75rem;
+      font-size: 0.82rem;
     }
     .folder-icon { font-size: 0.55rem; color: #94a3b8; flex-shrink: 0; }
     .tree-file {
@@ -534,12 +534,12 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       color: var(--text, #374151);
       border-radius: 4px;
       transition: background 0.1s;
-      font-size: 0.75rem;
+      font-size: 0.82rem;
       font-family: inherit;
     }
     .tree-file:hover { background: var(--accent-light); }
     .tree-file.selected { background: var(--accent-light); color: var(--accent); font-weight: 600; }
-    .file-icon { font-size: 0.75rem; flex-shrink: 0; }
+    .file-icon { font-size: 0.82rem; flex-shrink: 0; }
     .tree-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .code-preview {
       border-top: 1px solid var(--border, #e2e8f0);
@@ -557,8 +557,8 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       border-bottom: 1px solid rgba(255,255,255,0.07);
       flex-shrink: 0;
     }
-    .code-file-name { font-size: 0.7rem; font-weight: 600; color: #e6edf3; font-family: monospace; }
-    .code-file-kind { font-size: 0.62rem; color: rgba(230,237,243,0.4); text-transform: uppercase; letter-spacing: 0.05em; }
+    .code-file-name { font-size: 0.78rem; font-weight: 600; color: #e6edf3; font-family: monospace; }
+    .code-file-kind { font-size: 0.68rem; color: rgba(230,237,243,0.58); text-transform: uppercase; letter-spacing: 0.05em; }
     .code-block {
       flex: 1;
       overflow: auto;
@@ -566,7 +566,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       color: #e6edf3;
       margin: 0;
       padding: 0.6rem 0.75rem;
-      font-size: 0.68rem;
+      font-size: 0.76rem;
       line-height: 1.6;
       white-space: pre;
       font-family: 'Fira Code', 'Cascadia Code', monospace;
@@ -585,7 +585,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       padding: 0.28rem 0.65rem;
       border: 1px solid var(--border, #cbd5e1);
       border-radius: 999px;
-      font-size: 0.72rem;
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
       background: var(--bg, #fff);

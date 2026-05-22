@@ -85,7 +85,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
       border: none;
       outline: none;
       background: transparent;
-      font-size: 0.84rem;
+      font-size: 0.92rem;
       color: var(--text);
       min-width: 0;
     }
@@ -94,7 +94,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
     .search-input::-webkit-search-cancel-button { display: none; }
 
     .search-kbd {
-      font-size: 0.67rem;
+      font-size: 0.72rem;
       background: var(--bg-subtle);
       border: 1px solid var(--border-strong);
       border-radius: var(--radius-xs);
@@ -122,7 +122,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
     .search-hint,
     .search-empty {
       padding: 1rem 1.1rem;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
       text-align: center;
     }
@@ -147,7 +147,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
     .search-result.focused { background: var(--accent-light); }
 
     .result-category {
-      font-size: 0.68rem;
+      font-size: 0.74rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.07em;
@@ -155,13 +155,13 @@ import { DOCS_PAGES, DocPage } from './docs-data';
     }
 
     .result-title {
-      font-size: 0.875rem;
+      font-size: 0.94rem;
       font-weight: 600;
       color: var(--text);
     }
 
     .result-desc {
-      font-size: 0.78rem;
+      font-size: 0.84rem;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;

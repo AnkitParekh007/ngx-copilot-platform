@@ -145,7 +145,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
     }
 
     .mobile-bar-title {
-      font-size: 0.875rem;
+      font-size: 0.94rem;
       font-weight: 600;
       color: var(--text);
       white-space: nowrap;
@@ -160,7 +160,7 @@ import { DOCS_PAGES, DocPage } from './docs-data';
     }
 
     .docs-article {
-      padding: 2.25rem 3rem 3rem;
+      padding: 2.35rem 3.2rem 3rem;
       max-width: var(--article-max);
     }
 
