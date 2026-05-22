@@ -27,10 +27,11 @@ import { RagResult } from '../../models/rag-result.model';
   `,
   styles: [`
     .source-card {
-      border: 1px solid #dbe4f0;
+      border: 1px solid var(--border, #dbe4f0);
       border-radius: 1rem;
       padding: 1rem;
-      background: #fff;
+      background: var(--bg-card-solid, #fff);
+      color: var(--text, #0f172a);
       display: grid;
       gap: 0.5rem;
     }
@@ -38,27 +39,27 @@ import { RagResult } from '../../models/rag-result.model';
       display: flex;
       justify-content: space-between;
       gap: 1rem;
-      color: #475569;
+      color: var(--text-subtle, #475569);
       font-size: 0.85rem;
     }
     h4 { margin: 0; font-size: 1rem; }
     .path-line {
       margin: 0;
       font-size: 0.8rem;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       font-family: ui-monospace, monospace;
       word-break: break-all;
     }
-    .snippet { margin: 0; color: #334155; }
+    .snippet { margin: 0; color: var(--text-muted, #334155); }
     .tags { margin: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
     .tag {
       font-size: 0.72rem;
       padding: 0.15rem 0.45rem;
       border-radius: 999px;
-      background: #f1f5f9;
-      color: #475569;
+      background: var(--bg-muted, #f1f5f9);
+      color: var(--text-subtle, #475569);
     }
-    a { color: #1d4ed8; text-decoration: none; }
+    a { color: var(--accent, #1d4ed8); text-decoration: none; }
   `],
 })
 export class RagSourceCardComponent {

@@ -339,7 +339,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     .section-desc code { background: var(--bg-subtle); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-muted); }
 
     /* Feature grid */
-    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.85rem; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; }
 
     .feature-card {
       padding: 1.1rem 1.15rem;
@@ -373,6 +373,14 @@ import { CopilotContext, CopilotShellComponent } from '@ankitparekh007/ngx-copil
     .feature-card strong { font-size: 1rem; color: var(--text); }
     .feature-card span { font-size: 0.93rem; color: var(--text-muted); line-height: 1.58; }
     .feature-card code { font-size: 0.86rem; background: var(--bg-subtle); color: var(--text); padding: 0.1rem 0.3rem; border-radius: 3px; }
+
+    @media (max-width: 900px) {
+      .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
 
     /* Architecture */
     .arch-section { }

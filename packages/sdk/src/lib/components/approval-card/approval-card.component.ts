@@ -43,16 +43,17 @@ import { ApprovalRequest, getApprovalTone } from '../../models/approval-request.
       padding: 1rem;
       display: grid;
       gap: 0.75rem;
-      border: 1px solid #f59e0b;
-      background: #fffbeb;
+      border: 1px solid var(--callout-warning-border, #f59e0b);
+      background: var(--callout-warning-bg, #fffbeb);
+      color: var(--text, #0f172a);
     }
     .approval-card[data-tone='critical'] {
-      border-color: #ef4444;
-      background: #fef2f2;
+      border-color: var(--callout-danger-border, #ef4444);
+      background: var(--callout-danger-bg, #fef2f2);
     }
     .approval-card[data-tone='resolved'] {
-      border-color: #22c55e;
-      background: #f0fdf4;
+      border-color: var(--callout-success-border, #22c55e);
+      background: var(--callout-success-bg, #f0fdf4);
     }
     .approval-header {
       display: flex;
@@ -64,21 +65,31 @@ import { ApprovalRequest, getApprovalTone } from '../../models/approval-request.
       margin: 0;
       font-size: 0.85rem;
       text-transform: uppercase;
-      color: #92400e;
+      color: var(--callout-warning-text, #92400e);
     }
+    .approval-card[data-tone='critical'] .eyebrow,
+    .approval-card[data-tone='critical'] .risk,
+    .approval-card[data-tone='critical'] .decision { color: var(--callout-danger-text, #b91c1c); }
+    .approval-card[data-tone='resolved'] .eyebrow,
+    .approval-card[data-tone='resolved'] .risk,
+    .approval-card[data-tone='resolved'] .decision { color: var(--callout-success-text, #166534); }
     h4, p { margin: 0; }
-    .summary { color: #334155; }
+    .summary { color: var(--text-muted, #334155); }
     .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     button {
       border: none;
       border-radius: 999px;
-      background: #0f172a;
-      color: #fff;
+      background: var(--text, #0f172a);
+      color: var(--bg-card-solid, #fff);
       padding: 0.6rem 1rem;
       cursor: pointer;
     }
     button:disabled { opacity: 0.55; cursor: not-allowed; }
-    .secondary { background: #e2e8f0; color: #0f172a; }
+    .secondary {
+      background: var(--bg-card-solid, #e2e8f0);
+      color: var(--text, #0f172a);
+      border: 1px solid var(--border, #cbd5e1);
+    }
   `],
 })
 export class ApprovalCardComponent {

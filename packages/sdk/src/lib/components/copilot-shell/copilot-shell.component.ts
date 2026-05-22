@@ -97,10 +97,10 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
       display: grid;
       gap: 1rem;
       padding: 1rem;
-      background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
-      color: #0f172a;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--bg-card-solid, #ffffff) 92%, white 8%) 0%, color-mix(in srgb, var(--bg-muted, #eef4ff) 86%, white 14%) 100%);
+      color: var(--text, #0f172a);
       border-radius: 1.5rem;
-      border: 1px solid #dbe4f0;
+      border: 1px solid var(--border, #dbe4f0);
     }
     .hero {
       display: flex;
@@ -113,7 +113,7 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
       margin: 0 0 0.35rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #1d4ed8;
+      color: var(--accent, #1d4ed8);
       font-size: 0.82rem;
     }
     h2, h3, p, pre { margin: 0; }
@@ -127,25 +127,34 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
       display: grid;
       gap: 0.8rem;
       border-radius: 1.25rem;
-      background: rgba(255, 255, 255, 0.92);
+      background: var(--bg-card, rgba(255, 255, 255, 0.92));
       padding: 1rem;
-      border: 1px solid #dbe4f0;
+      border: 1px solid var(--border, #dbe4f0);
+      box-shadow: var(--shadow-sm, none);
     }
+    .panel h3 { color: var(--text, #0f172a); }
     .panel-context pre {
       white-space: pre-wrap;
       word-break: break-word;
       font-size: 0.86rem;
-      color: #334155;
+      line-height: 1.65;
+      color: var(--text, #334155);
+      background: var(--code-bg, #111827);
+      border: 1px solid var(--border, #dbe4f0);
+      border-radius: 0.95rem;
+      padding: 0.95rem 1rem;
+      overflow: auto;
     }
     .cards { display: grid; gap: 0.75rem; }
-    .muted { color: #64748b; font-size: 0.9rem; }
+    .muted { color: var(--text-muted, #64748b); font-size: 0.9rem; }
     .footer {
-      border-top: 1px solid #dbe4f0;
+      border-top: 1px solid var(--border, #dbe4f0);
       padding-top: 0.75rem;
     }
     .reset {
-      border: 1px solid #cbd5e1;
-      background: #fff;
+      border: 1px solid var(--border, #cbd5e1);
+      background: var(--bg-card-solid, #fff);
+      color: var(--text, #0f172a);
       border-radius: 999px;
       padding: 0.45rem 0.9rem;
       cursor: pointer;

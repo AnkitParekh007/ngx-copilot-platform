@@ -17,13 +17,14 @@ import { Component, Input } from '@angular/core';
       gap: 0.35rem;
       padding: 0.9rem 1rem;
       border-radius: 1rem;
-      border: 1px solid #bfdbfe;
-      background: #eff6ff;
+      border: 1px solid var(--border-strong, #bfdbfe);
+      background: var(--accent-light, #eff6ff);
     }
     p, .state { margin: 0; }
+    p { color: var(--text, #0f172a); }
     .state {
       font-size: 0.82rem;
-      color: #1d4ed8;
+      color: var(--accent, #1d4ed8);
     }
   `],
 })

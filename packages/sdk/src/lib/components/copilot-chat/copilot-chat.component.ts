@@ -71,28 +71,29 @@ import { StreamingMessageComponent } from '../streaming-message/streaming-messag
     .message {
       border-radius: 1rem;
       padding: 0.9rem 1rem;
-      background: #fff;
-      border: 1px solid #dbe4f0;
+      background: var(--bg-card-solid, #fff);
+      border: 1px solid var(--border, #dbe4f0);
+      color: var(--text, #0f172a);
     }
     .message[data-role='assistant'] {
-      background: #eff6ff;
-      border-color: #bfdbfe;
+      background: var(--accent-light, #eff6ff);
+      border-color: var(--border-strong, #bfdbfe);
     }
     .message-role {
       margin: 0 0 0.35rem;
       text-transform: capitalize;
       font-size: 0.82rem;
-      color: #475569;
+      color: var(--text-subtle, #475569);
     }
     p { margin: 0; }
-    .empty { color: #64748b; font-size: 0.95rem; }
+    .empty { color: var(--text-muted, #64748b); font-size: 0.95rem; }
     .error {
       margin: 0;
       padding: 0.65rem 0.85rem;
       border-radius: 0.75rem;
-      background: #fef2f2;
-      color: #b91c1c;
-      border: 1px solid #fecaca;
+      background: var(--callout-danger-bg, #fef2f2);
+      color: var(--callout-danger-text, #b91c1c);
+      border: 1px solid var(--callout-danger-border, #fecaca);
     }
     .composer {
       display: grid;
@@ -102,17 +103,20 @@ import { StreamingMessageComponent } from '../streaming-message/streaming-messag
       resize: vertical;
       min-height: 3rem;
       border-radius: 0.85rem;
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--border, #cbd5e1);
       padding: 0.65rem 0.8rem;
       font: inherit;
+      color: var(--text, #0f172a);
+      background: var(--bg-card-solid, #ffffff);
     }
+    textarea::placeholder { color: var(--text-subtle, #64748b); }
     textarea:disabled { opacity: 0.65; cursor: not-allowed; }
     button {
       justify-self: start;
       border: none;
       border-radius: 999px;
-      background: #0f172a;
-      color: #fff;
+      background: var(--text, #0f172a);
+      color: var(--bg-card-solid, #fff);
       padding: 0.55rem 1rem;
       cursor: pointer;
     }
