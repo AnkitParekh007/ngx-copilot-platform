@@ -29,12 +29,12 @@ interface FlatNode {
 }
 
 const TAB_SUMMARIES: Record<string, string> = {
-  dashboard: 'Portfolio health snapshot for catalog readiness, approval queue pressure, and channel delivery.',
-  'product-onboarding': 'Operational table for category setup, lifecycle state, and publication readiness.',
-  'bulk-upload': 'High-volume importer for CSV/XLSX onboarding with batch retries and validation handling.',
-  validation: 'Rule engine output for field-level issues, severity, and release blockers.',
-  approval: 'Reviewer workspace for approve, reject, and request-changes actions.',
-  syndication: 'Channel dispatch queue for Amazon, Shopify, B2B, and partner feeds.',
+  dashboard: 'Operating snapshot for catalog throughput, review load, and channel readiness.',
+  'product-onboarding': 'Merchant-facing onboarding queue with lifecycle state and channel distribution context.',
+  'bulk-upload': 'Batch import flow for CSV or XLSX onboarding with validation and retry surfaces.',
+  validation: 'Rule center for product quality blockers and remediation handoff.',
+  approval: 'Reviewer workspace for approve, reject, and request-changes decisions.',
+  syndication: 'Dispatch queue for marketplace and channel publication jobs.',
 };
 
 function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
@@ -54,52 +54,52 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
   imports: [RouterLink, CopilotShellComponent, RetailopsKpiCardComponent, RetailopsStatusBadgeComponent],
   host: { class: 'codebase-host' },
   template: `
-    <div class="sample-page">
-      <section class="hero-card">
-        <div class="hero-copy">
-          <nav class="crumb" aria-label="Breadcrumb">
+    <div class="workspace-demo codebase-demo">
+      <section class="workspace-hero">
+        <div>
+          <nav class="workspace-crumb" aria-label="Breadcrumb">
             <a routerLink="/">Live demo</a>
             <span>/</span>
             <span>RetailOps PXM codebase copilot</span>
           </nav>
-          <div class="hero-eyebrow">
-            <span class="eyebrow-badge">Angular workspace sample</span>
-            <span class="eyebrow-badge">Human-readable retrieval</span>
-            <span class="eyebrow-badge accent">Mock enterprise data</span>
+          <div class="workspace-badge-row">
+            <span class="workspace-badge">Angular workspace</span>
+            <span class="workspace-badge">Grounded code retrieval</span>
+            <span class="workspace-badge workspace-badge-warning">100% mock data</span>
           </div>
-          <h1>Explore an Angular product workspace the way an onboarding engineer would.</h1>
-          <p class="hero-desc">
-            This sample shows how <strong>ngx-copilot-sdk</strong> can sit next to a real application surface,
-            a navigable code tree, and a grounded copilot panel. The objective is not “chat about code” in
-            the abstract. It is <strong>traceable navigation</strong>: prompts, citations, and tool steps that
-            point back to concrete Angular files and feature boundaries.
+          <h1 class="workspace-title">Enterprise code navigation with a copilot that cites the files it is talking about.</h1>
+          <p class="workspace-description">
+            This sample pairs a realistic Angular product surface with a repository navigator and a grounded copilot.
+            The point is not generic chat. It is <strong>inspectable implementation guidance</strong>: prompts,
+            file-path citations, and tool-step summaries that point back to concrete Angular services, guards,
+            components, and models.
           </p>
-          <div class="hero-actions">
-            <a routerLink="/docs/retailops-pxm-demo" class="hero-btn hero-btn-primary">Read demo architecture</a>
-            <a routerLink="/docs/adapters" class="hero-btn hero-btn-secondary">Backend adapter model</a>
+          <div class="workspace-actions">
+            <a routerLink="/docs/retailops-pxm-demo" class="workspace-action workspace-action-primary">Read demo architecture</a>
+            <a routerLink="/docs/adapters" class="workspace-action workspace-action-secondary">Review adapter boundary</a>
           </div>
         </div>
 
-        <aside class="hero-meta">
-          <div class="meta-card">
-            <div class="meta-label">Workspace</div>
-            <div class="meta-value">retailops-pxm-web</div>
-            <div class="meta-sub">Angular monorepo slice · branch: main</div>
+        <aside class="workspace-meta-stack">
+          <div class="workspace-meta-card">
+            <div class="workspace-meta-label">Workspace</div>
+            <div class="workspace-meta-value">retailops-pxm-web</div>
+            <div class="workspace-meta-copy">Angular monorepo slice for onboarding, validation, approvals, and syndication.</div>
           </div>
-          <div class="meta-card">
-            <div class="meta-label">Copilot behavior</div>
-            <div class="meta-value">Code navigation</div>
-            <div class="meta-sub">Grounded file citations, prompt chips, and tool timeline</div>
+          <div class="workspace-meta-card">
+            <div class="workspace-meta-label">Copilot purpose</div>
+            <div class="workspace-meta-value">Code navigation</div>
+            <div class="workspace-meta-copy">Prompt chips, grounded file citations, and step-by-step retrieval trace.</div>
           </div>
-          <div class="meta-card meta-card-warning">
-            <div class="meta-label">Safety</div>
-            <div class="meta-value">100% mock data</div>
-            <div class="meta-sub">No real repo access, no API calls, no credentials</div>
+          <div class="workspace-meta-card workspace-meta-card-warning">
+            <div class="workspace-meta-label">Safety</div>
+            <div class="workspace-meta-value">No live repo access</div>
+            <div class="workspace-meta-copy">All data is fictional, browser-only, and credential-free.</div>
           </div>
         </aside>
       </section>
 
-      <section class="kpi-strip" aria-label="Workspace metrics">
+      <section class="workspace-kpi-grid" aria-label="Workspace metrics">
         @for (kpi of kpiData; track kpi.label) {
           <app-retailops-kpi-card
             [label]="kpi.label"
@@ -109,23 +109,23 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
         }
       </section>
 
-      <section class="overview-grid">
-        <article class="surface-card">
-          <div class="section-head">
+      <section class="workspace-main-grid codebase-main-grid">
+        <article class="workspace-panel">
+          <div class="workspace-section-head">
             <div>
-              <div class="section-eyebrow">App surface</div>
-              <h2>RetailOps product workspace</h2>
+              <div class="workspace-section-eyebrow">Product workspace</div>
+              <h2>RetailOps application surface</h2>
               <p>{{ activeTabSummary() }}</p>
             </div>
-            <div class="section-tag">{{ selectedTab().label }}</div>
+            <span class="workspace-tag">{{ selectedTab().label }}</span>
           </div>
 
-          <div class="feature-tabs" role="tablist" aria-label="RetailOps features">
+          <div class="workspace-chip-row tabs-row" role="tablist" aria-label="RetailOps features">
             @for (tab of featureTabs; track tab.id) {
               <button
                 role="tab"
                 [attr.aria-selected]="selectedTab().id === tab.id"
-                class="feature-tab"
+                class="workspace-chip"
                 [class.active]="selectedTab().id === tab.id"
                 (click)="selectTab(tab)">
                 {{ tab.label }}
@@ -133,17 +133,19 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
             }
           </div>
 
-          <div class="surface-body">
+          <div class="workspace-panel-muted workspace-surface-stage">
             @if (selectedTab().id === 'dashboard') {
-              <div class="dashboard-slab">
-                <div class="slab-note">Executive summary</div>
-                <p>Merchandising, approval, and syndication health are surfaced before the engineer ever opens the copilot.</p>
+              <div class="workspace-surface-stack">
+                <div class="workspace-inline-header">
+                  <strong>Executive dashboard</strong>
+                  <span>Readiness, queue pressure, and publishing signal</span>
+                </div>
                 <div class="mini-kpi-grid">
                   @for (kpi of kpiData; track kpi.label) {
-                    <div class="mini-kpi">
-                      <span class="mini-kpi-label">{{ kpi.label }}</span>
+                    <div class="mini-kpi-card">
+                      <span class="workspace-subtle-label">{{ kpi.label }}</span>
                       <strong>{{ kpi.value }}</strong>
-                      <span class="mini-kpi-change" [class.good]="kpi.isPositive">{{ kpi.change }}</span>
+                      <span class="mini-kpi-trend" [class.good]="kpi.isPositive">{{ kpi.change }}</span>
                     </div>
                   }
                 </div>
@@ -151,13 +153,13 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
             }
 
             @if (selectedTab().id === 'product-onboarding') {
-              <div class="table-card">
-                <div class="table-header">
+              <div class="workspace-surface-stack">
+                <div class="workspace-inline-header">
                   <strong>Product onboarding queue</strong>
-                  <span>Mock SKU lifecycle view</span>
+                  <span>Mock lifecycle and channel distribution view</span>
                 </div>
-                <div class="table-scroll">
-                  <table class="data-table" aria-label="Product onboarding list">
+                <div class="workspace-scroll">
+                  <table class="workspace-table" aria-label="Product onboarding list">
                     <thead>
                       <tr>
                         <th>SKU</th>
@@ -184,24 +186,26 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
             }
 
             @if (selectedTab().id === 'bulk-upload') {
-              <div class="bulk-layout">
-                <div class="upload-dropzone">
-                  <div class="upload-icon">↑</div>
-                  <strong>Drop CSV or XLSX to stage a catalog import</strong>
-                  <span>Up to 50MB · 10,000 rows per batch · row-level retry support</span>
-                  <button class="upload-btn" type="button">Browse local file</button>
+              <div class="bulk-grid">
+                <div class="bulk-dropzone">
+                  <div class="dropzone-icon">&#8593;</div>
+                  <strong>Stage a catalog import</strong>
+                  <p>Drop CSV or XLSX to simulate the onboarding pipeline. Validation, retry, and reporting stay visible before any commit step.</p>
+                  <button type="button" class="workspace-action workspace-action-secondary upload-action">Browse local file</button>
                 </div>
-                <div class="support-stack">
-                  <div class="info-panel">
-                    <div class="info-panel-label">Flow highlights</div>
+
+                <div class="workspace-surface-stack">
+                  <div class="workspace-panel-muted flow-note-card">
+                    <div class="workspace-subtle-label">Why this matters</div>
                     <ul>
-                      <li>File parsing and schema checks happen in the service layer.</li>
-                      <li>Validation issues are materialized before a destructive import step.</li>
-                      <li>Error exports allow recovery without rerunning clean rows.</li>
+                      <li>Parsing and schema checks belong in the service layer.</li>
+                      <li>Broken rows should not block clean rows from progressing.</li>
+                      <li>Operators need exportable error reports and retry paths.</li>
                     </ul>
                   </div>
-                  <div class="jobs-panel">
-                    <div class="jobs-header">
+
+                  <div class="workspace-panel-muted recent-jobs-card">
+                    <div class="workspace-inline-header">
                       <strong>Recent jobs</strong>
                       <span>Illustrative import history</span>
                     </div>
@@ -226,13 +230,13 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
             }
 
             @if (selectedTab().id === 'validation') {
-              <div class="table-card">
-                <div class="table-header">
+              <div class="workspace-surface-stack">
+                <div class="workspace-inline-header">
                   <strong>Validation issue center</strong>
-                  <span>Rule-driven blockers surfaced before approval</span>
+                  <span>Rule-driven blockers before review</span>
                 </div>
-                <div class="table-scroll">
-                  <table class="data-table" aria-label="Validation issues">
+                <div class="workspace-scroll">
+                  <table class="workspace-table" aria-label="Validation issues">
                     <thead>
                       <tr>
                         <th>Product</th>
@@ -245,7 +249,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
                       @for (issue of validationIssues; track issue.productId + issue.field) {
                         <tr>
                           <td class="name-cell">{{ issue.productName }}</td>
-                          <td><code class="field-code">{{ issue.field }}</code></td>
+                          <td><code>{{ issue.field }}</code></td>
                           <td class="issue-cell">{{ issue.issue }}</td>
                           <td>
                             <app-retailops-status-badge
@@ -261,13 +265,13 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
             }
 
             @if (selectedTab().id === 'approval') {
-              <div class="table-card">
-                <div class="table-header">
+              <div class="workspace-surface-stack">
+                <div class="workspace-inline-header">
                   <strong>Approval queue</strong>
-                  <span>Human sign-off is explicit and stateful</span>
+                  <span>Explicit reviewer checkpoints</span>
                 </div>
-                <div class="table-scroll">
-                  <table class="data-table" aria-label="Approval queue">
+                <div class="workspace-scroll">
+                  <table class="workspace-table" aria-label="Approval queue">
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -296,13 +300,13 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
             }
 
             @if (selectedTab().id === 'syndication') {
-              <div class="table-card">
-                <div class="table-header">
+              <div class="workspace-surface-stack">
+                <div class="workspace-inline-header">
                   <strong>Channel dispatch jobs</strong>
-                  <span>Readiness, retry, and channel-specific status</span>
+                  <span>Readiness, retry, and marketplace delivery status</span>
                 </div>
-                <div class="table-scroll">
-                  <table class="data-table" aria-label="Syndication jobs">
+                <div class="workspace-scroll">
+                  <table class="workspace-table" aria-label="Syndication jobs">
                     <thead>
                       <tr>
                         <th>Channel</th>
@@ -328,30 +332,30 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
           </div>
         </article>
 
-        <article class="surface-card">
-          <div class="section-head">
+        <article class="workspace-panel repo-panel">
+          <div class="workspace-section-head">
             <div>
-              <div class="section-eyebrow">Repository navigator</div>
-              <h2>Trace the answer back to Angular files</h2>
-              <p>Prompt suggestions and file explorer are aligned so the citation model feels inspectable instead of magical.</p>
+              <div class="workspace-section-eyebrow">Repository navigator</div>
+              <h2>Inspect the files behind the answer</h2>
+              <p>The file tree, code preview, and prompt results are aligned so the copilot feels auditable.</p>
             </div>
             <div class="repo-meta-stack">
-              <span class="repo-badge">retailops-pxm-web</span>
-              <span class="branch-badge">main</span>
+              <span class="workspace-pill">retailops-pxm-web</span>
+              <span class="workspace-pill workspace-pill-muted">main</span>
             </div>
           </div>
 
-          <div class="navigator-grid">
-            <div class="explorer-card">
-              <div class="subhead">
+          <div class="repo-grid">
+            <section class="workspace-panel-muted explorer-card">
+              <div class="repo-card-head">
                 <strong>File explorer</strong>
                 <span>Mock Angular workspace tree</span>
               </div>
               <div class="file-tree" role="tree" aria-label="Project file tree">
                 @for (flat of flatNodes; track flat.node.name + flat.depth) {
                   @if (flat.node.type === 'folder') {
-                    <div class="tree-folder" [style.padding-left.px]="flat.depth * 14 + 10">
-                      <span class="folder-icon">▸</span>
+                    <div class="tree-folder" [style.padding-left.px]="flat.depth * 14 + 12">
+                      <span class="folder-icon">></span>
                       <span class="tree-name">{{ flat.node.name }}</span>
                     </div>
                   } @else {
@@ -359,7 +363,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
                       type="button"
                       class="tree-file"
                       [class.selected]="selectedFile()?.name === flat.node.name"
-                      [style.padding-left.px]="flat.depth * 14 + 10"
+                      [style.padding-left.px]="flat.depth * 14 + 12"
                       (click)="selectFile(flat.node)">
                       <span class="file-icon">{{ getFileIcon(flat.node.name) }}</span>
                       <span class="tree-name">{{ flat.node.name }}</span>
@@ -367,33 +371,33 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
                   }
                 }
               </div>
-            </div>
+            </section>
 
-            <div class="code-card">
-              <div class="subhead">
+            <section class="workspace-panel-muted code-card">
+              <div class="repo-card-head">
                 <strong>{{ selectedFile()?.name ?? 'Select a file' }}</strong>
                 <span>{{ selectedFile() ? 'Grounding preview' : 'Choose a node from the explorer' }}</span>
               </div>
               <pre class="code-block">{{ selectedFile() ? getSnippet(selectedFile()!) : emptySnippet }}</pre>
-            </div>
+            </section>
           </div>
         </article>
       </section>
 
-      <section class="copilot-grid">
-        <article class="surface-card prompt-panel">
-          <div class="section-head compact">
+      <section class="workspace-assistant-grid codebase-assistant-grid">
+        <article class="workspace-panel prompt-panel">
+          <div class="workspace-section-head compact-head">
             <div>
-              <div class="section-eyebrow">Suggested operator prompts</div>
-              <h2>Ask about implementation, not just concepts</h2>
+              <div class="workspace-section-eyebrow">Suggested prompts</div>
+              <h2>Ask implementation questions operators and engineers actually ask</h2>
             </div>
           </div>
 
-          <div class="prompt-chips" aria-label="Suggested prompts">
+          <div class="workspace-chip-row prompt-row" aria-label="Suggested prompts">
             @for (prompt of codbasePrompts; track prompt.text) {
               <button
                 type="button"
-                class="prompt-chip"
+                class="workspace-chip"
                 [class.active]="selectedPrompt()?.text === prompt.text"
                 (click)="selectPrompt(prompt)">
                 {{ prompt.text }}
@@ -401,40 +405,42 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
             }
           </div>
 
-          <div class="prompt-insight" *ngIf="selectedPrompt() as prompt; else emptyPromptState">
+          <div class="workspace-panel-muted prompt-insight" *ngIf="selectedPrompt() as prompt; else emptyPromptState">
             <div class="insight-grid">
               <div>
-                <div class="insight-label">Likely files</div>
+                <div class="workspace-subtle-label">Likely files</div>
                 <div class="insight-list">
                   @for (source of prompt.sources; track source.filePath) {
                     <code>{{ source.filePath }}</code>
                   }
                 </div>
               </div>
-              <div>
-                <div class="insight-label">Tool steps</div>
-                <div class="insight-stat">{{ prompt.timeline.length }} retrieval steps</div>
+              <div class="insight-stat-block">
+                <div class="workspace-subtle-label">Tool steps</div>
+                <strong>{{ prompt.timeline.length }}</strong>
+                <span>retrieval events</span>
               </div>
             </div>
           </div>
           <ng-template #emptyPromptState>
-            <div class="empty-insight">
+            <div class="workspace-panel-muted empty-state">
               Pick a prompt chip to see how the workspace, code citations, and copilot transcript line up.
             </div>
           </ng-template>
         </article>
 
-        <article class="surface-card copilot-panel">
-          <div class="section-head compact">
+        <article class="workspace-panel copilot-panel">
+          <div class="workspace-section-head compact-head">
             <div>
-              <div class="section-eyebrow">Grounded copilot workspace</div>
+              <div class="workspace-section-eyebrow">Grounded copilot workspace</div>
               <h2>RetailOps PXM navigator</h2>
               <p>Mock retrieval over Angular services, guards, models, and feature folders.</p>
             </div>
           </div>
+
           <ngx-copilot-shell
             title="RetailOps PXM navigator"
-            subtitle="Mock retrieval over retailops-pxm-web · main"
+            subtitle="Mock retrieval over retailops-pxm-web &middot; main"
             [messages]="messages()"
             [sources]="sources()"
             [timeline]="timeline()"
@@ -449,238 +455,50 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
   styles: [`
     :host {
       display: block;
-      padding: 2rem 1.25rem 3rem;
+      padding: 1.8rem 1.25rem 3rem;
     }
 
-    .sample-page {
-      width: min(1380px, 100%);
-      margin: 0 auto;
+    .codebase-main-grid {
+      grid-template-columns: minmax(0, 1.18fr) minmax(360px, 0.82fr);
+    }
+
+    .workspace-surface-stage {
+      padding: 1rem;
+      min-height: 460px;
+    }
+
+    .workspace-surface-stack {
       display: grid;
-      gap: 1.5rem;
-    }
-
-    .hero-card,
-    .surface-card {
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .hero-card {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
-      gap: 1.25rem;
-      border-radius: 1.75rem;
-      padding: 1.5rem;
-      background:
-        radial-gradient(circle at top right, rgba(99, 102, 241, 0.18), transparent 32%),
-        radial-gradient(circle at bottom left, rgba(34, 197, 94, 0.12), transparent 26%),
-        var(--bg-card);
-    }
-
-    .crumb {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      margin-bottom: 0.9rem;
-      font-size: 0.92rem;
-      color: var(--text-muted);
-    }
-
-    .crumb a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .hero-eyebrow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      margin-bottom: 0.85rem;
-    }
-
-    .eyebrow-badge {
-      padding: 0.25rem 0.65rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg-muted);
-      color: var(--text-subtle);
-      font-size: 0.76rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .eyebrow-badge.accent {
-      background: var(--callout-warning-bg);
-      border-color: var(--callout-warning-border);
-      color: var(--callout-warning-text);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height: 1.06;
-      letter-spacing: -0.035em;
-      color: var(--text);
-    }
-
-    .hero-desc {
-      margin: 1rem 0 0;
-      max-width: 760px;
-      font-size: 1rem;
-      line-height: 1.8;
-      color: var(--text-muted);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-      margin-top: 1.35rem;
-    }
-
-    .hero-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0.7rem 1rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .hero-btn-primary {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-      color: white;
-      border-color: transparent;
-    }
-
-    .hero-btn-secondary {
-      background: var(--bg-muted);
-      color: var(--text);
-    }
-
-    .hero-meta {
-      display: grid;
-      gap: 0.85rem;
+      gap: 0.95rem;
       align-content: start;
     }
 
-    .meta-card {
-      padding: 1rem 1.05rem;
-      border-radius: 1.15rem;
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--bg-card-solid) 82%, transparent 18%);
-    }
-
-    .meta-card-warning {
-      border-color: var(--callout-warning-border);
-      background: var(--callout-warning-bg);
-    }
-
-    .meta-label {
-      font-size: 0.74rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-subtle);
-      margin-bottom: 0.35rem;
-    }
-
-    .meta-value {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 0.25rem;
-    }
-
-    .meta-sub {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--text-muted);
-    }
-
-    .kpi-strip {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.85rem;
-    }
-
-    .overview-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-      gap: 1.25rem;
-      align-items: start;
-    }
-
-    .copilot-grid {
-      display: grid;
-      grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
-      gap: 1.25rem;
-      align-items: start;
-    }
-
-    .surface-card {
-      border-radius: 1.5rem;
-      padding: 1.25rem;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .section-head {
+    .workspace-inline-header,
+    .repo-card-head {
       display: flex;
-      align-items: start;
+      align-items: baseline;
       justify-content: space-between;
-      gap: 1rem;
+      gap: 0.9rem;
+      flex-wrap: wrap;
     }
 
-    .section-head.compact {
-      margin-bottom: -0.2rem;
-    }
-
-    .section-eyebrow {
-      margin-bottom: 0.35rem;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--accent);
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: 1.35rem;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
+    .workspace-inline-header strong,
+    .repo-card-head strong {
       color: var(--text);
+      font-size: 1rem;
     }
 
-    .section-head p {
-      margin: 0.45rem 0 0;
-      color: var(--text-muted);
-      line-height: 1.7;
-      font-size: 0.95rem;
+    .workspace-inline-header span,
+    .repo-card-head span {
+      color: var(--text-subtle);
+      font-size: 0.82rem;
     }
 
-    .section-tag,
-    .repo-badge,
-    .branch-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.4rem 0.75rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg-muted);
-      color: var(--text);
-      font-size: 0.84rem;
-      font-weight: 700;
-      white-space: nowrap;
+    .tabs-row {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 0.2rem;
+      scrollbar-width: thin;
     }
 
     .repo-meta-stack {
@@ -690,79 +508,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       justify-content: end;
     }
 
-    .branch-badge {
-      color: var(--text-subtle);
-    }
-
-    .feature-tabs,
-    .prompt-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-    }
-
-    .feature-tab,
-    .prompt-chip {
-      padding: 0.55rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg-muted);
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      transition: border-color 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
-    }
-
-    .feature-tab:hover,
-    .prompt-chip:hover,
-    .feature-tab.active,
-    .prompt-chip.active {
-      color: var(--accent);
-      border-color: var(--border-strong);
-      box-shadow: 0 10px 24px rgba(99, 102, 241, 0.12);
-      transform: translateY(-1px);
-    }
-
-    .surface-body {
-      min-height: 420px;
-      display: grid;
-      align-content: start;
-    }
-
-    .dashboard-slab,
-    .table-card,
-    .explorer-card,
-    .code-card,
-    .prompt-insight,
-    .jobs-panel,
-    .info-panel {
-      border: 1px solid var(--border);
-      background: var(--bg-muted);
-      border-radius: 1.1rem;
-    }
-
-    .dashboard-slab {
-      padding: 1rem 1.05rem;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .dashboard-slab p {
-      margin: 0;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    .slab-note,
-    .subhead span,
-    .table-header span,
-    .insight-label {
-      font-size: 0.74rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    .workspace-pill-muted {
       color: var(--text-subtle);
     }
 
@@ -772,89 +518,30 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       gap: 0.75rem;
     }
 
-    .mini-kpi {
-      padding: 0.9rem;
-      border-radius: 0.95rem;
-      background: var(--bg-card-solid);
+    .mini-kpi-card {
+      padding: 0.95rem;
+      border-radius: 1rem;
       border: 1px solid var(--border);
+      background: var(--bg-card-solid);
       display: grid;
-      gap: 0.25rem;
+      gap: 0.28rem;
     }
 
-    .mini-kpi strong {
-      font-size: 1.1rem;
+    .mini-kpi-card strong {
+      font-size: 1.08rem;
       color: var(--text);
     }
 
-    .mini-kpi-label,
-    .mini-kpi-change {
-      font-size: 0.86rem;
+    .mini-kpi-trend {
+      font-size: 0.84rem;
       color: var(--text-muted);
     }
 
-    .mini-kpi-change.good {
+    .mini-kpi-trend.good {
       color: var(--callout-success-text);
     }
 
-    .table-card {
-      display: grid;
-      gap: 0.9rem;
-      padding: 1rem;
-    }
-
-    .table-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .table-header strong,
-    .subhead strong {
-      font-size: 1rem;
-      color: var(--text);
-    }
-
-    .table-scroll {
-      overflow: auto;
-      max-width: 100%;
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
-
-    .data-table th {
-      padding: 0.72rem 0.7rem;
-      text-align: left;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-subtle);
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-
-    .data-table td {
-      padding: 0.72rem 0.7rem;
-      border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent 30%);
-      vertical-align: middle;
-      color: var(--text-muted);
-    }
-
-    .data-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .data-table tr:hover td {
-      background: color-mix(in srgb, var(--accent-light) 45%, transparent 55%);
-    }
-
     .sku-cell,
-    .field-code,
     .job-name {
       font-family: "JetBrains Mono", ui-monospace, monospace;
     }
@@ -865,97 +552,73 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       font-size: 0.84rem;
     }
 
-    .field-code {
-      padding: 0.14rem 0.38rem;
-      border-radius: 6px;
-      background: var(--bg-card-solid);
-      border: 1px solid var(--border);
-      color: var(--code-inline-text);
-      font-size: 0.8rem;
+    .name-cell,
+    .issue-cell {
+      color: var(--text-muted);
     }
 
-    .bulk-layout {
+    .bulk-grid {
       display: grid;
-      grid-template-columns: minmax(240px, 1.1fr) minmax(240px, 0.9fr);
+      grid-template-columns: minmax(240px, 1.08fr) minmax(240px, 0.92fr);
       gap: 1rem;
+      align-items: start;
     }
 
-    .upload-dropzone {
-      padding: 1.4rem;
-      border-radius: 1.1rem;
-      border: 1.5px dashed var(--border-strong);
-      background: color-mix(in srgb, var(--accent-light) 45%, transparent 55%);
-      display: grid;
-      gap: 0.45rem;
-      justify-items: start;
-      align-content: center;
+    .bulk-dropzone {
       min-height: 260px;
+      padding: 1.25rem;
+      border-radius: 1.15rem;
+      border: 1.5px dashed var(--border-strong);
+      background: color-mix(in srgb, var(--accent-light) 42%, transparent 58%);
+      display: grid;
+      gap: 0.55rem;
+      align-content: center;
+      justify-items: start;
     }
 
-    .upload-icon {
+    .dropzone-icon {
       width: 48px;
       height: 48px;
-      border-radius: 14px;
       display: grid;
       place-items: center;
-      background: var(--bg-card-solid);
+      border-radius: 14px;
       border: 1px solid var(--border);
+      background: var(--bg-card-solid);
       color: var(--accent);
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
     }
 
-    .upload-dropzone strong {
-      font-size: 1.1rem;
+    .bulk-dropzone strong {
+      font-size: 1.08rem;
       color: var(--text);
     }
 
-    .upload-dropzone span {
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .upload-btn {
-      margin-top: 0.55rem;
-      padding: 0.65rem 1rem;
-      border-radius: 999px;
-      border: 1px solid var(--border-strong);
-      background: var(--bg-card-solid);
-      color: var(--accent);
-      cursor: pointer;
-      font: inherit;
-      font-weight: 700;
-    }
-
-    .support-stack {
-      display: grid;
-      gap: 1rem;
-      align-content: start;
-    }
-
-    .info-panel,
-    .jobs-panel {
-      padding: 1rem;
-    }
-
-    .info-panel ul {
-      margin: 0.65rem 0 0;
-      padding-left: 1.15rem;
+    .bulk-dropzone p {
+      margin: 0;
       color: var(--text-muted);
       line-height: 1.7;
     }
 
-    .jobs-panel {
-      display: grid;
-      gap: 0.6rem;
+    .upload-action {
+      margin-top: 0.2rem;
     }
 
-    .jobs-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 0.75rem;
-      flex-wrap: wrap;
+    .flow-note-card,
+    .recent-jobs-card {
+      padding: 1rem;
+    }
+
+    .flow-note-card ul {
+      margin: 0.65rem 0 0;
+      padding-left: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .recent-jobs-card {
+      display: grid;
+      gap: 0.65rem;
     }
 
     .job-row {
@@ -963,7 +626,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       grid-template-columns: minmax(0, 1fr) auto auto;
       gap: 0.6rem;
       align-items: center;
-      padding: 0.8rem 0.9rem;
+      padding: 0.82rem 0.9rem;
       border-radius: 0.95rem;
       border: 1px solid var(--border);
       background: var(--bg-card-solid);
@@ -983,11 +646,15 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       white-space: nowrap;
     }
 
-    .navigator-grid {
+    .repo-panel {
+      align-content: start;
+    }
+
+    .repo-grid {
       display: grid;
-      grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.1fr);
-      gap: 1rem;
-      min-height: 520px;
+      grid-template-rows: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+      gap: 0.95rem;
+      min-height: 640px;
     }
 
     .explorer-card,
@@ -995,34 +662,23 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       overflow: hidden;
       display: grid;
       grid-template-rows: auto 1fr;
-    }
-
-    .subhead {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 0.75rem;
-      padding: 0.95rem 1rem 0.8rem;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
+      padding: 0.95rem;
+      gap: 0.85rem;
     }
 
     .file-tree {
       overflow: auto;
-      padding: 0.55rem 0.4rem 0.7rem;
-      max-height: 100%;
+      padding: 0.2rem 0;
     }
 
     .tree-folder,
     .tree-file {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
       width: 100%;
-      min-height: 34px;
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-      border-radius: 0.6rem;
+      min-height: 36px;
+      border-radius: 0.7rem;
       font-size: 0.88rem;
     }
 
@@ -1036,6 +692,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       color: var(--text);
       cursor: pointer;
       font-family: inherit;
+      text-align: left;
     }
 
     .tree-file:hover,
@@ -1046,13 +703,16 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
 
     .tree-file.selected {
       font-weight: 700;
+      box-shadow: inset 0 0 0 1px var(--border-strong);
     }
 
     .folder-icon,
     .file-icon {
-      width: 16px;
+      width: 18px;
       flex-shrink: 0;
       text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
     }
 
     .tree-name {
@@ -1063,8 +723,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
 
     .code-block {
       margin: 0;
-      height: 100%;
-      min-height: 360px;
+      min-height: 100%;
       overflow: auto;
       background: var(--code-bg);
       color: var(--code-text);
@@ -1073,10 +732,27 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       line-height: 1.65;
       white-space: pre;
       font-family: "JetBrains Mono", ui-monospace, monospace;
+      border-radius: 1rem;
     }
 
-    .prompt-panel {
+    .codebase-assistant-grid {
+      align-items: stretch;
+    }
+
+    .prompt-panel,
+    .copilot-panel {
+      height: 100%;
       align-content: start;
+    }
+
+    .compact-head {
+      margin-bottom: -0.1rem;
+    }
+
+    .prompt-row {
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+      scrollbar-width: thin;
     }
 
     .prompt-insight {
@@ -1097,8 +773,7 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       margin-top: 0.55rem;
     }
 
-    .insight-list code,
-    .insight-stat {
+    .insight-list code {
       padding: 0.28rem 0.55rem;
       border-radius: 999px;
       border: 1px solid var(--border);
@@ -1107,64 +782,56 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       font-size: 0.82rem;
     }
 
-    .empty-insight {
+    .insight-stat-block {
+      display: grid;
+      justify-items: end;
+      gap: 0.1rem;
+      text-align: right;
+    }
+
+    .insight-stat-block strong {
+      font-size: 1.55rem;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .insight-stat-block span {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    .empty-state {
       padding: 1rem;
-      border-radius: 1.1rem;
-      border: 1px dashed var(--border-strong);
-      background: color-mix(in srgb, var(--accent-light) 35%, transparent 65%);
+      border-style: dashed;
       color: var(--text-muted);
       line-height: 1.7;
     }
 
-    .copilot-panel ngx-copilot-shell {
-      display: block;
-    }
-
-    .empty-snippet,
-    .name-cell,
-    .issue-cell {
-      color: var(--text-muted);
-    }
-
-    @media (max-width: 1180px) {
-      .hero-card,
-      .overview-grid,
-      .copilot-grid,
-      .navigator-grid,
-      .bulk-layout {
+    @media (max-width: 1199px) {
+      .codebase-main-grid {
         grid-template-columns: 1fr;
       }
 
-      .kpi-strip {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .repo-grid,
+      .bulk-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        min-height: 0;
       }
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 899px) {
       :host {
         padding: 1.1rem 0.8rem 2rem;
       }
 
-      .sample-page {
-        gap: 1rem;
-      }
-
-      .hero-card,
-      .surface-card {
-        padding: 1rem;
-        border-radius: 1.15rem;
-      }
-
-      .kpi-strip,
       .mini-kpi-grid {
         grid-template-columns: 1fr;
       }
 
-      .section-head,
-      .table-header,
-      .jobs-header,
-      .subhead,
-      .insight-grid {
+      .insight-grid,
+      .workspace-inline-header,
+      .repo-card-head {
         grid-template-columns: 1fr;
         display: grid;
       }
@@ -1172,10 +839,22 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       .repo-meta-stack {
         justify-content: start;
       }
+    }
 
+    @media (max-width: 639px) {
       .job-row {
         grid-template-columns: 1fr;
         align-items: start;
+      }
+
+      .workspace-surface-stage,
+      .flow-note-card,
+      .recent-jobs-card,
+      .explorer-card,
+      .code-card,
+      .prompt-insight,
+      .empty-state {
+        padding: 0.9rem;
       }
     }
   `],
@@ -1293,10 +972,10 @@ export class EnterpriseCodebaseShowcaseComponent {
   }
 
   getFileIcon(name: string): string {
-    if (name.endsWith('.service.ts')) return '⚙';
-    if (name.endsWith('.component.ts')) return '◻';
-    if (name.endsWith('.guard.ts')) return '⊕';
-    if (name.endsWith('.model.ts')) return '◇';
-    return '•';
+    if (name.endsWith('.service.ts')) return 'svc';
+    if (name.endsWith('.component.ts')) return 'cmp';
+    if (name.endsWith('.guard.ts')) return 'g';
+    if (name.endsWith('.model.ts')) return 'mdl';
+    return 'ts';
   }
 }

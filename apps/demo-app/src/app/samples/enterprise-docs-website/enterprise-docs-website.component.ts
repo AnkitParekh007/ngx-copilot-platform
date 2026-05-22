@@ -29,82 +29,82 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
   imports: [RouterLink, CopilotShellComponent],
   host: { class: 'docs-host' },
   template: `
-    <div class="docs-page">
-      <section class="hero-card">
-        <div class="hero-copy">
-          <nav class="crumb" aria-label="Breadcrumb">
+    <div class="workspace-demo docs-demo">
+      <section class="workspace-hero">
+        <div>
+          <nav class="workspace-crumb" aria-label="Breadcrumb">
             <a routerLink="/">Live demo</a>
             <span>/</span>
             <span>RetailOps PXM documentation copilot</span>
           </nav>
-          <div class="hero-eyebrow">
-            <span class="eyebrow-badge">Documentation knowledge base</span>
-            <span class="eyebrow-badge">Grounded URL citations</span>
-            <span class="eyebrow-badge accent">Operator-safe mock data</span>
+          <div class="workspace-badge-row">
+            <span class="workspace-badge">Knowledge base sample</span>
+            <span class="workspace-badge">Grounded URL citations</span>
+            <span class="workspace-badge workspace-badge-warning">Operator-safe mock data</span>
           </div>
-          <h1>Design a docs experience where AI answers feel reviewable, not guessed.</h1>
-          <p class="hero-desc">
-            This sample treats the documentation site as a <strong>knowledge surface</strong>, not just a stack
-            of markdown pages. Product, QA, and support users can navigate articles directly, ask operational
-            questions, and verify every answer against canonical documentation URLs.
+          <h1 class="workspace-title">Documentation answers that feel inspectable because the source material stays in view.</h1>
+          <p class="workspace-description">
+            This sample treats the documentation site as a <strong>knowledge workspace</strong>, not just a stack of
+            articles. Product, QA, and support readers can browse the canon, ask practical process questions, and
+            verify every answer against the cited article targets that shaped it.
           </p>
-          <div class="hero-actions">
-            <a routerLink="/docs/rag-sources" class="hero-btn hero-btn-primary">Read citation model</a>
-            <a routerLink="/docs/backend-contract" class="hero-btn hero-btn-secondary">Event stream contract</a>
+          <div class="workspace-actions">
+            <a routerLink="/docs/rag-sources" class="workspace-action workspace-action-primary">Read citation model</a>
+            <a routerLink="/docs/backend-contract" class="workspace-action workspace-action-secondary">Review event contract</a>
           </div>
         </div>
 
-        <aside class="hero-meta">
-          <div class="meta-card">
-            <div class="meta-label">Host</div>
-            <div class="meta-value">docs.retailops-pxm.example</div>
-            <div class="meta-sub">Illustrative documentation host for PM, QA, and support readers</div>
+        <aside class="workspace-meta-stack">
+          <div class="workspace-meta-card">
+            <div class="workspace-meta-label">Host</div>
+            <div class="workspace-meta-value">docs.retailops-pxm.example</div>
+            <div class="workspace-meta-copy">Illustrative documentation host for PM, QA, and support readers.</div>
           </div>
-          <div class="meta-card">
-            <div class="meta-label">Answer behavior</div>
-            <div class="meta-value">URL-grounded guidance</div>
-            <div class="meta-sub">Every answer maps back to articles, workflow docs, or permission tables</div>
+          <div class="workspace-meta-card">
+            <div class="workspace-meta-label">Answer behavior</div>
+            <div class="workspace-meta-value">URL-grounded guidance</div>
+            <div class="workspace-meta-copy">Answers point back to workflows, lifecycle guides, and permissions tables.</div>
           </div>
-          <div class="meta-card meta-card-warning">
-            <div class="meta-label">Safety</div>
-            <div class="meta-value">Mock only</div>
-            <div class="meta-sub">No live docs search, no real tenant content, no external API writes</div>
+          <div class="workspace-meta-card workspace-meta-card-warning">
+            <div class="workspace-meta-label">Safety</div>
+            <div class="workspace-meta-value">Mock only</div>
+            <div class="workspace-meta-copy">No live docs search, no real tenant content, and no external writes.</div>
           </div>
         </aside>
       </section>
 
-      <section class="summary-strip">
-        <div class="summary-card">
-          <span class="summary-label">Audience</span>
-          <strong>PM · QA · Support</strong>
-          <span>Same corpus, different questions, shared trust model.</span>
+      <section class="workspace-summary-grid">
+        <div class="workspace-stat-card">
+          <span class="workspace-subtle-label">Audience</span>
+          <strong>PM, QA, and Support</strong>
+          <span>Shared corpus, different workflows, one trust model.</span>
         </div>
-        <div class="summary-card">
-          <span class="summary-label">Content shape</span>
+        <div class="workspace-stat-card">
+          <span class="workspace-subtle-label">Content shape</span>
           <strong>{{ docsArticles.length }} canonical articles</strong>
           <span>Lifecycle, onboarding, approvals, troubleshooting, and permissions.</span>
         </div>
-        <div class="summary-card">
-          <span class="summary-label">AI UX</span>
-          <strong>Prompt → citation → article</strong>
-          <span>Answers are navigable instead of opaque.</span>
+        <div class="workspace-stat-card">
+          <span class="workspace-subtle-label">AI UX</span>
+          <strong>Prompt to citation to article</strong>
+          <span>Answers stay reviewable instead of opaque.</span>
         </div>
       </section>
 
-      <section class="workspace-grid">
-        <aside class="surface-card nav-card">
-          <div class="section-head compact">
+      <section class="workspace-main-grid docs-main-grid">
+        <aside class="workspace-panel docs-nav-panel">
+          <div class="workspace-section-head compact-head">
             <div>
-              <div class="section-eyebrow">Knowledge map</div>
+              <div class="workspace-section-eyebrow">Knowledge map</div>
               <h2>Browse canonical articles</h2>
-              <p>Category-driven information architecture keeps operators oriented before they ask the copilot.</p>
+              <p>Category-first navigation keeps operators oriented before they ask the copilot.</p>
             </div>
           </div>
 
           <nav class="article-nav" aria-label="Documentation articles">
             @for (category of categoryKeys; track category) {
-              <section class="nav-section">
-                <div class="nav-section-title">{{ category }}</div>
+              <section class="nav-group">
+                <div class="nav-group-title">{{ category }}</div>
                 @for (article of groupedArticles.get(category) ?? []; track article.id) {
                   <button
                     type="button"
@@ -120,89 +120,84 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
           </nav>
         </aside>
 
-        <article class="surface-card article-card">
-          <div class="section-head">
+        <article class="workspace-panel article-panel">
+          <div class="workspace-section-head">
             <div>
-              <div class="section-eyebrow">Reader view</div>
+              <div class="workspace-section-eyebrow">Reader view</div>
               <h2>{{ selectedArticle().title }}</h2>
               <p>{{ selectedArticle().intro }}</p>
             </div>
             <div class="article-meta-stack">
-              <span class="article-category">{{ selectedArticle().category }}</span>
-              <span class="article-badge">{{ selectedArticle().badge }}</span>
+              <span class="workspace-pill">{{ selectedArticle().category }}</span>
+              <span class="workspace-pill article-badge">{{ selectedArticle().badge }}</span>
             </div>
           </div>
 
-          <div class="article-layout">
-            <div class="article-flow-card">
-              <div class="flow-stat">
-                <span class="flow-label">Why this page exists</span>
-                <strong>Operator trust through inspectable docs</strong>
-              </div>
-              <div class="flow-steps">
-                <div class="flow-step">Find the relevant workflow page</div>
-                <div class="flow-step">Ask the copilot for task-specific guidance</div>
-                <div class="flow-step">Verify answer against cited article URLs</div>
-              </div>
+          <div class="article-guidance">
+            <div class="workspace-subtle-label">How to use this page</div>
+            <div class="guidance-steps">
+              <div class="guidance-step">Open the relevant workflow page first.</div>
+              <div class="guidance-step">Use the assistant to summarize or locate the policy.</div>
+              <div class="guidance-step">Verify the answer against the cited article URL.</div>
             </div>
+          </div>
 
-            <div class="article-sections">
-              @for (section of selectedArticle().sections; track section.heading) {
-                <section class="article-section">
-                  <h3>{{ section.heading }}</h3>
-                  <p>{{ section.body }}</p>
-                </section>
-              }
+          <div class="article-reader">
+            @for (section of selectedArticle().sections; track section.heading) {
+              <section class="article-block">
+                <h3>{{ section.heading }}</h3>
+                <p>{{ section.body }}</p>
+              </section>
+            }
 
-              @if (selectedArticle().table) {
-                <section class="article-section article-table-panel">
-                  @if (selectedArticle().table!.caption) {
-                    <div class="table-panel-head">
-                      <strong>{{ selectedArticle().table!.caption }}</strong>
-                      <span>Reference matrix</span>
-                    </div>
-                  }
-                  <div class="table-scroll">
-                    <table class="article-table" aria-label="{{ selectedArticle().table!.caption }}">
-                      <thead>
+            @if (selectedArticle().table) {
+              <section class="article-block article-table-block">
+                @if (selectedArticle().table!.caption) {
+                  <div class="workspace-inline-header">
+                    <strong>{{ selectedArticle().table!.caption }}</strong>
+                    <span>Reference matrix</span>
+                  </div>
+                }
+                <div class="workspace-scroll">
+                  <table class="workspace-table" aria-label="{{ selectedArticle().table!.caption }}">
+                    <thead>
+                      <tr>
+                        @for (header of selectedArticle().table!.headers; track header) {
+                          <th>{{ header }}</th>
+                        }
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (row of selectedArticle().table!.rows; track $index) {
                         <tr>
-                          @for (header of selectedArticle().table!.headers; track header) {
-                            <th>{{ header }}</th>
+                          @for (cell of row; track $index) {
+                            <td>{{ cell }}</td>
                           }
                         </tr>
-                      </thead>
-                      <tbody>
-                        @for (row of selectedArticle().table!.rows; track $index) {
-                          <tr>
-                            @for (cell of row; track $index) {
-                              <td>{{ cell }}</td>
-                            }
-                          </tr>
-                        }
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              }
-            </div>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            }
           </div>
         </article>
       </section>
 
-      <section class="copilot-grid">
-        <article class="surface-card prompt-panel">
-          <div class="section-head compact">
+      <section class="workspace-assistant-grid docs-assistant-grid">
+        <article class="workspace-panel prompt-panel">
+          <div class="workspace-section-head compact-head">
             <div>
-              <div class="section-eyebrow">Suggested support prompts</div>
+              <div class="workspace-section-eyebrow">Suggested support prompts</div>
               <h2>Ask practical product and process questions</h2>
             </div>
           </div>
 
-          <div class="prompt-chips" aria-label="Suggested prompts">
+          <div class="workspace-chip-row prompt-row" aria-label="Suggested prompts">
             @for (prompt of docsPrompts; track prompt.text) {
               <button
                 type="button"
-                class="prompt-chip"
+                class="workspace-chip"
                 [class.active]="selectedPrompt()?.text === prompt.text"
                 (click)="selectPrompt(prompt)">
                 {{ prompt.text }}
@@ -210,26 +205,26 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
             }
           </div>
 
-          <div class="prompt-insight" *ngIf="selectedPrompt() as prompt; else emptyPromptState">
-            <div class="insight-label">Cited article targets</div>
+          <div class="workspace-panel-muted prompt-insight" *ngIf="selectedPrompt() as prompt; else emptyPromptState">
+            <div class="workspace-subtle-label">Cited article targets</div>
             <div class="insight-list">
               @for (articleId of prompt.sourceIds; track articleId) {
                 <span class="insight-pill">{{ labelForSource(articleId) }}</span>
               }
             </div>
-            <div class="insight-meta">{{ prompt.timeline.length }} retrieval steps power the transcript on the right.</div>
+            <div class="insight-meta">{{ prompt.timeline.length }} retrieval steps shape the transcript on the right.</div>
           </div>
           <ng-template #emptyPromptState>
-            <div class="empty-insight">
-              Choose a prompt chip to see which documentation pages ground the answer and how the article view updates alongside the copilot.
+            <div class="workspace-panel-muted empty-state">
+              Choose a prompt chip to see which documentation pages ground the answer and how the article reader updates alongside the copilot.
             </div>
           </ng-template>
         </article>
 
-        <article class="surface-card copilot-panel">
-          <div class="section-head compact">
+        <article class="workspace-panel copilot-panel">
+          <div class="workspace-section-head compact-head">
             <div>
-              <div class="section-eyebrow">Grounded documentation copilot</div>
+              <div class="workspace-section-eyebrow">Grounded documentation copilot</div>
               <h2>RetailOps PXM docs assistant</h2>
               <p>Mock retrieval over canonical documentation articles, lifecycle guides, and permission matrices.</p>
             </div>
@@ -251,254 +246,14 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
   styles: [`
     :host {
       display: block;
-      padding: 2rem 1.25rem 3rem;
+      padding: 1.8rem 1.25rem 3rem;
     }
 
-    .docs-page {
-      width: min(1380px, 100%);
-      margin: 0 auto;
-      display: grid;
-      gap: 1.5rem;
-    }
-
-    .hero-card,
-    .surface-card {
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .hero-card {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
-      gap: 1.25rem;
-      padding: 1.5rem;
-      border-radius: 1.75rem;
-      background:
-        radial-gradient(circle at top right, rgba(167, 139, 250, 0.18), transparent 34%),
-        radial-gradient(circle at bottom left, rgba(56, 189, 248, 0.12), transparent 28%),
-        var(--bg-card);
-    }
-
-    .crumb {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      margin-bottom: 0.9rem;
-      font-size: 0.92rem;
-      color: var(--text-muted);
-    }
-
-    .crumb a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .hero-eyebrow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      margin-bottom: 0.85rem;
-    }
-
-    .eyebrow-badge {
-      padding: 0.25rem 0.65rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg-muted);
-      color: var(--text-subtle);
-      font-size: 0.76rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .eyebrow-badge.accent {
-      background: var(--callout-warning-bg);
-      border-color: var(--callout-warning-border);
-      color: var(--callout-warning-text);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height: 1.06;
-      letter-spacing: -0.035em;
-      color: var(--text);
-    }
-
-    .hero-desc {
-      margin: 1rem 0 0;
-      max-width: 760px;
-      font-size: 1rem;
-      line-height: 1.8;
-      color: var(--text-muted);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-      margin-top: 1.35rem;
-    }
-
-    .hero-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0.7rem 1rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .hero-btn-primary {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-      color: white;
-      border-color: transparent;
-    }
-
-    .hero-btn-secondary {
-      background: var(--bg-muted);
-      color: var(--text);
-    }
-
-    .hero-meta {
-      display: grid;
-      gap: 0.85rem;
-      align-content: start;
-    }
-
-    .meta-card {
-      padding: 1rem 1.05rem;
-      border-radius: 1.15rem;
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--bg-card-solid) 82%, transparent 18%);
-    }
-
-    .meta-card-warning {
-      border-color: var(--callout-warning-border);
-      background: var(--callout-warning-bg);
-    }
-
-    .meta-label {
-      font-size: 0.74rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-subtle);
-      margin-bottom: 0.35rem;
-    }
-
-    .meta-value {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 0.25rem;
-    }
-
-    .meta-sub {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--text-muted);
-    }
-
-    .summary-strip {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.85rem;
-    }
-
-    .summary-card {
-      padding: 1rem 1.05rem;
-      border-radius: 1.2rem;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      box-shadow: var(--shadow-sm);
-      display: grid;
-      gap: 0.25rem;
-    }
-
-    .summary-label {
-      font-size: 0.74rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-subtle);
-    }
-
-    .summary-card strong {
-      font-size: 1.05rem;
-      color: var(--text);
-    }
-
-    .summary-card span:last-child {
-      color: var(--text-muted);
-      line-height: 1.6;
-      font-size: 0.92rem;
-    }
-
-    .workspace-grid {
-      display: grid;
+    .docs-main-grid {
       grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
-      gap: 1.25rem;
-      align-items: start;
     }
 
-    .copilot-grid {
-      display: grid;
-      grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
-      gap: 1.25rem;
-      align-items: start;
-    }
-
-    .surface-card {
-      border-radius: 1.5rem;
-      padding: 1.25rem;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: start;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .section-head.compact {
-      margin-bottom: -0.2rem;
-    }
-
-    .section-eyebrow {
-      margin-bottom: 0.35rem;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--accent);
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: 1.35rem;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-
-    .section-head p {
-      margin: 0.45rem 0 0;
-      color: var(--text-muted);
-      line-height: 1.7;
-      font-size: 0.95rem;
-    }
-
-    .nav-card {
+    .docs-nav-panel {
       position: sticky;
       top: calc(var(--topnav-height) + 1.2rem);
       max-height: calc(100vh - var(--topnav-height) - 2.4rem);
@@ -507,18 +262,18 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
     }
 
     .article-nav {
-      overflow: auto;
       display: grid;
-      gap: 0.8rem;
+      gap: 0.85rem;
+      overflow: auto;
       padding-right: 0.1rem;
     }
 
-    .nav-section {
+    .nav-group {
       display: grid;
       gap: 0.45rem;
     }
 
-    .nav-section-title {
+    .nav-group-title {
       font-size: 0.76rem;
       font-weight: 800;
       text-transform: uppercase;
@@ -528,9 +283,9 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
 
     .nav-item {
       display: grid;
-      gap: 0.25rem;
+      gap: 0.22rem;
       width: 100%;
-      padding: 0.8rem 0.9rem;
+      padding: 0.82rem 0.9rem;
       border-radius: 1rem;
       border: 1px solid var(--border);
       background: var(--bg-muted);
@@ -538,6 +293,7 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       cursor: pointer;
       text-align: left;
       font-family: inherit;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
     }
 
     .nav-item:hover,
@@ -562,29 +318,15 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       color: var(--text-subtle);
     }
 
+    .article-panel {
+      align-content: start;
+    }
+
     .article-meta-stack {
       display: flex;
-      flex-wrap: wrap;
       gap: 0.45rem;
+      flex-wrap: wrap;
       justify-content: end;
-    }
-
-    .article-category,
-    .article-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.4rem 0.75rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg-muted);
-      font-size: 0.84rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .article-category {
-      color: var(--text);
     }
 
     .article-badge {
@@ -592,88 +334,66 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       border-color: var(--border-strong);
     }
 
-    .article-layout {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .article-flow-card,
-    .article-section,
-    .article-table-panel,
-    .prompt-insight {
+    .article-guidance {
+      padding: 1rem;
+      border-radius: 1.1rem;
       border: 1px solid var(--border);
       background: var(--bg-muted);
-      border-radius: 1.15rem;
-    }
-
-    .article-flow-card {
-      padding: 1rem 1.05rem;
       display: grid;
-      gap: 1rem;
+      gap: 0.85rem;
     }
 
-    .flow-label,
-    .table-panel-head span,
-    .insight-label {
-      font-size: 0.74rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-subtle);
-    }
-
-    .flow-stat strong {
-      display: block;
-      margin-top: 0.25rem;
-      font-size: 1rem;
-      color: var(--text);
-    }
-
-    .flow-steps {
+    .guidance-steps {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.7rem;
+      gap: 0.75rem;
     }
 
-    .flow-step {
+    .guidance-step {
       padding: 0.9rem;
-      border-radius: 0.95rem;
+      border-radius: 1rem;
       border: 1px solid var(--border);
       background: var(--bg-card-solid);
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.65;
       font-size: 0.9rem;
     }
 
-    .article-sections {
-      display: grid;
-      gap: 1rem;
+    .article-reader {
+      padding: 0.15rem 0.15rem 0;
     }
 
-    .article-section {
-      padding: 1rem 1.05rem;
+    .article-block {
+      padding: 0.1rem 0 1.35rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent 28%);
+      margin-bottom: 1.15rem;
     }
 
-    .article-section h3 {
-      margin: 0 0 0.55rem;
-      font-size: 1rem;
+    .article-block:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .article-block h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.04rem;
       color: var(--text);
     }
 
-    .article-section p {
+    .article-block p {
       margin: 0;
       color: var(--text-muted);
-      line-height: 1.75;
-      font-size: 0.94rem;
+      line-height: 1.8;
+      font-size: 0.96rem;
     }
 
-    .article-table-panel {
-      padding: 1rem 1.05rem;
+    .article-table-block {
       display: grid;
-      gap: 0.8rem;
+      gap: 0.9rem;
     }
 
-    .table-panel-head {
+    .workspace-inline-header {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
@@ -681,74 +401,34 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       flex-wrap: wrap;
     }
 
-    .table-panel-head strong {
+    .workspace-inline-header strong {
       color: var(--text);
       font-size: 1rem;
     }
 
-    .table-scroll {
-      overflow: auto;
-      max-width: 100%;
-    }
-
-    .article-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
-
-    .article-table th {
-      padding: 0.72rem 0.7rem;
-      text-align: left;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    .workspace-inline-header span {
       color: var(--text-subtle);
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
+      font-size: 0.82rem;
     }
 
-    .article-table td {
-      padding: 0.72rem 0.7rem;
-      border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent 30%);
-      color: var(--text-muted);
-      vertical-align: top;
-      line-height: 1.6;
+    .docs-assistant-grid {
+      align-items: stretch;
     }
 
-    .article-table tr:last-child td {
-      border-bottom: none;
+    .prompt-panel,
+    .copilot-panel {
+      height: 100%;
+      align-content: start;
     }
 
-    .article-table tr:hover td {
-      background: color-mix(in srgb, var(--accent-light) 45%, transparent 55%);
+    .compact-head {
+      margin-bottom: -0.1rem;
     }
 
-    .prompt-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-    }
-
-    .prompt-chip {
-      padding: 0.55rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg-muted);
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      transition: border-color 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
-    }
-
-    .prompt-chip:hover,
-    .prompt-chip.active {
-      color: var(--accent);
-      border-color: var(--border-strong);
-      box-shadow: 0 10px 24px rgba(99, 102, 241, 0.12);
-      transform: translateY(-1px);
+    .prompt-row {
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+      scrollbar-width: thin;
     }
 
     .prompt-insight {
@@ -775,60 +455,48 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       font-size: 0.82rem;
     }
 
-    .empty-insight {
+    .empty-state {
       padding: 1rem;
-      border-radius: 1.1rem;
-      border: 1px dashed var(--border-strong);
-      background: color-mix(in srgb, var(--accent-light) 35%, transparent 65%);
+      border-style: dashed;
       color: var(--text-muted);
       line-height: 1.7;
     }
 
-    .copilot-panel ngx-copilot-shell {
-      display: block;
-    }
-
-    @media (max-width: 1180px) {
-      .hero-card,
-      .workspace-grid,
-      .copilot-grid {
+    @media (max-width: 1199px) {
+      .docs-main-grid {
         grid-template-columns: 1fr;
       }
 
-      .summary-strip,
-      .flow-steps {
+      .guidance-steps {
         grid-template-columns: 1fr;
       }
 
-      .nav-card {
+      .docs-nav-panel {
         position: static;
         max-height: none;
       }
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 899px) {
       :host {
         padding: 1.1rem 0.8rem 2rem;
       }
 
-      .docs-page {
-        gap: 1rem;
-      }
-
-      .hero-card,
-      .surface-card {
-        padding: 1rem;
-        border-radius: 1.15rem;
-      }
-
-      .section-head,
-      .table-panel-head {
+      .workspace-inline-header {
         display: grid;
         grid-template-columns: 1fr;
       }
 
       .article-meta-stack {
         justify-content: start;
+      }
+    }
+
+    @media (max-width: 639px) {
+      .article-guidance,
+      .prompt-insight,
+      .empty-state {
+        padding: 0.9rem;
       }
     }
   `],
