@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
       </h1>
       <p class="text-xl text-muted-foreground">
         Next.js API backend compatible with
-        <code class="text-sm bg-muted px-2 py-1 rounded">&#64;ankitparekh007/ngx-copilot-sdk</code>
+        <code class="text-sm bg-muted px-2 py-1 rounded">&#64;ankit-parekh-007/ngx-copilot-sdk</code>
       </p>
     </header>
 
@@ -148,7 +148,7 @@ import { Component } from '@angular/core';
       <div class="p-6 rounded-xl border border-border bg-card font-mono text-sm space-y-6">
         <div>
           <p class="text-muted-foreground mb-2 font-sans"># Install ngx-copilot-sdk</p>
-          <code class="block text-[var(--copilot-ask)]">npm install &#64;ankitparekh007/ngx-copilot-sdk</code>
+          <code class="block text-[var(--copilot-ask)]">npm install &#64;ankit-parekh-007/ngx-copilot-sdk</code>
         </div>
         <div>
           <p class="text-muted-foreground mb-2 font-sans"># Configure in app.config.ts</p>

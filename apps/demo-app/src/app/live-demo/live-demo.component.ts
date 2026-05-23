@@ -33,7 +33,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankit-parekh-007/ngx-cop
       <!-- Install box -->
       <div class="install-box">
         <span class="install-label">npm</span>
-        <code class="install-cmd">npm install &#64;ankitparekh007/ngx-copilot-sdk</code>
+        <code class="install-cmd">npm install &#64;ankit-parekh-007/ngx-copilot-sdk</code>
         <button class="copy-btn" (click)="copyInstall()" [class.copied]="installCopied()" aria-label="Copy install command">
           @if (installCopied()) {
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>

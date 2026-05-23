@@ -14,7 +14,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       </div>
       <h1>API Reference</h1>
       <p class="header-desc">
-        All exported symbols from <code>&#64;ankitparekh007/ngx-copilot-sdk</code>:
+        All exported symbols from <code>&#64;ankit-parekh-007/ngx-copilot-sdk</code>:
         provider factories, components, services, and model interfaces.
       </p>
     </div>

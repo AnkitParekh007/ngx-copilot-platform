@@ -49,7 +49,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
 
     <h2 id="what-is">What is ngx-copilot-sdk?</h2>
     <p>
-      <code>&#64;ankitparekh007/ngx-copilot-sdk</code> is a standalone Angular library that provides a
+      <code>&#64;ankit-parekh-007/ngx-copilot-sdk</code> is a standalone Angular library that provides a
       production-ready agentic copilot UI layer. You wire in your backend; the SDK handles
       streaming token delivery, grounded RAG source citation cards, multi-step tool-call
       visualisation, and human-in-the-loop approval gates — all driven by reactive Angular Signals.
@@ -128,7 +128,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
         <strong>0.1.0 preview —</strong> APIs are stabilising but may change before 1.0.
         UI components, backend adapters, and <code>CopilotService</code> are marked <em>Preview</em>.
         Core config helpers (<code>provideCopilot</code>, model interfaces) target stable-intent.
-        Pin the version in production: <code>"&#64;ankitparekh007/ngx-copilot-sdk": "0.1.0"</code>.
+        Pin the version in production: <code>"&#64;ankit-parekh-007/ngx-copilot-sdk": "0.1.0"</code>.
       </div>
     </div>
 
