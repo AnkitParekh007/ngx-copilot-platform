@@ -31,6 +31,13 @@ If you are reviewing this as a recruiter, hiring manager, or engineering lead, t
 
 **Status:** v0.1.0 preview. The SDK is buildable, tested, and documented. The backend is functional and ready to run with your own Supabase/OpenAI credentials.
 
+## Proven Now
+
+- `packages/sdk` test suite passes and the publishable Angular library builds successfully
+- `apps/demo-app` works in mock mode without any backend credentials
+- `apps/example-consumer` builds against `NgxCopilotPlatformBackendAdapter`
+- `packages/backend` builds with aligned `POST /api/copilot/chat/stream` SSE and `POST /api/copilot/rag/query` response contracts
+
 ---
 
 ## Monorepo structure
@@ -97,8 +104,11 @@ pnpm install
 cp packages/backend/.env.example packages/backend/.env.local
 # Fill in: SUPABASE_*, KV_REST_*, COPILOT_API_KEYS, OPENAI_API_KEY
 
-pnpm --filter @ngx-copilot/backend dev    # starts Next.js API on :3001
-pnpm --filter example-consumer dev        # starts Angular consumer on :4200
+corepack pnpm --filter @ngx-copilot/backend dev    # starts Next.js API on :3001
+corepack pnpm --filter example-consumer dev        # starts Angular consumer on :4201
+
+# Optional: verify the backend contract directly
+COPILOT_API_KEY=cpk_dev_your_key_here node scripts/smoke-platform-backend.mjs
 ```
 
 ```ts
@@ -177,6 +187,16 @@ provideCopilot({ defaultMode: 'ask' }, { backendAdapter: new MyAdapter() })
 | `POST /api/ingestion/documentation` | Crawl and ingest web documentation |
 | `GET /api/health` | Health check |
 
+## Platform backend contract
+
+| Endpoint | Method | Notes |
+|---|---|---|
+| `/api/copilot/chat` | `POST` | Non-streaming JSON response |
+| `/api/copilot/chat/stream` | `POST` | SSE stream that accepts `CopilotRequest` JSON |
+| `/api/copilot/rag/query` | `POST` | Returns raw `RagResult[]` |
+| `/api/copilot/tools/execute` | `POST` | Tool execution / approval entry point |
+| `/api/copilot/approvals/:id/resolve` | `POST` | Resolve approval requests |
+
 ---
 
 ## Development commands
@@ -189,6 +209,7 @@ pnpm build:sdk
 pnpm test:sdk
 pnpm pack:sdk
 pnpm deploy:pages
+pnpm smoke:backend
 ```
 
 ---

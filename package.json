@@ -31,7 +31,8 @@
     "pack:dry": "pnpm --filter @ankit-parekh-007/ngx-copilot-sdk pack:dry",
     "pack:sdk": "pnpm --filter @ankit-parekh-007/ngx-copilot-sdk pack:dry",
     "deploy:pages": "pnpm --filter demo-app build:gh-pages",
-    "verify": "pnpm test:sdk && pnpm lint:sdk && pnpm build:sdk && pnpm pack:sdk"
+    "verify": "pnpm test:sdk && pnpm lint:sdk && pnpm build:sdk && pnpm pack:sdk",
+    "smoke:backend": "node scripts/smoke-platform-backend.mjs"
   },
   "devDependencies": {
     "turbo": "^2.5.4"

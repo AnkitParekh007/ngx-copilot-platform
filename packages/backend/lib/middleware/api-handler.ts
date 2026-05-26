@@ -10,6 +10,7 @@ import { authenticate, AuthResult } from './auth';
 import { rateLimit, RateLimitTier, createRateLimitHeaders, rateLimitExceededResponse } from './rate-limit';
 import { validateBody, validationErrorResponse, ValidationResult } from './validation';
 import { getCorsHeaders, getSecurityHeaders, handleCorsPreFlight, isOriginAllowed, generateRequestId } from './security';
+import { MissingConfigError } from '../config';
 
 export interface ApiContext {
   requestId: string;
@@ -143,6 +144,18 @@ export function createApiHandler<T extends z.ZodSchema | undefined = undefined>(
 
     } catch (error) {
       console.error(`[${requestId}] Unhandled error:`, error);
+
+      if (error instanceof MissingConfigError) {
+        return createErrorResponse(
+          'Service Unavailable',
+          error.message,
+          error.code,
+          error.status,
+          requestId,
+          request,
+          { service: error.service, missingVars: error.missingVars },
+        );
+      }
       
       if (onError && error instanceof Error) {
         return onError(error, requestId);

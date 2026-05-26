@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { hybridSearch } from '@/lib/services/rag'
 import { createApiHandler } from '@/lib/middleware/api-handler'
 import { ragQuerySchema } from '@/lib/middleware/validation'
+import { assertServiceConfigs } from '@/lib/config'
 import type { RagResult } from '@/lib/types/copilot'
 
 /**
@@ -10,6 +11,7 @@ import type { RagResult } from '@/lib/types/copilot'
  */
 export const POST = createApiHandler(
   async (request: NextRequest, { requestId }, body) => {
+    assertServiceConfigs(['supabase', 'openai'])
     const { query, filters, limit, threshold } = body
 
     const searchResults = await hybridSearch(query, {
@@ -50,11 +52,7 @@ export const POST = createApiHandler(
       )
     }
 
-    return NextResponse.json({
-      results: filteredResults.slice(0, limit),
-      total: filteredResults.length,
-      requestId,
-    })
+    return NextResponse.json(filteredResults.slice(0, limit))
   },
   {
     requireAuth: true,

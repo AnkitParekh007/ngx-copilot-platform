@@ -20,7 +20,8 @@ import { Component } from '@angular/core';
     <section class="mb-12">
       <h2 class="text-2xl font-semibold mb-4">API Endpoints</h2>
       <p class="text-muted-foreground mb-6">
-        These endpoints are designed to work with the <code class="text-sm bg-muted px-1 rounded">HttpCopilotBackendAdapter</code> from ngx-copilot-sdk.
+        These endpoints are designed to work with the <code class="text-sm bg-muted px-1 rounded">NgxCopilotPlatformBackendAdapter</code>
+        from ngx-copilot-sdk.
       </p>
 
       <div class="space-y-4">
@@ -41,14 +42,14 @@ import { Component } from '@angular/core';
 
         <div class="p-6 rounded-xl border border-border bg-card">
           <div class="flex items-center gap-3 mb-3">
-            <span class="px-2 py-1 text-xs font-semibold bg-blue-500/20 text-blue-500 rounded">GET</span>
+            <span class="px-2 py-1 text-xs font-semibold bg-blue-500/20 text-blue-500 rounded">POST</span>
             <code class="text-lg">/api/copilot/chat/stream</code>
           </div>
           <p class="text-sm text-muted-foreground mb-3">
             SSE streaming endpoint. Emits <code class="text-xs bg-muted px-1 rounded">CopilotEvent</code> objects.
           </p>
           <details class="text-sm">
-            <summary class="cursor-pointer text-muted-foreground hover:text-foreground">Query Parameters &amp; Events</summary>
+            <summary class="cursor-pointer text-muted-foreground hover:text-foreground">Request/Events</summary>
             <pre class="mt-2 p-4 bg-muted rounded-lg overflow-x-auto text-xs">{{ streamEndpointExample }}</pre>
           </details>
         </div>
@@ -216,8 +217,16 @@ export class HomeComponent {
   "sources": [...]
 }`;
 
-  readonly streamEndpointExample = `// Query params
-?message=How+does+syndication+work&mode=ask&sessionId=optional
+  readonly streamEndpointExample = `// Request: CopilotRequest
+{
+  "sessionId": "optional-session-id",
+  "message": "How does syndication work?",
+  "mode": "ask",
+  "context": {
+    "route": "/products",
+    "title": "Product List"
+  }
+}
 
 // SSE Events (CopilotEvent union type):
 { "type": "session-started", "sessionId": "..." }
@@ -322,16 +331,19 @@ export class HomeComponent {
   "message": "Started ingesting angular-app (branch: main)"
 }`;
 
-  readonly sdkConfigExample = `import { provideCopilotConfig } from '@ankit-parekh-007/ngx-copilot-sdk';
+  readonly sdkConfigExample = `import { provideCopilot, providePlatformBackend } from '@ankit-parekh-007/ngx-copilot-sdk';
 
 export const appConfig = {
   providers: [
-    provideCopilotConfig({
-      apiBaseUrl: \`\${window.location.origin}/api/copilot\`,
+    provideCopilot({
       defaultMode: 'ask',
-      enableApprovals: true,
-      enableRagSources: true,
-      enableToolTimeline: true,
+      statusLabel: 'Connected to platform backend',
+    }, {
+      useMockBackend: false,
+    }),
+    ...providePlatformBackend({
+      apiUrl: 'http://localhost:3001',
+      apiKey: 'cpk_dev_replace_with_your_key',
     }),
   ],
 };`;

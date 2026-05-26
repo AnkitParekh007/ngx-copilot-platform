@@ -29,7 +29,7 @@ This app closes [ngx-copilot-platform#2](https://github.com/AnkitParekh007/ngx-c
 cp packages/backend/.env.example packages/backend/.env.local
 # Fill in your Supabase, Upstash, and OpenAI keys in .env.local
 
-pnpm --filter @ngx-copilot/backend dev
+corepack pnpm --filter @ngx-copilot/backend dev
 # Backend starts on http://localhost:3001
 ```
 
@@ -48,9 +48,23 @@ export const environment = {
 
 ```bash
 # From the monorepo root:
-pnpm --filter example-consumer dev
+corepack pnpm --filter example-consumer dev
 # App starts on http://localhost:4201
 ```
+
+**Optional Step 4 — Verify backend contract without the UI**
+
+```bash
+COPILOT_API_KEY=cpk_dev_your_key_from_env_local node scripts/smoke-platform-backend.mjs
+```
+
+## Runtime contract
+
+The example consumer uses `NgxCopilotPlatformBackendAdapter`, which currently expects:
+
+- `POST /api/copilot/chat/stream` with a JSON `CopilotRequest` body and SSE events in response
+- `POST /api/copilot/rag/query` returning a raw `RagResult[]`
+- `Authorization: Bearer cpk_*` for backend authentication
 
 ## Key files
 

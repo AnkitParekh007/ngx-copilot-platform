@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { Redis } from '@upstash/redis';
 import { createPublicApiHandler } from '@/lib/middleware/api-handler';
+import { hasServiceConfig } from '@/lib/config';
 
 interface HealthStatus {
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -34,6 +35,9 @@ const startTime = Date.now();
 
 async function checkDatabase(): Promise<DependencyStatus> {
   const start = Date.now();
+  if (!hasServiceConfig('supabase')) {
+    return { status: 'down', message: 'Supabase environment variables are missing' };
+  }
   try {
     const supabase = await createClient();
     const { error } = await supabase.from('conversations').select('id').limit(1);
@@ -54,6 +58,9 @@ async function checkDatabase(): Promise<DependencyStatus> {
 
 async function checkCache(): Promise<DependencyStatus> {
   const start = Date.now();
+  if (!hasServiceConfig('redis')) {
+    return { status: 'unknown', message: 'Redis rate limiting is not configured' };
+  }
   try {
     const redis = new Redis({
       url: process.env.KV_REST_API_URL!,
@@ -80,6 +87,9 @@ async function checkCache(): Promise<DependencyStatus> {
 
 async function checkAI(): Promise<DependencyStatus> {
   const start = Date.now();
+  if (!hasServiceConfig('openai')) {
+    return { status: 'down', message: 'OpenAI environment variables are missing' };
+  }
   try {
     // Check if the OpenAI API is reachable
     const response = await fetch('https://api.openai.com/v1/models', {

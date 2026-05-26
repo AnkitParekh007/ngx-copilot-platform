@@ -156,7 +156,7 @@ export const executeBrowserAction = tool({
 export const generateFollowUpSuggestions = tool({
   description: 'Generate contextual follow-up suggestions based on the conversation and current context',
   inputSchema: z.object({
-    currentMode: z.enum(['ask', 'plan', 'agent']),
+    currentMode: z.enum(['ask', 'plan', 'execute']),
     lastResponse: z.string().describe('Summary of the last assistant response'),
     topicCategory: z.enum(['documentation', 'code', 'workflow', 'navigation', 'general']),
     sources: z.array(z.object({
@@ -172,27 +172,27 @@ export const generateFollowUpSuggestions = tool({
       if (topicCategory === 'documentation') {
         suggestions.push(
           { id: '1', text: 'Show me the related Angular implementation', mode: 'ask' },
-          { id: '2', text: 'Open this workflow in the browser', mode: 'agent' },
+          { id: '2', text: 'Open this workflow in the browser', mode: 'execute' },
           { id: '3', text: 'Create a test plan for this feature', mode: 'plan' },
         )
       } else if (topicCategory === 'code') {
         suggestions.push(
           { id: '1', text: 'Explain how this component works', mode: 'ask' },
           { id: '2', text: 'Find the API service used here', mode: 'ask' },
-          { id: '3', text: 'Navigate to this component in the app', mode: 'agent' },
+          { id: '3', text: 'Navigate to this component in the app', mode: 'execute' },
         )
       }
     } else if (currentMode === 'plan') {
       suggestions.push(
-        { id: '1', text: 'Execute this plan now', mode: 'agent' },
+        { id: '1', text: 'Execute this plan now', mode: 'execute' },
         { id: '2', text: 'Add more steps to the plan', mode: 'plan' },
         { id: '3', text: 'Compare with documentation', mode: 'ask' },
       )
-    } else if (currentMode === 'agent') {
+    } else if (currentMode === 'execute') {
       suggestions.push(
-        { id: '1', text: 'Take a screenshot of the current state', mode: 'agent' },
+        { id: '1', text: 'Take a screenshot of the current state', mode: 'execute' },
         { id: '2', text: 'Verify the result against documentation', mode: 'ask' },
-        { id: '3', text: 'Continue with the next step', mode: 'agent' },
+        { id: '3', text: 'Continue with the next step', mode: 'execute' },
       )
     }
 

@@ -1,8 +1,9 @@
-import { generateText } from 'ai'
+import { assertServiceConfig } from '../config'
 
 const EMBEDDING_MODEL = 'openai/text-embedding-3-small'
 
 export async function generateEmbedding(text: string): Promise<number[]> {
+  assertServiceConfig('openai')
   const response = await fetch('https://api.openai.com/v1/embeddings', {
     method: 'POST',
     headers: {
@@ -24,6 +25,7 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 }
 
 export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
+  assertServiceConfig('openai')
   // Process in batches to avoid rate limits
   const batchSize = 20
   const embeddings: number[][] = []

@@ -1,18 +1,16 @@
-import { streamText, generateText } from 'ai'
-import { tool } from 'ai'
+import { generateText, tool } from 'ai'
 import { NextRequest, NextResponse } from 'next/server'
 import { copilotTools } from '@/lib/services/copilot-tools'
 import { hybridSearch, buildContextFromSources } from '@/lib/services/rag'
 import { logAuditEvent } from '@/lib/services/audit'
 import { createApiHandler } from '@/lib/middleware/api-handler'
 import { chatRequestSchema } from '@/lib/middleware/validation'
+import { assertServiceConfigs } from '@/lib/config'
 import type { 
   CopilotMode, 
   CopilotResponse,
-  CopilotEvent,
   CopilotMessage,
   RagResult,
-  ToolTimelineItem,
 } from '@/lib/types/copilot'
 
 const SYSTEM_PROMPTS: Record<CopilotMode, string> = {
@@ -48,7 +46,7 @@ When planning:
 5. Identify potential risks or blockers
 6. Present the plan for user approval`,
 
-  agent: `You are an autonomous browser agent for an Angular application.
+  execute: `You are an autonomous browser agent for an Angular application.
 
 Your role in AGENT mode:
 - Execute approved plans or perform requested browser actions
@@ -64,6 +62,14 @@ Safety rules:
 3. ALWAYS validate the current page state before acting
 4. ALWAYS explain what you're about to do before doing it
 5. STOP and report if something unexpected happens`,
+
+  debug: `You are a debugging assistant for an Angular application.
+
+Your role in DEBUG mode:
+- Diagnose failures using available code and documentation context
+- Explain likely root causes before proposing changes
+- Prefer concrete, low-risk fixes over speculative advice
+- Call out missing evidence when the context is incomplete`,
 }
 
 /**
@@ -72,6 +78,7 @@ Safety rules:
  */
 export const POST = createApiHandler(
   async (request: NextRequest, { requestId, auth }, body) => {
+    assertServiceConfigs(['supabase', 'openai'])
     const { conversationId, message, mode, context } = body
 
     // Log the request
@@ -157,166 +164,6 @@ export const POST = createApiHandler(
   }
 )
 
-/**
- * GET /api/copilot/chat - SSE streaming
- * Compatible with HttpCopilotBackendAdapter.sendStream()
- */
-export const GET = createApiHandler(
-  async (request: NextRequest, { requestId, auth }) => {
-    const url = new URL(request.url)
-    const message = url.searchParams.get('message') || ''
-    const mode = (url.searchParams.get('mode') || 'ask') as CopilotMode
-    const sessionId = url.searchParams.get('sessionId') || undefined
-
-    if (!message) {
-      return NextResponse.json(
-        { error: 'Bad Request', message: 'Message parameter is required', code: 'MISSING_MESSAGE' },
-        { status: 400 }
-      )
-    }
-
-    const encoder = new TextEncoder()
-    
-    const stream = new ReadableStream({
-      async start(controller) {
-        const sendEvent = (event: CopilotEvent) => {
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`))
-        }
-
-        try {
-          // Send session started
-          const newSessionId = sessionId || crypto.randomUUID()
-          sendEvent({ type: 'session-started', sessionId: newSessionId })
-
-          // Pre-fetch context
-          let ragContext = ''
-          let sources: RagResult[] = []
-          
-          if (mode === 'ask' || mode === 'plan') {
-            try {
-              const searchResults = await hybridSearch(message, {
-                documentLimit: 5,
-                codeLimit: 5,
-                threshold: 0.6,
-              })
-              ragContext = buildContextFromSources(searchResults.sources)
-              sources = searchResults.sources.map(s => ({
-                id: s.id,
-                title: s.title || 'Untitled',
-                snippet: s.content.substring(0, 300),
-                score: s.similarity,
-                sourceType: s.type,
-                sourceUrl: s.url,
-                filePath: s.filePath,
-                fileKind: s.componentType,
-                repo: s.repoSlug,
-                branch: s.branch,
-                chunkId: s.id,
-              }))
-            } catch (error) {
-              console.error(`[${requestId}] RAG search failed:`, error)
-            }
-          }
-
-          // Build system prompt
-          let systemPrompt = SYSTEM_PROMPTS[mode]
-          if (ragContext) {
-            systemPrompt += `\n\n## Available Context\n${ragContext}`
-          }
-
-          const messageId = crypto.randomUUID()
-          sendEvent({ type: 'message-start', messageId })
-
-          // Tool timeline items for tracking
-          const toolTimeline: ToolTimelineItem[] = []
-
-          // Stream the response
-          const result = streamText({
-            model: 'anthropic/claude-sonnet-4',
-            system: systemPrompt,
-            prompt: message,
-            tools: getModeTools(mode, newSessionId),
-            maxSteps: mode === 'agent' ? 15 : 5,
-            onStepFinish: async ({ stepType, toolCalls, toolResults }) => {
-              if (stepType === 'tool-call' && toolCalls) {
-                for (const toolCall of toolCalls) {
-                  const timelineItem: ToolTimelineItem = {
-                    id: toolCall.toolCallId,
-                    toolName: toolCall.toolName,
-                    summary: `Executing ${toolCall.toolName}`,
-                    status: 'running',
-                    startedAt: new Date().toISOString(),
-                  }
-                  toolTimeline.push(timelineItem)
-                  sendEvent({ type: 'tool-timeline', items: [...toolTimeline] })
-                }
-              }
-              if (stepType === 'tool-result' && toolResults) {
-                for (const toolResult of toolResults) {
-                  const item = toolTimeline.find(t => t.id === toolResult.toolCallId)
-                  if (item) {
-                    item.status = 'succeeded'
-                    item.finishedAt = new Date().toISOString()
-                    sendEvent({ type: 'tool-timeline', items: [...toolTimeline] })
-                  }
-                }
-              }
-            },
-          })
-
-          let fullContent = ''
-          for await (const chunk of result.textStream) {
-            fullContent += chunk
-            sendEvent({ type: 'message-chunk', messageId, content: chunk })
-          }
-
-          // Send complete message
-          const completeMessage: CopilotMessage = {
-            id: messageId,
-            role: 'assistant',
-            content: fullContent,
-            createdAt: new Date().toISOString(),
-            sources: sources.length > 0 ? sources : undefined,
-          }
-          sendEvent({ type: 'message-complete', message: completeMessage })
-
-          // Send sources if any
-          if (sources.length > 0) {
-            sendEvent({ type: 'sources', sources })
-          }
-
-          // Send done
-          sendEvent({ type: 'done' })
-          controller.close()
-        } catch (error) {
-          console.error(`[${requestId}] Stream error:`, error)
-          sendEvent({
-            type: 'error',
-            error: {
-              code: 'STREAM_ERROR',
-              message: error instanceof Error ? error.message : 'Stream failed',
-              retryable: true,
-            },
-          })
-          controller.close()
-        }
-      },
-    })
-
-    return new Response(stream, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
-    })
-  },
-  {
-    requireAuth: true,
-    rateLimit: 'standard',
-  }
-)
-
 function getModeTools(mode: CopilotMode, sessionId?: string) {
   const baseTools = {
     searchKnowledgeBase: copilotTools.searchKnowledgeBase,
@@ -337,7 +184,7 @@ function getModeTools(mode: CopilotMode, sessionId?: string) {
         getPageSelectors: copilotTools.getPageSelectors,
       }
 
-    case 'agent':
+    case 'execute':
       return {
         ...baseTools,
         createPlan: copilotTools.createPlan,
@@ -355,6 +202,7 @@ function getModeTools(mode: CopilotMode, sessionId?: string) {
         validatePageState: copilotTools.validatePageState,
       }
 
+    case 'debug':
     default:
       return baseTools
   }
@@ -366,7 +214,7 @@ export async function OPTIONS() {
     status: 204,
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
     },
   })

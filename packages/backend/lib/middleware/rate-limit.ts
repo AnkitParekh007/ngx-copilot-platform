@@ -10,55 +10,58 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+import { hasServiceConfig } from '../config';
 
-// Initialize Redis client
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL!,
-  token: process.env.KV_REST_API_TOKEN!,
-});
+let cachedRateLimiters: Record<string, Ratelimit> | null = null;
 
-// Rate limit configurations
-export const rateLimiters = {
-  // Standard rate limit for chat endpoints
-  standard: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(100, '1 m'),
-    analytics: true,
-    prefix: 'ratelimit:standard',
-  }),
+function getRateLimiters() {
+  if (!hasServiceConfig('redis')) {
+    return null;
+  }
+  if (cachedRateLimiters) {
+    return cachedRateLimiters;
+  }
 
-  // Heavy rate limit for expensive operations (embeddings, AI calls)
-  heavy: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(20, '1 m'),
-    analytics: true,
-    prefix: 'ratelimit:heavy',
-  }),
+  const redis = new Redis({
+    url: process.env.KV_REST_API_URL!,
+    token: process.env.KV_REST_API_TOKEN!,
+  });
 
-  // Ingestion rate limit (very limited due to resource intensity)
-  ingestion: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(5, '1 h'),
-    analytics: true,
-    prefix: 'ratelimit:ingestion',
-  }),
+  cachedRateLimiters = {
+    standard: new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(100, '1 m'),
+      analytics: true,
+      prefix: 'ratelimit:standard',
+    }),
+    heavy: new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(20, '1 m'),
+      analytics: true,
+      prefix: 'ratelimit:heavy',
+    }),
+    ingestion: new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(5, '1 h'),
+      analytics: true,
+      prefix: 'ratelimit:ingestion',
+    }),
+    burst: new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(1000, '1 m'),
+      analytics: true,
+      prefix: 'ratelimit:burst',
+    }),
+    strict: new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(30, '1 m'),
+      analytics: true,
+      prefix: 'ratelimit:strict',
+    }),
+  };
 
-  // Burst rate limit for lightweight endpoints
-  burst: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(1000, '1 m'),
-    analytics: true,
-    prefix: 'ratelimit:burst',
-  }),
-
-  // Strict rate limit for auth/approval endpoints
-  strict: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(30, '1 m'),
-    analytics: true,
-    prefix: 'ratelimit:strict',
-  }),
-};
+  return cachedRateLimiters;
+}
 
 export type RateLimitTier = keyof typeof rateLimiters;
 
@@ -99,7 +102,16 @@ export async function rateLimit(
   identifier?: string
 ): Promise<RateLimitResult> {
   const id = identifier || getRateLimitIdentifier(request);
-  const limiter = rateLimiters[tier];
+  const limiter = getRateLimiters()?.[tier];
+
+  if (!limiter) {
+    return {
+      success: true,
+      limit: 0,
+      remaining: 0,
+      reset: Date.now(),
+    };
+  }
 
   try {
     const { success, limit, remaining, reset } = await limiter.limit(id);

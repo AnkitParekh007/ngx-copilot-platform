@@ -21,7 +21,7 @@ export const paginationSchema = z.object({
 // Chat Schemas
 // ============================================
 
-export const copilotModeSchema = z.enum(['ask', 'plan', 'agent']);
+export const copilotModeSchema = z.enum(['ask', 'plan', 'execute', 'debug']);
 
 export const copilotMessageSchema = z.object({
   id: z.string().optional(),
