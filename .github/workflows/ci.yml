@@ -54,6 +54,12 @@ jobs:
       - name: Build admin UI
         run: pnpm --filter admin-ui build
 
+      - name: Typecheck backend
+        run: pnpm --filter @ngx-copilot/backend typecheck
+
+      - name: Test backend contracts
+        run: pnpm --filter @ngx-copilot/backend test
+
       - name: Build backend
         run: pnpm --filter @ngx-copilot/backend build
         env:

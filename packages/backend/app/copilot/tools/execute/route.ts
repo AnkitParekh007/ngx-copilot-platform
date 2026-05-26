@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logAuditEvent } from '@/lib/services/audit'
+import { hybridSearch, buildContextFromSources, getSelectorsForRoute } from '@/lib/services/rag'
 import { createApiHandler } from '@/lib/middleware/api-handler'
 import { toolExecutionSchema } from '@/lib/middleware/validation'
-import type { ToolExecutionEvent, ApprovalRequest } from '@/lib/types/copilot'
+import type { ToolExecutionEvent, ApprovalRequest, Plan } from '@/lib/types/copilot'
 
 /**
  * POST /api/copilot/tools/execute - Tool execution endpoint
@@ -15,6 +16,7 @@ export const POST = createApiHandler(
 
     // Determine if approval is required
     const requiresApproval = shouldRequireApproval(toolName, args)
+    const supportedToolNames = new Set(['searchKnowledgeBase', 'getPageSelectors', 'createPlan'])
 
     // Log the tool execution
     await logAuditEvent({
@@ -62,7 +64,16 @@ export const POST = createApiHandler(
       return NextResponse.json(response)
     }
 
-    // Execute the tool
+    if (!supportedToolNames.has(toolName)) {
+      const failedResponse: ToolExecutionEvent = {
+        type: 'failed',
+        requestId: toolCallId,
+        error: `Tool "${toolName}" is not enabled for public launch.`,
+      }
+
+      return NextResponse.json(failedResponse, { status: 501 })
+    }
+
     try {
       const startTime = Date.now()
       const output = await executeToolByName(toolName, args)
@@ -74,6 +85,7 @@ export const POST = createApiHandler(
         userId: auth.userId,
         actionType: 'tool_execution_completed',
         actionName: toolName,
+        request: JSON.stringify(args),
         result: output,
         requiresApproval: false,
         requestId,
@@ -96,6 +108,7 @@ export const POST = createApiHandler(
         userId: auth.userId,
         actionType: 'tool_execution_failed',
         actionName: toolName,
+        request: JSON.stringify(args),
         error: error instanceof Error ? error.message : 'Unknown error',
         requiresApproval: false,
         requestId,
@@ -155,31 +168,113 @@ function determineRiskLevel(toolName: string, args: Record<string, unknown>): 'l
 }
 
 async function executeToolByName(toolName: string, args: Record<string, unknown>): Promise<Record<string, unknown>> {
-  // Tool dispatcher - implements actual tool execution
-  // In production, this would call the appropriate tool handler
-  
   switch (toolName) {
-    case 'navigate':
-      return { success: true, url: args.url, message: `Navigated to ${args.url}` }
-    
-    case 'click':
-      return { success: true, selector: args.selector, message: `Clicked element` }
-    
-    case 'fill':
-      return { success: true, selector: args.selector, message: `Filled input field` }
-    
-    case 'read':
-      return { success: true, content: 'Page content would be here', message: `Read page content` }
-    
-    case 'screenshot':
-      return { success: true, message: `Screenshot captured` }
-    
     case 'searchKnowledgeBase':
-      return { success: true, results: [], message: `Search completed` }
-    
+      return executeKnowledgeSearch(args)
+    case 'getPageSelectors':
+      return executeGetPageSelectors(args)
+    case 'createPlan':
+      return executeCreatePlan(args)
     default:
-      return { success: true, message: `Executed ${toolName}` }
+      throw new Error(`Tool "${toolName}" is not enabled for public launch.`)
   }
+}
+
+async function executeKnowledgeSearch(args: Record<string, unknown>): Promise<Record<string, unknown>> {
+  const query = typeof args.query === 'string' ? args.query : ''
+  if (!query) {
+    throw new Error('searchKnowledgeBase requires a string "query" argument.')
+  }
+
+  const includeDocumentation = args.includeDocumentation !== false
+  const includeCode = args.includeCode !== false
+  const limit = typeof args.limit === 'number' ? args.limit : 5
+  const results = await hybridSearch(query, {
+    documentLimit: includeDocumentation ? limit : 0,
+    codeLimit: includeCode ? limit : 0,
+    includeDocumentation,
+    includeCode,
+  })
+
+  return {
+    sources: results.sources,
+    context: buildContextFromSources(results.sources),
+    documentCount: results.documentResults.length,
+    codeCount: results.codeResults.length,
+  }
+}
+
+async function executeGetPageSelectors(args: Record<string, unknown>): Promise<Record<string, unknown>> {
+  const route = typeof args.route === 'string' ? args.route : ''
+  if (!route) {
+    throw new Error('getPageSelectors requires a string "route" argument.')
+  }
+
+  const selectors = await getSelectorsForRoute(route)
+  return {
+    route,
+    selectors,
+    count: selectors.length,
+  }
+}
+
+function executeCreatePlan(args: Record<string, unknown>): Record<string, unknown> {
+  const goal = typeof args.goal === 'string' ? args.goal : ''
+  if (!goal) {
+    throw new Error('createPlan requires a string "goal" argument.')
+  }
+
+  const stepsInput = Array.isArray(args.steps) ? args.steps : []
+  const assumptions = Array.isArray(args.assumptions) ? args.assumptions.filter(isString) : []
+  const risks = Array.isArray(args.risks) ? args.risks.filter(isString) : []
+
+  const plan: Plan = {
+    id: crypto.randomUUID(),
+    goal,
+    steps: stepsInput.map((step, index) => {
+      const stepRecord = isRecord(step) ? step : {}
+      return {
+        id: `step-${index + 1}`,
+        description: typeof stepRecord.description === 'string' ? stepRecord.description : `Step ${index + 1}`,
+        actionType: isBrowserActionType(stepRecord.actionType) ? stepRecord.actionType : 'read',
+        target: isRecord(stepRecord.target) ? stepRecord.target : undefined,
+        status: 'pending',
+      }
+    }),
+    assumptions,
+    risks,
+    status: 'pending',
+  }
+
+  return {
+    plan,
+    requiresApproval: true,
+    message: `Created plan with ${plan.steps.length} steps. Waiting for user approval before execution.`,
+  }
+}
+
+function isString(value: unknown): value is string {
+  return typeof value === 'string'
+}
+
+function isRecord(value: unknown): value is Record<string, any> {
+  return !!value && typeof value === 'object' && !Array.isArray(value)
+}
+
+function isBrowserActionType(value: unknown): value is Plan['steps'][number]['actionType'] {
+  return typeof value === 'string' && [
+    'navigate',
+    'click',
+    'fill',
+    'select',
+    'upload',
+    'scroll',
+    'wait',
+    'read',
+    'validate',
+    'screenshot',
+    'hover',
+  ].includes(value)
 }
 
 // Handle OPTIONS for CORS preflight

@@ -4,22 +4,13 @@
  * Handles cross-origin requests and adds security headers
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server.js';
 
 // Allowed origins for CORS
 const ALLOWED_ORIGINS = (process.env.CORS_ALLOWED_ORIGINS || '')
   .split(',')
   .filter(Boolean)
   .map((origin) => origin.trim());
-
-// Default allowed origins if not configured
-const DEFAULT_ALLOWED_ORIGINS = [
-  'http://localhost:4200', // Angular dev server
-  'http://localhost:3000', // Next.js dev server
-  'http://localhost:5173', // Vite dev server
-];
-
-const ALL_ALLOWED_ORIGINS = [...new Set([...ALLOWED_ORIGINS, ...DEFAULT_ALLOWED_ORIGINS])];
 
 // Allow all origins in development
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -31,7 +22,7 @@ export function isOriginAllowed(origin: string | null): boolean {
   if (!origin) return true; // Same-origin requests
   if (isDevelopment) return true; // Allow all in development
   if (ALLOWED_ORIGINS.includes('*')) return true; // Wildcard
-  return ALL_ALLOWED_ORIGINS.some((allowed) => {
+  return ALLOWED_ORIGINS.some((allowed) => {
     if (allowed.includes('*')) {
       const pattern = allowed.replace(/\*/g, '.*');
       return new RegExp(`^${pattern}$`).test(origin);

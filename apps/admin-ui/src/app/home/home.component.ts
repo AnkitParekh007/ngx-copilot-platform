@@ -263,9 +263,9 @@ export class HomeComponent {
 
   readonly toolsEndpointExample = `// Request: ToolExecutionRequest
 {
-  "toolName": "navigate",
-  "input": { "url": "/products" },
-  "requiresApproval": false
+  "toolName": "searchKnowledgeBase",
+  "toolCallId": "tool-call-123",
+  "args": { "query": "upload workflow", "limit": 5 }
 }
 
 // Response: ToolExecutionEvent
@@ -342,8 +342,8 @@ export const appConfig = {
       useMockBackend: false,
     }),
     ...providePlatformBackend({
-      apiUrl: 'http://localhost:3001',
-      apiKey: 'cpk_dev_replace_with_your_key',
+      apiUrl: environment.apiUrl,
+      apiKey: environment.apiKey,
     }),
   ],
 };`;

@@ -18,7 +18,6 @@ export {
 // Rate Limiting
 export {
   rateLimit,
-  rateLimiters,
   getRateLimitIdentifier,
   createRateLimitHeaders,
   rateLimitExceededResponse,

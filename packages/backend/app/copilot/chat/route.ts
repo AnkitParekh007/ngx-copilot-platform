@@ -1,5 +1,6 @@
-import { generateText, tool } from 'ai'
+import { generateText } from 'ai'
 import { NextRequest, NextResponse } from 'next/server'
+import { mapSourceToRagResult } from '@/lib/contracts'
 import { copilotTools } from '@/lib/services/copilot-tools'
 import { hybridSearch, buildContextFromSources } from '@/lib/services/rag'
 import { logAuditEvent } from '@/lib/services/audit'
@@ -46,22 +47,13 @@ When planning:
 5. Identify potential risks or blockers
 6. Present the plan for user approval`,
 
-  execute: `You are an autonomous browser agent for an Angular application.
+  execute: `You are an execution planning assistant for an Angular application.
 
-Your role in AGENT mode:
-- Execute approved plans or perform requested browser actions
-- Navigate the application like a real user
-- Interact with UI elements safely and methodically
-- Report progress and results in real-time
-- Handle errors gracefully and suggest recovery actions
-- ALWAYS ask for approval before destructive or sensitive actions
-
-Safety rules:
-1. NEVER execute destructive actions without explicit approval
-2. NEVER expose credentials, tokens, or sensitive data
-3. ALWAYS validate the current page state before acting
-4. ALWAYS explain what you're about to do before doing it
-5. STOP and report if something unexpected happens`,
+Your role in EXECUTE mode:
+- Refine approved plans into safe, verifiable execution steps
+- Use available knowledge and selectors to guide a production executor
+- Avoid claiming that browser actions have already run
+- Clearly state when a real execution runtime is required`,
 
   debug: `You are a debugging assistant for an Angular application.
 
@@ -103,19 +95,7 @@ export const POST = createApiHandler(
           threshold: 0.6,
         })
         ragContext = buildContextFromSources(searchResults.sources)
-        sources = searchResults.sources.map(s => ({
-          id: s.id,
-          title: s.title || 'Untitled',
-          snippet: s.content.substring(0, 300),
-          score: s.similarity,
-          sourceType: s.type,
-          sourceUrl: s.url,
-          filePath: s.filePath,
-          fileKind: s.componentType,
-          repo: s.repoSlug,
-          branch: s.branch,
-          chunkId: s.id,
-        }))
+        sources = searchResults.sources.map(source => mapSourceToRagResult(source, 300))
       } catch (error) {
         console.error(`[${requestId}] RAG search failed:`, error)
       }
@@ -139,7 +119,6 @@ export const POST = createApiHandler(
       system: systemPrompt,
       prompt: message,
       tools: getModeTools(mode, conversationId),
-      maxSteps: 5,
     })
 
     const responseMessage: CopilotMessage = {
@@ -164,7 +143,7 @@ export const POST = createApiHandler(
   }
 )
 
-function getModeTools(mode: CopilotMode, sessionId?: string) {
+function getModeTools(mode: CopilotMode, _sessionId?: string) {
   const baseTools = {
     searchKnowledgeBase: copilotTools.searchKnowledgeBase,
     generateFollowUpSuggestions: copilotTools.generateFollowUpSuggestions,
@@ -189,17 +168,6 @@ function getModeTools(mode: CopilotMode, sessionId?: string) {
         ...baseTools,
         createPlan: copilotTools.createPlan,
         getPageSelectors: copilotTools.getPageSelectors,
-        executeBrowserAction: tool({
-          ...copilotTools.executeBrowserAction,
-          execute: async (args) => {
-            return copilotTools.executeBrowserAction.execute({
-              ...args,
-              conversationId: sessionId || 'anonymous',
-            })
-          },
-        }),
-        readPageContent: copilotTools.readPageContent,
-        validatePageState: copilotTools.validatePageState,
       }
 
     case 'debug':

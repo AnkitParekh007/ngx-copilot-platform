@@ -1,7 +1,7 @@
 import { parse } from 'node-html-parser'
 import { createClient } from '@/lib/supabase/server'
 import { generateEmbeddings, chunkText, createContentHash } from './embedding'
-import type { DocumentChunk, IngestionJob } from '@/lib/types/copilot'
+import type { IngestionJob } from '@/lib/types/copilot'
 
 interface CrawlOptions {
   maxPages?: number
@@ -283,9 +283,9 @@ export async function getIngestionJobStatus(jobId: string): Promise<IngestionJob
     totalItems: data.total_items,
     processedItems: data.processed_items,
     error: data.error,
-    createdAt: new Date(data.created_at),
-    startedAt: data.started_at ? new Date(data.started_at) : undefined,
-    completedAt: data.completed_at ? new Date(data.completed_at) : undefined,
+    createdAt: data.created_at,
+    startedAt: data.started_at || undefined,
+    completedAt: data.completed_at || undefined,
   }
 }
 

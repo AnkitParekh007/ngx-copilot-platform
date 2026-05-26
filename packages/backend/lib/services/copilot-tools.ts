@@ -2,7 +2,7 @@ import { tool } from 'ai'
 import { z } from 'zod'
 import { hybridSearch, buildContextFromSources, getSelectorsForRoute } from './rag'
 import { logAuditEvent, assessActionRisk, requiresApproval, createApprovalRequest } from './audit'
-import type { Source, BrowserAction, Plan, PlanStep, FollowUpSuggestion } from '@/lib/types/copilot'
+import type { BrowserAction, Plan, FollowUpSuggestion } from '@/lib/types/copilot'
 
 // Tool: Search documentation and code
 export const searchKnowledgeBase = tool({
@@ -116,7 +116,7 @@ export const executeBrowserAction = tool({
       status: 'pending',
       riskLevel: 'low',
       requiresApproval: false,
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     }
 
     // Assess risk
@@ -143,12 +143,7 @@ export const executeBrowserAction = tool({
       }
     }
 
-    // Return the action for the browser automation layer to execute
-    return {
-      action,
-      status: 'ready_to_execute',
-      message: `Action ready: ${description}`,
-    }
+    throw new Error('Browser automation is disabled for public launch until a production executor is configured.')
   },
 })
 
@@ -214,43 +209,6 @@ export const generateFollowUpSuggestions = tool({
   },
 })
 
-// Tool: Read current page content
-export const readPageContent = tool({
-  description: 'Read and analyze the current page content in the browser',
-  inputSchema: z.object({
-    includeStructure: z.boolean().default(true).describe('Include page structure analysis'),
-    includeInteractiveElements: z.boolean().default(true).describe('Include list of interactive elements'),
-  }),
-  execute: async ({ includeStructure, includeInteractiveElements }) => {
-    // This will be implemented by the browser automation layer
-    // Returns placeholder for now - actual implementation handled by Playwright service
-    return {
-      status: 'ready',
-      action: 'read_page',
-      options: { includeStructure, includeInteractiveElements },
-    }
-  },
-})
-
-// Tool: Validate page state
-export const validatePageState = tool({
-  description: 'Validate expected state of the current page',
-  inputSchema: z.object({
-    expectations: z.array(z.object({
-      type: z.enum(['element_exists', 'element_visible', 'text_contains', 'url_matches', 'toast_message']),
-      target: z.string().describe('Selector or text to check'),
-      expected: z.string().optional().describe('Expected value'),
-    })),
-  }),
-  execute: async ({ expectations }) => {
-    return {
-      status: 'ready',
-      action: 'validate',
-      expectations,
-    }
-  },
-})
-
 // Export all tools for the agent
 export const copilotTools = {
   searchKnowledgeBase,
@@ -258,6 +216,4 @@ export const copilotTools = {
   createPlan,
   executeBrowserAction,
   generateFollowUpSuggestions,
-  readPageContent,
-  validatePageState,
 }

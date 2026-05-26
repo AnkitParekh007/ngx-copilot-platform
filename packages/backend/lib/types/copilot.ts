@@ -39,6 +39,10 @@ export interface RagResult {
   tags?: string[];
 }
 
+export type Source = RagResult;
+
+export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
+
 export interface ApprovalRequest {
   id: string;
   title: string;
@@ -55,6 +59,12 @@ export interface ToolTimelineItem {
   status: 'queued' | 'running' | 'awaiting_approval' | 'succeeded' | 'failed' | 'skipped';
   startedAt?: string;
   finishedAt?: string;
+}
+
+export interface FollowUpSuggestion {
+  id: string;
+  text: string;
+  mode: CopilotMode;
 }
 
 // ============= Adapter Models (from ngx-copilot-sdk/adapters) =============
@@ -242,7 +252,7 @@ export interface BrowserAction {
   result?: string;
   error?: string;
   screenshot?: string;
-  riskLevel: 'low' | 'medium' | 'high';
+  riskLevel: RiskLevel;
   requiresApproval: boolean;
   timestamp: string;
 }
@@ -272,6 +282,23 @@ export interface AuditLog {
   requiresApproval: boolean;
   approvedAt?: string;
   createdAt: string;
+}
+
+export interface PlanStep {
+  id: string;
+  description: string;
+  actionType: BrowserActionType;
+  target?: ActionTarget;
+  status: 'pending' | 'approved' | 'executing' | 'completed' | 'failed';
+}
+
+export interface Plan {
+  id: string;
+  goal: string;
+  steps: PlanStep[];
+  assumptions: string[];
+  risks: string[];
+  status: 'pending' | 'approved' | 'executing' | 'completed' | 'failed';
 }
 
 // Conversation Types

@@ -217,11 +217,11 @@ export const DELETE = createApiHandler(
       const supabase = await createClient()
 
       // Delete code chunks for this repo
-      const { error: chunksError, count: chunksDeleted } = await supabase
+      const { data: deletedChunks, error: chunksError } = await supabase
         .from('code_chunks')
         .delete()
         .eq('repo_slug', repoSlug)
-        .select('id', { count: 'exact', head: true })
+        .select('id')
 
       if (chunksError) {
         throw chunksError
@@ -241,7 +241,7 @@ export const DELETE = createApiHandler(
       return NextResponse.json({
         success: true,
         message: `Deleted indexed code for ${repoSlug}`,
-        chunksDeleted: chunksDeleted || 0,
+        chunksDeleted: deletedChunks?.length || 0,
         requestId,
       })
     } catch (error) {

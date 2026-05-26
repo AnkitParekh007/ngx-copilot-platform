@@ -4,13 +4,14 @@
  * Combines: Authentication, Rate Limiting, Validation, CORS, Security Headers
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server.js';
 import { z } from 'zod';
 import { authenticate, AuthResult } from './auth';
 import { rateLimit, RateLimitTier, createRateLimitHeaders, rateLimitExceededResponse } from './rate-limit';
 import { validateBody, validationErrorResponse, ValidationResult } from './validation';
 import { getCorsHeaders, getSecurityHeaders, handleCorsPreFlight, isOriginAllowed, generateRequestId } from './security';
 import { MissingConfigError } from '../config';
+import { buildErrorBody } from '../api-contract';
 
 export interface ApiContext {
   requestId: string;
@@ -188,13 +189,7 @@ function createErrorResponse(
   details?: unknown
 ): NextResponse {
   const response = NextResponse.json(
-    {
-      error,
-      message,
-      code,
-      requestId,
-      ...(details ? { details } : {}),
-    },
+    buildErrorBody({ error, message, code, requestId, details }),
     { status }
   );
 

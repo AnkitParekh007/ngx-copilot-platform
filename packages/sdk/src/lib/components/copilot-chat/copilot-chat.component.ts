@@ -55,7 +55,7 @@ import { StreamingMessageComponent } from '../streaming-message/streaming-messag
           (keydown.enter)="onEnter($event)"
           aria-label="Copilot message input"></textarea>
         <button type="submit" [disabled]="disabled || isStreaming || !draft.trim()">
-          {{ isStreaming ? 'Sending…' : submitLabel }}
+          {{ isStreaming ? 'Sending...' : submitLabel }}
         </button>
       </form>
     </section>
@@ -138,8 +138,8 @@ export class CopilotChatComponent implements AfterViewChecked {
   @Input() isStreaming = false;
   @Input() streamingContent = '';
   @Input() errorMessage?: string;
-  @Input() emptyLabel = 'Ask a question to start the copilot preview.';
-  @Input() placeholder = 'Ask the copilot…';
+  @Input() emptyLabel = 'Ask a question to start the copilot.';
+  @Input() placeholder = 'Ask the copilot...';
   @Input() submitLabel = 'Send';
   @Input() showComposer = true;
   @Input() disabled = false;

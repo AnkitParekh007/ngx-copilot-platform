@@ -167,8 +167,8 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
 })
 export class CopilotShellComponent {
   @Input() title = 'Angular copilot shell';
-  @Input() subtitle = 'Preview UI for chat, context, citations, tools, and approvals.';
-  @Input() statusLabel = '0.1.0 preview SDK';
+  @Input() subtitle = 'Unified workspace for chat, context, citations, tools, and approvals.';
+  @Input() statusLabel = 'ngx-copilot SDK';
   @Input() modes: CopilotMode[] = ['ask', 'plan', 'execute', 'debug'];
   @Input() activeMode: CopilotMode = 'ask';
   @Input() context!: CopilotContext;

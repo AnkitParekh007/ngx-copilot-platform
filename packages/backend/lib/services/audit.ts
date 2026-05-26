@@ -29,7 +29,7 @@ export async function logAuditEvent(
       result: event.result,
       error: event.error,
       requires_approval: event.requiresApproval,
-      approved_at: event.approvedAt?.toISOString(),
+      approved_at: event.approvedAt,
       ip_address: event.ipAddress,
       user_agent: event.userAgent,
       request_id: event.requestId,
@@ -86,8 +86,8 @@ export async function getAuditLogs(
     result: log.result as Record<string, unknown> | undefined,
     error: log.error,
     requiresApproval: log.requires_approval,
-    approvedAt: log.approved_at ? new Date(log.approved_at) : undefined,
-    createdAt: new Date(log.created_at),
+    approvedAt: log.approved_at || undefined,
+    createdAt: log.created_at,
   }))
 }
 

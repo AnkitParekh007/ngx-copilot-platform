@@ -40,6 +40,7 @@ export const copilotContextSchema = z.object({
 
 export const chatRequestSchema = z.object({
   conversationId: uuidSchema.optional(),
+  sessionId: uuidSchema.optional(),
   mode: copilotModeSchema.default('ask'),
   message: z.string().min(1, 'Message is required').max(10000, 'Message too long'),
   messages: z.array(copilotMessageSchema).optional(),
@@ -129,7 +130,7 @@ export const bitbucketIngestionSchema = z.object({
 
 export const ingestionJobQuerySchema = z.object({
   jobId: uuidSchema.optional(),
-  action: z.enum(['status', 'branches', 'cancel']).optional(),
+  action: z.enum(['status', 'branches', 'cancel', 'validate']).optional(),
   owner: z.string().optional(),
   repo: z.string().optional(),
 });

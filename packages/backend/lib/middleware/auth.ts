@@ -1,14 +1,7 @@
-/**
- * API Authentication Middleware
- * 
- * Supports multiple authentication methods:
- * 1. API Key via X-API-Key header
- * 2. Bearer token via Authorization header
- * 3. Optional Supabase session for user-specific operations
- */
-
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server.js';
+import { randomBytes } from 'node:crypto';
 import { createClient } from '@/lib/supabase/server';
+import { extractApiKeyFromHeaders, hashApiKey, isApiKeyToken } from '../auth-contract';
 
 export interface AuthResult {
   authenticated: boolean;
@@ -22,8 +15,6 @@ export interface AuthenticatedRequest extends NextRequest {
   auth: AuthResult;
 }
 
-// API keys are stored in environment variables or database
-// For production, store hashed API keys in the database
 const VALID_API_KEYS = new Set(
   (process.env.COPILOT_API_KEYS || '').split(',').filter(Boolean)
 );
@@ -31,11 +22,8 @@ const VALID_API_KEYS = new Set(
 // Master API key for admin operations
 const MASTER_API_KEY = process.env.COPILOT_MASTER_API_KEY;
 
-/**
- * Verify API key from request headers
- */
 export async function verifyApiKey(request: NextRequest): Promise<AuthResult> {
-  const apiKey = request.headers.get('X-API-Key') || request.headers.get('x-api-key');
+  const apiKey = extractApiKey(request);
   
   if (!apiKey) {
     return { authenticated: false, method: 'none', error: 'No API key provided' };
@@ -51,12 +39,17 @@ export async function verifyApiKey(request: NextRequest): Promise<AuthResult> {
     return { authenticated: true, method: 'api-key', apiKeyId: hashApiKey(apiKey) };
   }
 
-  // Check database for API key (for dynamic key management)
+  const keyHashes = [hashApiKey(apiKey)];
+  const legacyHash = hashApiKeyLegacy(apiKey);
+  if (!keyHashes.includes(legacyHash)) {
+    keyHashes.push(legacyHash);
+  }
+
   const supabase = await createClient();
   const { data: keyRecord } = await supabase
     .from('api_keys')
     .select('id, user_id, permissions, expires_at')
-    .eq('key_hash', hashApiKey(apiKey))
+    .in('key_hash', keyHashes)
     .eq('is_active', true)
     .single();
 
@@ -76,9 +69,6 @@ export async function verifyApiKey(request: NextRequest): Promise<AuthResult> {
   return { authenticated: false, method: 'api-key', error: 'Invalid API key' };
 }
 
-/**
- * Verify Bearer token (JWT or access token)
- */
 export async function verifyBearerToken(request: NextRequest): Promise<AuthResult> {
   const authHeader = request.headers.get('Authorization');
   
@@ -87,6 +77,9 @@ export async function verifyBearerToken(request: NextRequest): Promise<AuthResul
   }
 
   const token = authHeader.substring(7);
+  if (isApiKeyToken(token)) {
+    return { authenticated: false, method: 'bearer', error: 'Bearer API keys are validated by API-key auth' };
+  }
   
   // Verify with Supabase
   const supabase = await createClient();
@@ -99,9 +92,6 @@ export async function verifyBearerToken(request: NextRequest): Promise<AuthResul
   return { authenticated: true, method: 'bearer', userId: user.id };
 }
 
-/**
- * Check Supabase session from cookies
- */
 export async function verifySupabaseSession(request: NextRequest): Promise<AuthResult> {
   const supabase = await createClient();
   const { data: { user }, error } = await supabase.auth.getUser();
@@ -113,9 +103,6 @@ export async function verifySupabaseSession(request: NextRequest): Promise<AuthR
   return { authenticated: true, method: 'supabase-session', userId: user.id };
 }
 
-/**
- * Main authentication function - tries multiple methods
- */
 export async function authenticate(
   request: NextRequest,
   options: {
@@ -125,7 +112,7 @@ export async function authenticate(
 ): Promise<AuthResult> {
   const { requireAuth = true, allowedMethods = ['api-key', 'bearer', 'supabase-session'] } = options;
 
-  // Try API key first (most common for SDK)
+  // Try API key first. Production SDK clients send Authorization: Bearer cpk_*.
   if (allowedMethods.includes('api-key')) {
     const apiKeyResult = await verifyApiKey(request);
     if (apiKeyResult.authenticated) {
@@ -133,7 +120,7 @@ export async function authenticate(
     }
   }
 
-  // Try Bearer token
+  // Try Bearer token for non-API-key user auth.
   if (allowedMethods.includes('bearer')) {
     const bearerResult = await verifyBearerToken(request);
     if (bearerResult.authenticated) {
@@ -154,16 +141,13 @@ export async function authenticate(
     return { 
       authenticated: false, 
       method: 'none', 
-      error: 'Authentication required. Provide X-API-Key header or Authorization: Bearer <token>' 
+      error: 'Authentication required. Provide Authorization: Bearer cpk_* for API access or a valid Supabase bearer/session token.' 
     };
   }
 
   return { authenticated: false, method: 'none' };
 }
 
-/**
- * Middleware wrapper for protected routes
- */
 export function withAuth(
   handler: (request: NextRequest, auth: AuthResult) => Promise<NextResponse>,
   options?: Parameters<typeof authenticate>[1]
@@ -174,7 +158,7 @@ export function withAuth(
     if (options?.requireAuth !== false && !auth.authenticated) {
       return NextResponse.json(
         { 
-          error: 'Unauthorized', 
+          error: 'Unauthorized',
           message: auth.error || 'Authentication required',
           code: 'AUTH_REQUIRED'
         },
@@ -186,10 +170,7 @@ export function withAuth(
   };
 }
 
-/**
- * Simple hash function for API keys (use bcrypt in production for storage)
- */
-function hashApiKey(key: string): string {
+export function hashApiKeyLegacy(key: string): string {
   let hash = 0;
   for (let i = 0; i < key.length; i++) {
     const char = key.charCodeAt(i);
@@ -199,14 +180,10 @@ function hashApiKey(key: string): string {
   return `key_${Math.abs(hash).toString(16)}`;
 }
 
-/**
- * Generate a new API key
- */
 export function generateApiKey(): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let key = 'cpk_'; // copilot key prefix
-  for (let i = 0; i < 32; i++) {
-    key += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return key;
+  return `cpk_${randomBytes(24).toString('base64url')}`;
+}
+
+export function extractApiKey(request: NextRequest): string | null {
+  return extractApiKeyFromHeaders(request.headers);
 }

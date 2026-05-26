@@ -1,100 +1,54 @@
 # ngx-copilot-platform
 
-> Angular AI copilot platform with a publishable SDK, a production-shaped RAG backend, and enterprise-style demos.
+> Angular AI copilot platform with a publishable SDK, a self-hosted RAG backend, and isolated demo/example surfaces.
 
 [![CI](https://github.com/AnkitParekh007/ngx-copilot-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/AnkitParekh007/ngx-copilot-platform/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@ankit-parekh-007/ngx-copilot-sdk.svg)](https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-This repository demonstrates the full stack behind a serious Angular copilot experience:
+This repository contains three distinct layers:
 
-- **Frontend SDK:** `@ankit-parekh-007/ngx-copilot-sdk` ships Angular 20 components for chat, streaming, RAG citations, tool timelines, and approval workflows.
-- **Backend platform:** a Next.js RAG service handles ingestion, embeddings, retrieval, streaming, auth boundaries, and rate limiting.
-- **Proof through execution:** runnable demos, an example consumer, tests, docs, and deployment workflows validate the architecture end to end.
+- `packages/sdk`: `@ankit-parekh-007/ngx-copilot-sdk`, an Angular 20 copilot UI and adapter SDK.
+- `packages/backend`: a Next.js backend that owns auth, retrieval, ingestion, streaming, and approval boundaries.
+- `apps/*` and `examples/*`: demo, admin, and sample surfaces kept in the repo for development and documentation, but not intended to define the production deployment target.
 
-If you are reviewing this as a recruiter, hiring manager, or engineering lead, the signal is in the combination:
+## Current status
 
-- Angular library design with typed provider and adapter boundaries
-- Real backend integration patterns for OpenAI, Supabase pgvector, SSE streaming, and ingestion
-- Enterprise UX patterns like approvals, source citations, and tool execution timelines
-- Monorepo packaging, CI, publish preparation, and documentation discipline
+- The SDK builds and its test suite passes.
+- The backend builds, typechecks, and exposes aligned platform contracts.
+- Public API auth is standardized on `Authorization: Bearer cpk_*` for SDK/API-key clients.
+- Stubbed browser automation is disabled from the public execution path until a production executor is implemented.
+- Demo/example apps remain in the repository, but GitHub Pages deployment is manual-only and should stay separate from any public product deployment.
 
----
+## Platform contract
 
-## What this platform proves
-
-- Typed adapter pattern decouples Angular UI from any backend
-- Real RAG pipeline: ingest -> embed -> retrieve -> stream
-- `cpk_` API key auth keeps LLM credentials off the browser
-- SSE streaming from Next.js to Angular via `NgxCopilotPlatformBackendAdapter`
-- Enterprise patterns: approval gates, tool timelines, multi-mode copilot shell
-
-**Status:** v0.1.0 preview. The SDK is buildable, tested, and documented. The backend is functional and ready to run with your own Supabase/OpenAI credentials.
-
-## Proven Now
-
-- `packages/sdk` test suite passes and the publishable Angular library builds successfully
-- `apps/demo-app` works in mock mode without any backend credentials
-- `apps/example-consumer` builds against `NgxCopilotPlatformBackendAdapter`
-- `packages/backend` builds with aligned `POST /api/copilot/chat/stream` SSE and `POST /api/copilot/rag/query` response contracts
-
----
-
-## Monorepo structure
-
-```text
-ngx-copilot-platform/
-|-- packages/
-|   |-- sdk/              @ankit-parekh-007/ngx-copilot-sdk - Angular library (publishable)
-|   `-- backend/          Next.js RAG API (self-hosted)
-|-- apps/
-|   |-- demo-app/         Angular docs and showcase
-|   |-- admin-ui/         Next.js shadcn/ui admin panel
-|   `-- example-consumer/ Angular app wired to the real backend
-|-- examples/
-|   |-- github-ingestion/
-|   |-- bitbucket-ingestion/
-|   `-- enterprise-rag-demo/
-|-- docs/
-|   |-- sdk/
-|   |-- backend/
-|   `-- platform-overview.md
-`-- supabase/             Database migrations and pgvector schema
-```
-
----
+| Endpoint | Method | Contract |
+|---|---|---|
+| `/api/copilot/chat` | `POST` | Returns `CopilotResponse` |
+| `/api/copilot/chat/stream` | `POST` | Accepts `CopilotRequest` JSON and returns SSE `CopilotEvent` messages |
+| `/api/copilot/rag/query` | `POST` | Returns raw `RagResult[]` |
+| `/api/copilot/tools/execute` | `POST` | Only production-enabled tools are executable; disabled tools return `501` |
+| `/api/copilot/approvals/:id/resolve` | `POST` | Resolves approval requests |
 
 ## Quick start
 
-### Option A — SDK only (mock backend, no server required)
+### SDK-only
 
 ```bash
 npm install @ankit-parekh-007/ngx-copilot-sdk
 ```
 
 ```ts
-// app.config.ts
 import { provideCopilot } from '@ankit-parekh-007/ngx-copilot-sdk';
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    // All config fields are optional. The mock adapter is used by default.
-    provideCopilot({ defaultMode: 'ask' }),
-  ],
+export const appConfig = {
+  providers: [provideCopilot({ defaultMode: 'ask' })],
 };
 ```
 
-```html
-<!-- any component template -->
-<ngx-copilot-shell />
-```
+The default adapter is mock-backed for local UI work. Keep that mode isolated from public product deployments.
 
-The mock adapter simulates streaming, RAG citations, tool timelines, and approval gates
-without any backend or API keys. Use this for local development and UI work.
-
----
-
-### Option B — Full stack (real backend integration)
+### Full stack
 
 ```bash
 git clone https://github.com/AnkitParekh007/ngx-copilot-platform.git
@@ -102,132 +56,54 @@ cd ngx-copilot-platform
 pnpm install
 
 cp packages/backend/.env.example packages/backend/.env.local
-# Fill in: SUPABASE_*, KV_REST_*, COPILOT_API_KEYS, OPENAI_API_KEY
+# Fill in SUPABASE_*, OPENAI_API_KEY, optional KV_REST_*, and COPILOT_API_KEYS
 
-corepack pnpm --filter @ngx-copilot/backend dev    # starts Next.js API on :3001
-corepack pnpm --filter example-consumer dev        # starts Angular consumer on :4201
-
-# Optional: verify the backend contract directly
-COPILOT_API_KEY=cpk_dev_your_key_here node scripts/smoke-platform-backend.mjs
+corepack pnpm --filter @ngx-copilot/backend dev
+corepack pnpm --filter example-consumer dev
 ```
 
-```ts
-// app.config.ts — wires the Angular SDK to the platform backend
-import { provideCopilot, providePlatformBackend } from '@ankit-parekh-007/ngx-copilot-sdk';
-import { environment } from './environments/environment';
+`apps/example-consumer` now expects runtime config instead of committed keys:
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideCopilot({ defaultMode: 'ask' }, { useMockBackend: false }),
-    providePlatformBackend({
-      apiUrl: environment.apiUrl,   // 'http://localhost:3001' in dev
-      apiKey: environment.apiKey,   // 'cpk_dev_your_key' — never hardcode in production
-    }),
-  ],
+```ts
+window.__COPILOT_RUNTIME_CONFIG__ = {
+  apiUrl: 'https://your-backend-host',
+  apiKey: 'cpk_your_runtime_key',
 };
 ```
 
-```ts
-// environments/environment.ts  (development — committed)
-export const environment = {
-  apiUrl: 'http://localhost:3001',
-  apiKey: 'cpk_dev_replace_with_your_key',
-};
-
-// environments/environment.prod.ts  (production — values injected at build time)
-export const environment = {
-  apiUrl: process.env['API_URL'] ?? '',
-  apiKey: process.env['API_KEY'] ?? '',
-};
-```
-
-> **Security note:** `cpk_` API keys authenticate with the backend, not with OpenAI or Supabase.
-> The backend holds those provider secrets. Never embed production keys in Angular source code.
-
----
-
-### Option C — Custom backend adapter
-
-Implement `CopilotBackendAdapter` to connect any backend:
-
-```ts
-import { CopilotBackendAdapter, CopilotRequest, CopilotEvent } from '@ankit-parekh-007/ngx-copilot-sdk';
-import { Observable } from 'rxjs';
-
-class MyAdapter implements CopilotBackendAdapter {
-  send(request: CopilotRequest): Observable<CopilotEvent> {
-    // return an Observable<CopilotEvent> from your own API
-  }
-}
-
-// app.config.ts
-provideCopilot({ defaultMode: 'ask' }, { backendAdapter: new MyAdapter() })
-```
-
----
-
-## SDK components
-
-| Component | Description |
-|---|---|
-| `<ngx-copilot-shell>` | Full chat shell with streaming, sources, timeline, and approvals |
-| `<ngx-copilot-chat>` | Message list and composer |
-| `<ngx-streaming-message>` | Character-by-character streaming renderer |
-| `<ngx-rag-source-card>` | RAG citation card with file path, URL, snippet, and score |
-| `<ngx-tool-call-timeline>` | Multi-step agent tool execution visualization |
-| `<ngx-approval-card>` | User approval gate with risk indicators and tone |
-| `<ngx-agent-mode-selector>` | Mode switcher for ask, plan, execute, and debug |
-
-## Backend ingestion endpoints
-
-| Endpoint | Description |
-|---|---|
-| `POST /api/ingestion/github` | Ingest a GitHub repository into pgvector |
-| `POST /api/ingestion/bitbucket` | Ingest a Bitbucket repository |
-| `POST /api/ingestion/documentation` | Crawl and ingest web documentation |
-| `GET /api/health` | Health check |
-
-## Platform backend contract
-
-| Endpoint | Method | Notes |
-|---|---|---|
-| `/api/copilot/chat` | `POST` | Non-streaming JSON response |
-| `/api/copilot/chat/stream` | `POST` | SSE stream that accepts `CopilotRequest` JSON |
-| `/api/copilot/rag/query` | `POST` | Returns raw `RagResult[]` |
-| `/api/copilot/tools/execute` | `POST` | Tool execution / approval entry point |
-| `/api/copilot/approvals/:id/resolve` | `POST` | Resolve approval requests |
-
----
-
-## Development commands
+Use the smoke script to verify the backend contract directly:
 
 ```bash
-pnpm build
-pnpm test
-pnpm lint
-pnpm build:sdk
-pnpm test:sdk
-pnpm pack:sdk
-pnpm deploy:pages
-pnpm smoke:backend
+COPILOT_API_KEY=cpk_your_runtime_key node scripts/smoke-platform-backend.mjs
 ```
 
----
+## Launch constraints
+
+- Do not deploy `apps/demo-app`, `apps/example-consumer`, or `examples/*` as the public product without an explicit production wrapper and runtime configuration strategy.
+- Do not expose disabled browser automation endpoints as if they were live capabilities.
+- Do not hardcode backend URLs or API keys in Angular source files.
+- Keep `CORS_ALLOWED_ORIGINS` explicit in production. Development-only localhost permissiveness is handled in middleware, not by production defaults.
+
+## Verification
+
+These commands currently pass in the repository:
+
+```bash
+corepack pnpm --filter @ngx-copilot/backend typecheck
+corepack pnpm --filter @ngx-copilot/backend test
+corepack pnpm --filter @ngx-copilot/backend build
+corepack pnpm --filter @ankit-parekh-007/ngx-copilot-sdk test
+corepack pnpm --filter example-consumer build
+corepack pnpm --filter admin-ui build
+```
 
 ## CI/CD
 
-| Workflow | Trigger | Action |
+| Workflow | Trigger | Purpose |
 |---|---|---|
-| `ci.yml` | Every push or PR | Lint, test, and build workspace targets |
-| `deploy-pages.yml` | Push to `main` or manual | Build and deploy the demo app to GitHub Pages |
-| `publish-npm.yml` | GitHub Release | Publish `@ankit-parekh-007/ngx-copilot-sdk` to npm with OIDC |
-| `deploy-backend.yml` | Backend changes | Build backend (deploy step is a configurable template) |
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md). Good first issues live in [GOOD_FIRST_ISSUES.md](./GOOD_FIRST_ISSUES.md).
+| `ci.yml` | Every push and PR | SDK tests, backend typecheck/tests, workspace builds |
+| `deploy-pages.yml` | Manual only | Builds and publishes the demo app intentionally |
+| `publish-npm.yml` | GitHub Release | Publishes `@ankit-parekh-007/ngx-copilot-sdk` |
 
 ## License
 

@@ -1,5 +1,6 @@
-import { streamText, tool } from 'ai'
+import { streamText } from 'ai'
 import { NextRequest, NextResponse } from 'next/server'
+import { mapSourceToRagResult, serializeSseEvent } from '@/lib/contracts'
 import { copilotTools } from '@/lib/services/copilot-tools'
 import { hybridSearch, buildContextFromSources } from '@/lib/services/rag'
 import { createApiHandler } from '@/lib/middleware/api-handler'
@@ -10,13 +11,12 @@ import type {
   CopilotEvent,
   CopilotMessage,
   RagResult,
-  ToolTimelineItem,
 } from '@/lib/types/copilot'
 
 const SYSTEM_PROMPTS: Record<CopilotMode, string> = {
   ask: `You are an expert Angular development assistant. Answer questions using available context from documentation and code. Always cite sources.`,
   plan: `You are a workflow planning assistant. Create detailed step-by-step execution plans with assumptions and risks. Request approval before execution.`,
-  execute: `You are an autonomous browser agent. Execute approved plans safely. Always ask approval for destructive actions.`,
+  execute: `You are an execution planning assistant. Refine approved plans into safe steps and never claim a browser action ran unless a production executor confirmed it.`,
   debug: `You are a debugging assistant. Help diagnose issues and suggest fixes with explanations.`,
 }
 
@@ -33,7 +33,7 @@ export const POST = createApiHandler(
     const stream = new ReadableStream({
       async start(controller) {
         const sendEvent = (event: CopilotEvent) => {
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`))
+          controller.enqueue(encoder.encode(serializeSseEvent(event)))
         }
 
         try {
@@ -51,19 +51,7 @@ export const POST = createApiHandler(
                 threshold: 0.6,
               })
               ragContext = buildContextFromSources(searchResults.sources)
-              sources = searchResults.sources.map(s => ({
-                id: s.id,
-                title: s.title || 'Untitled',
-                snippet: s.content.substring(0, 300),
-                score: s.similarity,
-                sourceType: s.type,
-                sourceUrl: s.url,
-                filePath: s.filePath,
-                fileKind: s.componentType,
-                repo: s.repoSlug,
-                branch: s.branch,
-                chunkId: s.id,
-              }))
+              sources = searchResults.sources.map(source => mapSourceToRagResult(source, 300))
             } catch (error) {
               console.error(`[${requestId}] RAG search failed:`, error)
             }
@@ -81,38 +69,11 @@ export const POST = createApiHandler(
           const messageId = crypto.randomUUID()
           sendEvent({ type: 'message-start', messageId })
 
-          const toolTimeline: ToolTimelineItem[] = []
           const result = streamText({
             model: 'anthropic/claude-sonnet-4',
             system: systemPrompt,
             prompt: message,
             tools: getModeTools(mode, newSessionId),
-            maxSteps: mode === 'execute' ? 15 : 5,
-            onStepFinish: async ({ stepType, toolCalls, toolResults }) => {
-              if (stepType === 'tool-call' && toolCalls) {
-                for (const toolCall of toolCalls) {
-                  const timelineItem: ToolTimelineItem = {
-                    id: toolCall.toolCallId,
-                    toolName: toolCall.toolName,
-                    summary: `Executing ${toolCall.toolName}`,
-                    status: 'running',
-                    startedAt: new Date().toISOString(),
-                  }
-                  toolTimeline.push(timelineItem)
-                  sendEvent({ type: 'tool-timeline', items: [...toolTimeline] })
-                }
-              }
-              if (stepType === 'tool-result' && toolResults) {
-                for (const toolResult of toolResults) {
-                  const item = toolTimeline.find(t => t.id === toolResult.toolCallId)
-                  if (item) {
-                    item.status = 'succeeded'
-                    item.finishedAt = new Date().toISOString()
-                    sendEvent({ type: 'tool-timeline', items: [...toolTimeline] })
-                  }
-                }
-              }
-            },
           })
 
           let fullContent = ''
@@ -166,7 +127,7 @@ export const POST = createApiHandler(
   }
 )
 
-function getModeTools(mode: CopilotMode, sessionId?: string) {
+function getModeTools(mode: CopilotMode, _sessionId?: string) {
   const baseTools = {
     searchKnowledgeBase: copilotTools.searchKnowledgeBase,
     generateFollowUpSuggestions: copilotTools.generateFollowUpSuggestions,
@@ -191,17 +152,6 @@ function getModeTools(mode: CopilotMode, sessionId?: string) {
         ...baseTools,
         createPlan: copilotTools.createPlan,
         getPageSelectors: copilotTools.getPageSelectors,
-        executeBrowserAction: tool({
-          ...copilotTools.executeBrowserAction,
-          execute: async (args) => {
-            return copilotTools.executeBrowserAction.execute({
-              ...args,
-              conversationId: sessionId || 'anonymous',
-            })
-          },
-        }),
-        readPageContent: copilotTools.readPageContent,
-        validatePageState: copilotTools.validatePageState,
       }
 
     case 'debug':

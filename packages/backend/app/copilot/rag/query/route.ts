@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { hybridSearch } from '@/lib/services/rag'
+import { mapSourceToRagResult } from '@/lib/contracts'
 import { createApiHandler } from '@/lib/middleware/api-handler'
 import { ragQuerySchema } from '@/lib/middleware/validation'
 import { assertServiceConfigs } from '@/lib/config'
@@ -18,24 +19,9 @@ export const POST = createApiHandler(
       documentLimit: Math.ceil(limit / 2),
       codeLimit: Math.ceil(limit / 2),
       threshold,
-      repoSlug: filters?.repoSlug,
-      branch: filters?.branch,
     })
 
-    const results: RagResult[] = searchResults.sources.map(s => ({
-      id: s.id,
-      title: s.title || 'Untitled',
-      snippet: s.content.substring(0, 500),
-      score: s.similarity,
-      sourceType: s.type,
-      sourceUrl: s.url,
-      filePath: s.filePath,
-      fileKind: s.componentType,
-      repo: s.repoSlug,
-      branch: s.branch,
-      chunkId: s.id,
-      tags: s.tags || [],
-    }))
+    const results: RagResult[] = searchResults.sources.map(source => mapSourceToRagResult(source))
 
     // Filter by source types if specified
     let filteredResults = results
@@ -50,6 +36,14 @@ export const POST = createApiHandler(
       filteredResults = filteredResults.filter(r => 
         r.fileKind === filters.componentType
       )
+    }
+
+    if (filters?.repoSlug) {
+      filteredResults = filteredResults.filter(r => r.repo === filters.repoSlug)
+    }
+
+    if (filters?.branch) {
+      filteredResults = filteredResults.filter(r => r.branch === filters.branch)
     }
 
     return NextResponse.json(filteredResults.slice(0, limit))

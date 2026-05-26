@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
 import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
+import { environment } from '../environments/environment';
 
-/**
- * Example consumer demonstrating the full-stack integration:
- * Angular SDK (@ankit-parekh-007/ngx-copilot-sdk) + Next.js backend (packages/backend).
- *
- * The NgxCopilotPlatformBackendAdapter is wired in app.config.ts via
- * provideCopilot() — this component needs no adapter-specific code.
- */
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -15,9 +9,9 @@ import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
   template: `
     <div class="app-layout">
       <header class="app-header">
-        <h1>ngx-copilot-platform — Example Consumer</h1>
+        <h1>ngx-copilot-platform - Example Consumer</h1>
         <p class="subtitle">
-          Angular 20 app wired to the real Next.js RAG backend
+          Angular 20 app wired to the platform backend contract
         </p>
       </header>
 
@@ -27,18 +21,24 @@ import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
           <p>
             This app uses <code>NgxCopilotPlatformBackendAdapter</code> to send
             messages to <code>packages/backend</code> at
-            <code>{{ apiUrl }}</code>.
+            <code>{{ apiUrl || 'runtime-config required' }}</code>.
           </p>
           <p>
-            The backend authenticates with your <code>cpk_</code> API key,
-            runs RAG against your Supabase vector store, and streams responses
-            back via Server-Sent Events.
+            The backend authenticates with your configured <code>cpk_</code> API
+            key, runs RAG against your Supabase vector store, and streams
+            responses back via Server-Sent Events.
+          </p>
+          <p *ngIf="!isConfigured" class="warning">
+            Runtime configuration is missing. Define
+            <code>window.__COPILOT_RUNTIME_CONFIG__</code> with
+            <code>apiUrl</code> and <code>apiKey</code> before using this app
+            against a live backend.
           </p>
           <h3>Quickstart</h3>
           <ol>
-            <li>Copy <code>packages/backend/.env.example</code> → <code>.env.local</code></li>
+            <li>Copy <code>packages/backend/.env.example</code> to <code>.env.local</code></li>
             <li>Run <code>pnpm --filter @ngx-copilot/backend dev</code></li>
-            <li>Update <code>src/environments/environment.ts</code> with your API key</li>
+            <li>Provide <code>window.__COPILOT_RUNTIME_CONFIG__</code> with your backend URL and API key</li>
             <li>Run <code>pnpm --filter example-consumer dev</code></li>
           </ol>
         </aside>
@@ -84,6 +84,13 @@ import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
       border-radius: 0.25rem;
       font-size: 0.8125rem;
     }
+    .warning {
+      color: #991b1b;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+    }
     .copilot-panel {
       display: flex;
       flex-direction: column;
@@ -95,5 +102,6 @@ import { CopilotShellComponent } from '@ankit-parekh-007/ngx-copilot-sdk';
   `],
 })
 export class AppComponent {
-  readonly apiUrl = 'http://localhost:3001';
+  readonly apiUrl = environment.apiUrl;
+  readonly isConfigured = !!environment.apiUrl && !!environment.apiKey;
 }

@@ -1,13 +1,19 @@
+interface RuntimeCopilotConfig {
+  apiUrl?: string;
+  apiKey?: string;
+}
+
+declare global {
+  interface Window {
+    __COPILOT_RUNTIME_CONFIG__?: RuntimeCopilotConfig;
+  }
+}
+
+const runtimeConfig =
+  typeof window !== 'undefined' ? window.__COPILOT_RUNTIME_CONFIG__ ?? {} : {};
+
 export const environment = {
   production: false,
-  /**
-   * Base URL of the ngx-copilot-platform backend (packages/backend).
-   * Run `pnpm --filter @ngx-copilot/backend dev` to start it on port 3001.
-   */
-  apiUrl: 'http://localhost:3001',
-  /**
-   * API key from your backend .env.local — COPILOT_API_KEYS value.
-   * For local dev, use any key listed in packages/backend/.env.local.
-   */
-  apiKey: 'cpk_dev_replace_with_your_key',
+  apiUrl: runtimeConfig.apiUrl ?? '',
+  apiKey: runtimeConfig.apiKey ?? '',
 };

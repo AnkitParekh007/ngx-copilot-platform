@@ -7,12 +7,14 @@
  * - Burst: 1000 requests/minute for lightweight endpoints
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server.js';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { hasServiceConfig } from '../config';
 
-let cachedRateLimiters: Record<string, Ratelimit> | null = null;
+export type RateLimitTier = 'standard' | 'heavy' | 'ingestion' | 'burst' | 'strict';
+
+let cachedRateLimiters: Record<RateLimitTier, Ratelimit> | null = null;
 
 function getRateLimiters() {
   if (!hasServiceConfig('redis')) {
@@ -62,8 +64,6 @@ function getRateLimiters() {
 
   return cachedRateLimiters;
 }
-
-export type RateLimitTier = keyof typeof rateLimiters;
 
 export interface RateLimitResult {
   success: boolean;
