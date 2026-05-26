@@ -11,20 +11,16 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
 
-    // SDK configuration — mode, feature flags, status label.
-    // apiBaseUrl is not required here because the adapter manages its own URL.
     provideCopilot({
       defaultMode: 'ask',
       statusLabel: 'Connected to platform backend',
     }, {
-      // Disable the built-in mock so the platform adapter is used exclusively.
       useMockBackend: false,
     }),
 
-    // Wire the production platform backend adapter as COPILOT_BACKEND_ADAPTER.
-    // ⚠️ Never hardcode production apiKey in source. Use environment files
-    //    injected at build time via CI secrets.
-    // For local mock-only development, remove this block and drop useMockBackend: false.
+    // The example consumer validates the live backend contract.
+    // Runtime configuration must inject apiUrl/apiKey, and execute mode remains
+    // intentionally hidden until a production browser executor is available.
     ...providePlatformBackend({
       apiUrl: environment.apiUrl,
       apiKey: environment.apiKey,

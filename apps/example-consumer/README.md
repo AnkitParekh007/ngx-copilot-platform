@@ -6,6 +6,7 @@ Minimal Angular 20 app for validating the real platform adapter path:
 - Backend: `packages/backend`
 
 This app is a development and integration surface. It is not meant to ship with committed backend URLs or keys.
+The visible example surface intentionally excludes execute mode until browser automation has a real production executor.
 
 ## What it proves
 

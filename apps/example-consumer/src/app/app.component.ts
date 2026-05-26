@@ -44,7 +44,7 @@ import { environment } from '../environments/environment';
         </aside>
 
         <section class="copilot-panel">
-          <ngx-copilot-shell />
+          <ngx-copilot-shell [modes]="supportedModes" />
         </section>
       </main>
     </div>
@@ -102,6 +102,7 @@ import { environment } from '../environments/environment';
   `],
 })
 export class AppComponent {
+  readonly supportedModes = ['ask', 'plan', 'debug'] as const;
   readonly apiUrl = environment.apiUrl;
   readonly isConfigured = !!environment.apiUrl && !!environment.apiKey;
 }

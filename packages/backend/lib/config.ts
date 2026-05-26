@@ -1,7 +1,8 @@
-type ConfigService = 'supabase' | 'openai' | 'redis';
+type ConfigService = 'supabase' | 'supabaseAdmin' | 'openai' | 'redis';
 
 const SERVICE_ENV_VARS: Record<ConfigService, string[]> = {
   supabase: ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY'],
+  supabaseAdmin: ['NEXT_PUBLIC_SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'],
   openai: ['OPENAI_API_KEY'],
   redis: ['KV_REST_API_URL', 'KV_REST_API_TOKEN'],
 };

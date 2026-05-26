@@ -19,6 +19,7 @@ This repository contains three distinct layers:
 - Public API auth is standardized on `Authorization: Bearer cpk_*` for SDK/API-key clients.
 - Stubbed browser automation is disabled from the public execution path until a production executor is implemented.
 - Demo/example apps remain in the repository, but GitHub Pages deployment is manual-only and should stay separate from any public product deployment.
+- Admin API-key lifecycle endpoints are available for create, list, rotate, revoke, and metadata updates through master-key protected routes.
 
 ## Platform contract
 
@@ -29,6 +30,10 @@ This repository contains three distinct layers:
 | `/api/copilot/rag/query` | `POST` | Returns raw `RagResult[]` |
 | `/api/copilot/tools/execute` | `POST` | Only production-enabled tools are executable; disabled tools return `501` |
 | `/api/copilot/approvals/:id/resolve` | `POST` | Resolves approval requests |
+| `/api/admin/api-keys` | `GET`, `POST` | List and create API keys with master-key auth |
+| `/api/admin/api-keys/:id` | `PATCH` | Update API-key metadata and active state |
+| `/api/admin/api-keys/:id/rotate` | `POST` | Rotate an API key and return the new plaintext key once |
+| `/api/admin/api-keys/:id/revoke` | `POST` | Revoke an API key |
 
 ## Quick start
 
@@ -83,6 +88,7 @@ COPILOT_API_KEY=cpk_your_runtime_key node scripts/smoke-platform-backend.mjs
 - Do not expose disabled browser automation endpoints as if they were live capabilities.
 - Do not hardcode backend URLs or API keys in Angular source files.
 - Keep `CORS_ALLOWED_ORIGINS` explicit in production. Development-only localhost permissiveness is handled in middleware, not by production defaults.
+- Keep execute-mode UI hidden in public launch surfaces until a production browser executor is implemented.
 
 ## Verification
 
@@ -103,6 +109,7 @@ corepack pnpm --filter admin-ui build
 |---|---|---|
 | `ci.yml` | Every push and PR | SDK tests, backend typecheck/tests, workspace builds |
 | `deploy-pages.yml` | Manual only | Builds and publishes the demo app intentionally |
+| `release-readiness.yml` | Manual or Release | Smokes a deployed backend using release secrets before public rollout |
 | `publish-npm.yml` | GitHub Release | Publishes `@ankit-parekh-007/ngx-copilot-sdk` |
 
 ## License

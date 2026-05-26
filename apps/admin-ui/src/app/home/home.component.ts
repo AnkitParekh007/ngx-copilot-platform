@@ -23,6 +23,9 @@ import { Component } from '@angular/core';
         These endpoints are designed to work with the <code class="text-sm bg-muted px-1 rounded">NgxCopilotPlatformBackendAdapter</code>
         from ngx-copilot-sdk.
       </p>
+      <p class="text-sm text-amber-700 mb-6">
+        Execute-mode browser automation is currently excluded from launch scope. The backend keeps execution boundaries explicit and only exposes production-enabled tools.
+      </p>
 
       <div class="space-y-4">
 
@@ -96,6 +99,35 @@ import { Component } from '@angular/core';
           </details>
         </div>
 
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4">Admin API Key Lifecycle</h2>
+      <div class="space-y-4">
+        <div class="p-6 rounded-xl border border-border bg-card">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2 py-1 text-xs font-semibold bg-emerald-500/20 text-emerald-500 rounded">GET</span>
+            <code class="text-lg">/api/admin/api-keys</code>
+          </div>
+          <p class="text-sm text-muted-foreground mb-3">
+            Lists recent API keys. Requires <code class="text-xs bg-muted px-1 rounded">Authorization: Bearer &lt;COPILOT_MASTER_API_KEY&gt;</code>.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-xl border border-border bg-card">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2 py-1 text-xs font-semibold bg-emerald-500/20 text-emerald-500 rounded">POST</span>
+            <code class="text-lg">/api/admin/api-keys</code>
+          </div>
+          <p class="text-sm text-muted-foreground mb-3">
+            Creates a new API key and returns the plaintext key once.
+          </p>
+          <details class="text-sm">
+            <summary class="cursor-pointer text-muted-foreground hover:text-foreground">Request/Response</summary>
+            <pre class="mt-2 p-4 bg-muted rounded-lg overflow-x-auto text-xs">{{ apiKeyLifecycleExample }}</pre>
+          </details>
+        </div>
       </div>
     </section>
 
@@ -276,6 +308,30 @@ export class HomeComponent {
 { "type": "completed", "requestId": "...", "output": {...} }
 // or
 { "type": "failed", "requestId": "...", "error": "..." }`;
+
+  readonly apiKeyLifecycleExample = `// Create key request
+{
+  "name": "production-web-client",
+  "permissions": ["read", "write"],
+  "rateLimitTier": "standard",
+  "expiresAt": "2026-12-31T23:59:59.000Z"
+}
+
+// Response
+{
+  "key": "cpk_...",
+  "record": {
+    "id": "uuid",
+    "name": "production-web-client",
+    "is_active": true
+  }
+}
+
+// Rotate
+POST /api/admin/api-keys/:id/rotate
+
+// Revoke
+POST /api/admin/api-keys/:id/revoke`;
 
   readonly approvalsEndpointExample = `// Request
 { "decision": "approved" } // or "rejected"
