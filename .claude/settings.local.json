@@ -16,7 +16,12 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); b=d['projects']['demo-app']['architect']['build']['configurations']['production']; print\\(json.dumps\\(b, indent=2\\)\\)\")",
       "Bash(pnpm --filter @ankit-parekh-007/ngx-copilot-sdk build)",
       "Bash(pnpm --filter @ankit-parekh-007/ngx-copilot-sdk test)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm --filter demo-app build)",
+      "WebFetch(domain:github.com)",
+      "Bash(grep:*)",
+      "Bash(find:*)"
     ]
   }
 }

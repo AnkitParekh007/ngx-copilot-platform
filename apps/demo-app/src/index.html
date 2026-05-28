@@ -4,18 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark light" />
-    <script>
-      (function(){
-        try {
-          var t = localStorage.getItem('ngx-copilot-sdk:theme');
-          if (t === 'light' || t === 'dark') {
-            document.documentElement.setAttribute('data-theme', t);
-          } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-            document.documentElement.setAttribute('data-theme', 'light');
-          }
-        } catch(e){}
-      })();
-    </script>
+    <script src="theme-init.js"></script>
     <title>ngx-copilot-sdk — AI Copilot SDK for Angular</title>
     <meta name="description" content="Production-ready Angular SDK for embedding agentic AI copilots — streaming chat, grounded RAG citations, tool timelines, and approval gates." />
     <base href="/" />
@@ -40,7 +29,7 @@
 
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';" />
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';" />
 
     <!-- PWA manifest & favicon -->
     <link rel="manifest" href="manifest.webmanifest" />

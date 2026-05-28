@@ -53,6 +53,7 @@
   "scripts": {
     "build": "ng-packagr -p ng-package.json && node scripts/strip-publish-dir.mjs",
     "test": "node --import tsx --test --test-concurrency=1 tests/**/*.spec.ts tests/components/**/*.spec.ts",
+    "test:coverage": "node --import tsx --test --test-concurrency=1 --experimental-test-coverage tests/**/*.spec.ts tests/components/**/*.spec.ts",
     "test:components": "node --import tsx --test --test-concurrency=1 tests/components/**/*.spec.ts",
     "lint": "eslint .",
     "pack": "npm pack",

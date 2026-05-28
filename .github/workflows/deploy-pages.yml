@@ -47,6 +47,9 @@ jobs:
       - name: Build demo app (GitHub Pages)
         run: pnpm --filter demo-app build:gh-pages
 
+      - name: Verify SPA fallback (404.html)
+        run: node apps/demo-app/scripts/check-pages-routes.mjs
+
       - name: Detect output directory
         id: detect-dir
         run: |

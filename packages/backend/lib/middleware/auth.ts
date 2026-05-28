@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server.js';
-import { randomBytes } from 'node:crypto';
+import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { createClient } from '@/lib/supabase/server';
 import { extractApiKeyFromHeaders, hashApiKey, isApiKeyToken } from '../auth-contract';
 
@@ -29,9 +29,13 @@ export async function verifyApiKey(request: NextRequest): Promise<AuthResult> {
     return { authenticated: false, method: 'none', error: 'No API key provided' };
   }
 
-  // Check master key
-  if (MASTER_API_KEY && apiKey === MASTER_API_KEY) {
-    return { authenticated: true, method: 'api-key', apiKeyId: 'master' };
+  // Check master key — use constant-time comparison to prevent timing attacks
+  if (MASTER_API_KEY) {
+    const a = Buffer.from(apiKey);
+    const b = Buffer.from(MASTER_API_KEY);
+    if (a.length === b.length && timingSafeEqual(a, b)) {
+      return { authenticated: true, method: 'api-key', apiKeyId: 'master' };
+    }
   }
 
   // Check against valid API keys
