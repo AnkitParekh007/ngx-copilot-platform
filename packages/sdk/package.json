@@ -1,6 +1,6 @@
 {
   "name": "@ankit-parekh-007/ngx-copilot-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Angular 20 SDK for AI copilot chat, streaming responses, RAG citations, tool timelines, and approval workflows in enterprise apps.",
   "keywords": [
     "angular",

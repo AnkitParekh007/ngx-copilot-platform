@@ -57,4 +57,4 @@ jobs:
 
       - name: Publish to npm
         working-directory: dist/sdk
-        run: npm publish --provenance --access public --tag beta
+        run: npm publish --provenance --access public
