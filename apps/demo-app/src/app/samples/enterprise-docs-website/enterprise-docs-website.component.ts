@@ -257,13 +257,16 @@ function groupByCategory(articles: DocsArticle[]): Map<string, DocsArticle[]> {
       position: sticky;
       top: calc(var(--topnav-height) + 1.2rem);
       max-height: calc(100vh - var(--topnav-height) - 2.4rem);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
       overflow: hidden;
-      align-content: start;
     }
 
     .article-nav {
       display: grid;
+      align-content: start;
       gap: 0.85rem;
+      min-height: 0;
       overflow: auto;
       padding-right: 0.1rem;
     }
