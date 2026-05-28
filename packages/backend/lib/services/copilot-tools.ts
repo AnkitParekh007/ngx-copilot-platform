@@ -167,27 +167,27 @@ export const generateFollowUpSuggestions = tool({
       if (topicCategory === 'documentation') {
         suggestions.push(
           { id: '1', text: 'Show me the related Angular implementation', mode: 'ask' },
-          { id: '2', text: 'Open this workflow in the browser', mode: 'execute' },
-          { id: '3', text: 'Create a test plan for this feature', mode: 'plan' },
+          { id: '2', text: 'Create a test plan for this feature', mode: 'plan' },
+          { id: '3', text: 'Summarize the implementation risks', mode: 'debug' },
         )
       } else if (topicCategory === 'code') {
         suggestions.push(
           { id: '1', text: 'Explain how this component works', mode: 'ask' },
           { id: '2', text: 'Find the API service used here', mode: 'ask' },
-          { id: '3', text: 'Navigate to this component in the app', mode: 'execute' },
+          { id: '3', text: 'Highlight the likely failure points', mode: 'debug' },
         )
       }
     } else if (currentMode === 'plan') {
       suggestions.push(
-        { id: '1', text: 'Execute this plan now', mode: 'execute' },
-        { id: '2', text: 'Add more steps to the plan', mode: 'plan' },
-        { id: '3', text: 'Compare with documentation', mode: 'ask' },
+        { id: '1', text: 'Add more steps to the plan', mode: 'plan' },
+        { id: '2', text: 'Compare with documentation', mode: 'ask' },
+        { id: '3', text: 'Review the plan for risks', mode: 'debug' },
       )
     } else if (currentMode === 'execute') {
       suggestions.push(
-        { id: '1', text: 'Take a screenshot of the current state', mode: 'execute' },
-        { id: '2', text: 'Verify the result against documentation', mode: 'ask' },
-        { id: '3', text: 'Continue with the next step', mode: 'execute' },
+        { id: '1', text: 'Verify the result against documentation', mode: 'ask' },
+        { id: '2', text: 'Inspect the plan for blockers', mode: 'debug' },
+        { id: '3', text: 'Refine the execution plan', mode: 'plan' },
       )
     }
 
