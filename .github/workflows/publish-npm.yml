@@ -2,7 +2,9 @@ name: Publish SDK to npm
 
 # Trigger on GitHub release published or manual dispatch.
 #
-# NPM TRUSTED PUBLISHING SETUP (no NPM_TOKEN needed):
+# NPM PUBLISHING OPTIONS:
+#
+# Option A: Trusted Publishing (preferred, no NPM_TOKEN needed)
 # 1. Log in to npmjs.com and open the package page for
 #    @ankit-parekh-007/ngx-copilot-sdk.
 # 2. Navigate to Settings -> Publishing -> Trusted Publishers.
@@ -13,6 +15,10 @@ name: Publish SDK to npm
 #    - Workflow filename: publish-npm.yml
 #    - Environment name: npm-publish (optional)
 # 4. The id-token: write permission below handles OIDC token exchange.
+#
+# Option B: NPM token fallback
+# - Add repository secret: NPM_TOKEN
+# - The workflow will use token auth automatically when present.
 #
 # Reference: https://docs.npmjs.com/generating-provenance-statements
 
@@ -57,4 +63,13 @@ jobs:
 
       - name: Publish to npm
         working-directory: dist/sdk
-        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -n "${NODE_AUTH_TOKEN}" ]; then
+            echo "Publishing with NPM_TOKEN fallback"
+            npm publish --access public
+          else
+            echo "Publishing with npm Trusted Publishing"
+            npm publish --provenance --access public
+          fi
