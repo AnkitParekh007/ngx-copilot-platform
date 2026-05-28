@@ -18,7 +18,7 @@ This repository contains three distinct layers:
 - The backend builds, typechecks, and exposes aligned platform contracts.
 - Public API auth is standardized on `Authorization: Bearer cpk_*` for SDK/API-key clients.
 - Stubbed browser automation is disabled from the public execution path until a production executor is implemented.
-- Demo/example apps remain in the repository, but GitHub Pages deployment is manual-only and should stay separate from any public product deployment.
+- Demo/example apps remain in the repository. GitHub Pages deployment auto-triggers on push to `main` for changes under `apps/demo-app/**` and `packages/sdk/**`. It should stay separate from any public product deployment.
 - Admin API-key lifecycle endpoints are available for create, list, rotate, revoke, and metadata updates through master-key protected routes.
 - Legacy approval mutation routes have been removed; public approval resolution goes through the authenticated `/api/copilot/approvals/:id/resolve` contract only.
 
@@ -110,7 +110,7 @@ corepack pnpm --filter admin-ui build
 | Workflow | Trigger | Purpose |
 |---|---|---|
 | `ci.yml` | Every push and PR | SDK tests, backend typecheck/tests, workspace builds |
-| `deploy-pages.yml` | Manual only | Builds and publishes the demo app intentionally |
+| `deploy-pages.yml` | Push to `main` (demo-app/sdk paths) or manual | Builds and publishes the demo app to GitHub Pages |
 | `release-readiness.yml` | Manual or Release | Smokes a deployed backend using release secrets before public rollout |
 | `publish-npm.yml` | GitHub Release | Publishes `@ankit-parekh-007/ngx-copilot-sdk` |
 

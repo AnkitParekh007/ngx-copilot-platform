@@ -1,0 +1,17 @@
+# Global owner — all files require review from @AnkitParekh007
+* @AnkitParekh007
+
+# SDK library
+/packages/sdk/ @AnkitParekh007
+
+# Backend
+/packages/backend/ @AnkitParekh007
+
+# Demo and consumer apps
+/apps/ @AnkitParekh007
+
+# CI/CD workflows
+/.github/workflows/ @AnkitParekh007
+
+# Supabase migrations (sensitive — always requires review)
+/supabase/migrations/ @AnkitParekh007

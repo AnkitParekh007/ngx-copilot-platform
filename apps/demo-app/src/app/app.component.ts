@@ -86,6 +86,15 @@ import { ThemeService } from './theme/theme.service';
       }
     </header>
 
+    <!-- Global mock-mode disclosure — visible on every route -->
+    <div class="mock-banner" role="status" aria-live="polite">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+        <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>Mock demo — no real AI calls are made. All responses are simulated locally.</span>
+    </div>
+
     <main class="page" [class.docs-main]="isDocsRoute()" [class.workspace-main]="isWorkspaceRoute()">
       <router-outlet />
     </main>
@@ -158,6 +167,23 @@ import { ThemeService } from './theme/theme.service';
     }
   `,
   styles: [`
+    /* ── Mock disclosure banner ──────────────────────── */
+    .mock-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.35rem 1rem;
+      background: rgba(245, 158, 11, 0.08);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.22);
+      color: #fcd34d;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .mock-banner svg { flex-shrink: 0; }
+
     /* ── Top nav ──────────────────────────────────────── */
     .top {
       display: flex;
@@ -384,7 +410,7 @@ import { ThemeService } from './theme/theme.service';
 
     /* ── Footer ───────────────────────────────────────── */
     .footer {
-      padding: 0 1.25rem 1.25rem;
+      padding: 0 1.5rem 1.75rem;
       background:
         radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 18%, transparent), transparent 30%),
         radial-gradient(circle at top right, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 28%),
@@ -393,7 +419,7 @@ import { ThemeService } from './theme/theme.service';
     }
 
     .footer-shell {
-      max-width: 1200px;
+      width: min(100%, 1600px);
       margin: 0 auto;
       border: 1px solid var(--border);
       background:
@@ -592,7 +618,7 @@ import { ThemeService } from './theme/theme.service';
       .star-btn { display: none; }
 
       .footer {
-        padding: 0 1rem 1rem;
+        padding: 0 1rem 1.1rem;
       }
 
       .footer-grid {

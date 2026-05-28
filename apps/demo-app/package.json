@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^20.3.19",
     "@angular/router": "^20.3.19",
     "@ankit-parekh-007/ngx-copilot-sdk": "workspace:*",
+    "@sentry/angular": "^8.0.0",
     "marked": "^12.0.0",
     "rxjs": "^7.8.0",
     "tslib": "^2.6.0",

@@ -1,0 +1,97 @@
+version: 2
+updates:
+  # Root workspace (turbo, shared devDependencies)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    groups:
+      turbo:
+        patterns:
+          - turbo
+
+  # Angular SDK
+  - package-ecosystem: npm
+    directory: /packages/sdk
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - sdk
+    groups:
+      angular:
+        patterns:
+          - "@angular/*"
+          - "@angular-devkit/*"
+          - "@angular-eslint/*"
+
+  # Next.js backend
+  - package-ecosystem: npm
+    directory: /packages/backend
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - backend
+    groups:
+      ai-sdk:
+        patterns:
+          - ai
+          - "@ai-sdk/*"
+      supabase:
+        patterns:
+          - "@supabase/*"
+      radix-ui:
+        patterns:
+          - "@radix-ui/*"
+
+  # Demo app
+  - package-ecosystem: npm
+    directory: /apps/demo-app
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - demo
+
+  # Admin UI
+  - package-ecosystem: npm
+    directory: /apps/admin-ui
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - admin-ui
+
+  # Example consumer
+  - package-ecosystem: npm
+    directory: /apps/example-consumer
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+
+  # GitHub Actions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - ci

@@ -1,14 +1,12 @@
 name: Deploy Backend
 
-# Builds and verifies the backend on every main/master push that touches packages/backend/.
-# Public rollout should run the release-readiness smoke workflow against the deployed target
-# before enabling traffic or cutting a release.
-# Deployment step is intentionally left as a commented template - uncomment and adapt
-# for whichever hosting platform you use (Railway, Fly.io, Render, Docker/SSH, etc.).
+# Builds and verifies the backend on every main push that touches packages/backend/.
+# Deployment is performed manually or via your chosen platform's own CI integration.
+# See commented options below for Railway, Fly.io, Render, or self-hosted SSH.
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
     paths:
       - 'packages/backend/**'
       - '.github/workflows/deploy-backend.yml'
@@ -35,6 +33,7 @@ jobs:
       - name: Build backend
         run: pnpm --filter @ngx-copilot/backend build
         env:
+          # Stub env vars so Next.js build doesn't fail without real credentials
           NEXT_PUBLIC_SUPABASE_URL: https://stub.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: stub-anon-key
           SUPABASE_SERVICE_ROLE_KEY: stub-service-role-key
@@ -44,8 +43,7 @@ jobs:
           OPENAI_API_KEY: sk-stub
 
       # ------------------------------------------------------------------
-      # DEPLOYMENT - uncomment ONE of the options below and add the
-      # required secrets in your GitHub repo Settings -> Secrets.
+      # DEPLOYMENT — uncomment the option that matches your host
       # ------------------------------------------------------------------
 
       # Option A: Railway
@@ -62,10 +60,11 @@ jobs:
       # Secrets needed: FLY_API_TOKEN
       # Requires a fly.toml inside packages/backend/
       #
-      # - name: Deploy to Fly.io
+      # - name: Set up flyctl
       #   uses: superfly/flyctl-actions/setup-flyctl@master
-      # - run: flyctl deploy --remote-only
+      # - name: Deploy to Fly.io
       #   working-directory: packages/backend
+      #   run: flyctl deploy --remote-only
       #   env:
       #     FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
@@ -75,7 +74,7 @@ jobs:
       # - name: Deploy to Render
       #   run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
 
-      # Option D: Self-hosted via SSH + Docker
+      # Option D: Self-hosted / SSH
       # Secrets needed: SSH_HOST, SSH_USER, SSH_KEY
       #
       # - name: Deploy via SSH
@@ -85,8 +84,8 @@ jobs:
       #     username: ${{ secrets.SSH_USER }}
       #     key: ${{ secrets.SSH_KEY }}
       #     script: |
-      #       cd /srv/ngx-copilot-platform
-      #       git pull origin master
-      #       docker build -t ngx-copilot-backend packages/backend
-      #       docker stop copilot-backend || true
-      #       docker run -d --name copilot-backend --env-file .env -p 3001:3001 ngx-copilot-backend
+      #       cd /srv/ngx-copilot-backend
+      #       git pull origin main
+      #       pnpm install --frozen-lockfile
+      #       pnpm --filter @ngx-copilot/backend build
+      #       pm2 restart ngx-copilot-backend
