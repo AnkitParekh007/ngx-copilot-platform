@@ -13,7 +13,7 @@
 This repository packages that idea into three layers:
 
 - `packages/sdk`
-  `@ankit-parekh-007/ngx-copilot-sdk`, an Angular 20 SDK for copilot UI, streaming events, citations, approval cards, and adapter-driven integration.
+  `@ankit-parekh-007/ngx-copilot-sdk`, an Angular SDK for copilot UI, streaming events, citations, approval cards, and adapter-driven integration.
 - `packages/backend`
   a Next.js backend that owns auth, retrieval, ingestion, API-key lifecycle, SSE streaming, and approval boundaries.
 - `apps/*` and `examples/*`
