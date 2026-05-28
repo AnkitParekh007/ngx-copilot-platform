@@ -10,7 +10,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     <div class="article-header">
       <div class="header-meta">
         <span class="header-category">Getting Started</span>
-        <span class="badge badge-preview">0.1.0 Preview</span>
+        <span class="badge badge-preview">0.1.1 Preview</span>
       </div>
       <h1>ngx-copilot-sdk</h1>
       <p class="header-desc">
@@ -125,10 +125,10 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     <h2 id="preview-status">Preview status</h2>
     <div class="callout callout-warning">
       <div>
-        <strong>0.1.0 preview —</strong> APIs are stabilising but may change before 1.0.
+        <strong>0.1.1 preview —</strong> APIs are stabilising but may change before 1.0.
         UI components, backend adapters, and <code>CopilotService</code> are marked <em>Preview</em>.
         Core config helpers (<code>provideCopilot</code>, model interfaces) target stable-intent.
-        Pin the version in production: <code>"&#64;ankit-parekh-007/ngx-copilot-sdk": "0.1.0"</code>.
+        Pin the version in production: <code>"&#64;ankit-parekh-007/ngx-copilot-sdk": "0.1.1"</code>.
       </div>
     </div>
 
@@ -413,16 +413,15 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     .path-card code { font-size: 0.84rem; background: var(--code-inline-bg); color: var(--code-inline-text); padding: 0.1rem 0.3rem; border-radius: 3px; }
 
     .flow-diagram {
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(210px, 1fr) minmax(140px, 0.6fr) minmax(210px, 1fr) minmax(140px, 0.6fr) minmax(170px, 0.85fr);
       align-items: center;
-      flex-wrap: nowrap;
-      gap: 0;
+      gap: 0.9rem;
       padding: 1.25rem 1.5rem;
       background: var(--bg-subtle);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       margin: 1.25rem 0 2rem;
-      overflow-x: auto;
     }
 
     .flow-step {
@@ -430,7 +429,6 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       flex-direction: column;
       gap: 0.35rem;
       min-width: 0;
-      flex: 1 1 0;
     }
 
     .flow-step-label {
@@ -450,6 +448,7 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       border-radius: var(--radius-md);
       border: 1.5px solid var(--border);
       background: var(--bg);
+      min-height: 112px;
     }
 
     .flow-step-browser .flow-step-body { border-color: var(--accent); }
@@ -467,11 +466,10 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.15rem;
-      padding: 0 0.75rem;
-      min-width: 96px;
-      flex: 0 0 96px;
-      padding-top: 1.5rem;
+      justify-content: center;
+      gap: 0.3rem;
+      min-width: 0;
+      padding-top: 1.35rem;
     }
 
     .flow-arrow::before {
@@ -480,22 +478,27 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
       width: 100%;
       height: 1.5px;
       background: var(--border-strong);
-      margin-bottom: 0.3rem;
+      position: relative;
     }
 
     .flow-arrow-label {
-      font-size: 0.72rem;
+      font-size: 0.69rem;
       font-weight: 600;
       color: var(--text-subtle);
-      white-space: nowrap;
       text-align: center;
+      line-height: 1.35;
+      max-width: 16ch;
+      text-wrap: balance;
     }
 
     .flow-arrow-sub {
-      font-size: 0.68rem;
+      font-size: 0.64rem;
       color: var(--text-subtle);
       font-family: monospace;
-      white-space: nowrap;
+      text-align: center;
+      line-height: 1.35;
+      word-break: break-word;
+      max-width: 16ch;
     }
 
     @media (max-width: 1100px) {
@@ -503,9 +506,24 @@ import { DocsCodeBlockComponent } from './docs-code-block.component';
     }
 
     @media (max-width: 900px) {
-      .flow-diagram { flex-wrap: wrap; }
-      .flow-step { min-width: 220px; flex: 1 1 220px; }
-      .flow-arrow { flex: 1 1 100%; min-width: 0; }
+      .flow-diagram {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .flow-arrow {
+        padding-top: 0;
+      }
+
+      .flow-arrow::before {
+        width: 1.5px;
+        height: 28px;
+      }
+
+      .flow-arrow-label,
+      .flow-arrow-sub {
+        max-width: none;
+      }
     }
 
     @media (max-width: 700px) {

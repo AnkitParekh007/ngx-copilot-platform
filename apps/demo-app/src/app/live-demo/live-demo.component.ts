@@ -12,7 +12,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankit-parekh-007/ngx-cop
       <div class="hero-eyebrow">
         <span class="eyebrow-chip">Open-source</span>
         <span class="eyebrow-chip">Angular 20</span>
-        <span class="eyebrow-chip eyebrow-preview">0.1.0 Preview</span>
+        <span class="eyebrow-chip eyebrow-preview">0.1.1 Preview</span>
         <span class="eyebrow-chip eyebrow-mock" title="No real AI calls are made — responses are scripted mock data for demonstration purposes">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style="vertical-align:-1px">
             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
@@ -187,7 +187,7 @@ import { CopilotContext, CopilotShellComponent } from '@ankit-parekh-007/ngx-cop
 
     <!-- Preview disclaimer -->
     <div class="disclaimer" role="note">
-      <strong>Preview SDK — 0.1.0:</strong>
+      <strong>Preview SDK — 0.1.1:</strong>
       This SDK is under active development. APIs may change before 1.0.
       It does not include real LLM provider integrations in the browser — provider secrets belong behind your backend adapter.
       All RetailOps PXM demo data is entirely fictional.
@@ -307,7 +307,8 @@ import { CopilotContext, CopilotShellComponent } from '@ankit-parekh-007/ngx-cop
       border: 1px solid rgba(148,163,184,0.2);
       border-radius: 0.75rem;
       padding: 0.65rem 1rem;
-      max-width: 500px;
+      width: fit-content;
+      max-width: min(100%, 760px);
     }
 
     .install-label {
@@ -328,6 +329,8 @@ import { CopilotContext, CopilotShellComponent } from '@ankit-parekh-007/ngx-cop
       font-size: 0.9rem;
       color: #86efac;
       flex: 1;
+      min-width: max-content;
+      white-space: nowrap;
     }
 
     .copy-btn {

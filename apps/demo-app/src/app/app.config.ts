@@ -9,7 +9,7 @@ export const appConfig: ApplicationConfig = {
     provideCopilot({
       apiBaseUrl: '/api/copilot',
       defaultMode: 'plan',
-      statusLabel: '0.1.0 preview SDK — local mock demo',
+      statusLabel: '0.1.1 preview SDK - local mock demo',
       enableApprovals: true,
       enableRagSources: true,
       enableToolTimeline: true,

@@ -86,22 +86,74 @@ import { ThemeService } from './theme/theme.service';
       }
     </header>
 
-    <main class="page" [class.docs-main]="isDocsRoute()">
+    <main class="page" [class.docs-main]="isDocsRoute()" [class.workspace-main]="isWorkspaceRoute()">
       <router-outlet />
     </main>
 
     @if (!isDocsRoute()) {
       <footer class="footer">
-        <div class="footer-inner">
-          <span class="footer-brand">ngx-copilot-sdk</span>
-          <span class="footer-dot">&middot;</span>
-          <span>0.1.0 preview &middot; MIT License</span>
-          <span class="footer-dot">&middot;</span>
-          <a href="https://github.com/AnkitParekh007/ngx-copilot-platform" target="_blank" rel="noopener">GitHub</a>
-          <span class="footer-dot">&middot;</span>
-          <a href="https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk" target="_blank" rel="noopener">npm</a>
+        <div class="footer-shell">
+          <div class="footer-grid">
+            <div class="footer-brand-block">
+              <div class="footer-eyebrow">Angular AI Platform</div>
+              <div class="footer-brand-row">
+                <span class="footer-brand">ngx-copilot-sdk</span>
+                <span class="footer-version">v0.1.1</span>
+              </div>
+              <p class="footer-summary">
+                Enterprise-grade Angular copilot SDK for streaming chat, retrieval-backed answers,
+                approval workflows, and production-aligned backend integration.
+              </p>
+              <div class="footer-actions">
+                <a href="https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk" target="_blank" rel="noopener">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0v1.336H8.001V8.667h5.334v5.332h-2.669v-.001zm12.001 0h-1.33v-4h-1.336v4h-1.335v-4h-1.33v4h-2.671V8.667h8.002v5.331z"/>
+                  </svg>
+                  <span>Install package</span>
+                </a>
+                <a href="https://github.com/AnkitParekh007/ngx-copilot-platform" target="_blank" rel="noopener">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                  </svg>
+                  <span>View source</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-panel">
+              <div class="footer-panel-title">Launch Scope</div>
+              <div class="footer-status-row">
+                <span class="footer-status-dot"></span>
+                <span>SDK + backend API platform ready for evaluation</span>
+              </div>
+              <div class="footer-panel-copy">
+                Public launch scope excludes autonomous browser execution. The current release focuses on
+                production-safe chat, RAG, approvals, and platform integration.
+              </div>
+            </div>
+
+            <div class="footer-links-block">
+              <div class="footer-links-title">Resources</div>
+              <div class="footer-links">
+                <a routerLink="/docs">Documentation</a>
+                <a routerLink="/showcase">Showcase</a>
+                <a href="https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk" target="_blank" rel="noopener">npm Registry</a>
+                <a href="https://github.com/AnkitParekh007/ngx-copilot-platform" target="_blank" rel="noopener">GitHub Repository</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <div class="footer-meta">
+              <span>MIT License</span>
+              <span class="footer-dot">&middot;</span>
+              <span>Built for Angular 20</span>
+              <span class="footer-dot">&middot;</span>
+              <span>Production-focused platform architecture</span>
+            </div>
+            <div class="footer-note">RetailOps PXM is fictional demo data used only for showcase content.</div>
+          </div>
         </div>
-        <div class="footer-note">RetailOps PXM is fictional demo data &mdash; not a real product or company.</div>
       </footer>
     }
   `,
@@ -326,40 +378,211 @@ import { ThemeService } from './theme/theme.service';
       margin: 0 auto;
     }
 
-    /* ── Footer ───────────────────────────────────────── */
-    .footer {
-      padding: 0.85rem 1.25rem;
-      background: var(--bg-card-solid);
-      color: var(--text-subtle);
-      font-size: 0.88rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      border-top: 1px solid var(--border);
+    .page.workspace-main {
+      max-width: min(1720px, calc(100vw - 2rem));
     }
 
-    .footer-inner {
+    /* ── Footer ───────────────────────────────────────── */
+    .footer {
+      padding: 0 1.25rem 1.25rem;
+      background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 18%, transparent), transparent 30%),
+        radial-gradient(circle at top right, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 28%),
+        transparent;
+      color: var(--text-subtle);
+    }
+
+    .footer-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 28%),
+        radial-gradient(circle at left center, color-mix(in srgb, var(--accent-2) 8%, transparent) 0%, transparent 24%),
+        linear-gradient(180deg,
+          color-mix(in srgb, var(--bg-card-solid) 90%, transparent 10%),
+          color-mix(in srgb, var(--bg-card-solid) 98%, transparent 2%)),
+        var(--bg-card-solid);
+      box-shadow: var(--shadow-lg);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, 1fr) minmax(220px, 0.8fr);
+      gap: 1.5rem;
+      padding: 1.8rem;
+    }
+
+    .footer-brand-block,
+    .footer-panel,
+    .footer-links-block {
+      min-width: 0;
+    }
+
+    .footer-eyebrow,
+    .footer-panel-title,
+    .footer-links-title {
+      font-size: 0.73rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+
+    .footer-brand-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
       align-items: center;
+      gap: 0.7rem;
+      flex-wrap: wrap;
     }
 
     .footer-brand {
       font-weight: 700;
-      color: var(--text-muted);
+      color: var(--text);
       font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 0.85rem;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-version {
+      padding: 0.22rem 0.56rem;
+      border-radius: 999px;
+      border: 1px solid var(--pill-accent-border, rgba(91, 140, 255, 0.38));
+      background: rgba(91, 140, 255, 0.12);
+      color: var(--accent-text);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .footer-summary,
+    .footer-panel-copy {
+      margin: 0;
+      line-height: 1.65;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-width: 58ch;
+    }
+
+    .footer-summary {
+      margin-top: 0.9rem;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .footer-actions a,
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.16s ease, transform 0.16s ease;
+    }
+
+    .footer-actions a:hover,
+    .footer-links a:hover {
+      color: var(--accent-2);
+      text-decoration: none;
+      transform: translateX(2px);
+    }
+
+    .footer-panel {
+      padding: 1rem 1.05rem;
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent 15%);
+      border-radius: 18px;
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--bg-subtle) 92%, transparent 8%),
+        color-mix(in srgb, var(--bg-card-solid) 96%, transparent 4%)
+      );
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .footer-status-row {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .footer-status-dot {
+      width: 0.62rem;
+      height: 0.62rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #57d38c, #26b66d);
+      box-shadow: 0 0 0 0.28rem rgba(87, 211, 140, 0.14);
+      flex-shrink: 0;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 0.75rem;
+      font-size: 0.92rem;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.8rem 1.2rem;
+      border-top: 1px solid color-mix(in srgb, var(--border) 78%, transparent 22%);
+      background: color-mix(in srgb, var(--bg-subtle) 78%, transparent 22%);
+    }
+
+    .footer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.84rem;
+      color: var(--text-subtle);
     }
 
     .footer-dot { color: var(--border-strong); }
 
-    .footer a { color: var(--accent); text-decoration: none; }
-    .footer a:hover { color: var(--accent-2); text-decoration: underline; }
-
     .footer-note {
       font-size: 0.82rem;
       color: var(--text-subtle);
+      text-align: right;
+    }
+
+    :host-context(:root[data-resolved-theme="light"]) .footer-shell,
+    :host-context(:root[data-theme="light"]) .footer-shell {
+      background:
+        radial-gradient(circle at top right, rgba(79, 70, 229, 0.12) 0%, transparent 26%),
+        radial-gradient(circle at left center, rgba(219, 39, 119, 0.08) 0%, transparent 22%),
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,255,0.98)),
+        var(--bg-card-solid);
+      box-shadow: 0 24px 60px rgba(79, 70, 229, 0.12);
+    }
+
+    :host-context(:root[data-resolved-theme="light"]) .footer-panel,
+    :host-context(:root[data-theme="light"]) .footer-panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(243,246,255,0.9));
+      border-color: rgba(99, 102, 241, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    :host-context(:root[data-resolved-theme="light"]) .footer-bottom,
+    :host-context(:root[data-theme="light"]) .footer-bottom {
+      background: rgba(247, 249, 255, 0.88);
+      border-top-color: rgba(99, 102, 241, 0.16);
     }
 
     @media (max-width: 768px) {
@@ -367,6 +590,25 @@ import { ThemeService } from './theme/theme.service';
       .mobile-menu-btn { display: flex; }
       .top { height: auto; }
       .star-btn { display: none; }
+
+      .footer {
+        padding: 0 1rem 1rem;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        padding: 1.25rem;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1.25rem 1.15rem;
+      }
+
+      .footer-note {
+        text-align: left;
+      }
     }
 
     /* Docs mode: let docs layout handle full height */
@@ -379,6 +621,7 @@ export class AppComponent {
   private _theme = inject(ThemeService);
 
   isDocsRoute = signal(false);
+  isWorkspaceRoute = signal(false);
   mobileNavOpen = signal(false);
   isScrolled = signal(false);
 
@@ -391,6 +634,7 @@ export class AppComponent {
     this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         this.isDocsRoute.set(e.urlAfterRedirects.startsWith('/docs'));
+        this.isWorkspaceRoute.set(e.urlAfterRedirects.startsWith('/samples/'));
         this.mobileNavOpen.set(false);
       }
     });

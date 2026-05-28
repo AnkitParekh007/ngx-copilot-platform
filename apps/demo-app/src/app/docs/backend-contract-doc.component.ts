@@ -254,11 +254,24 @@ data: {
       <app-docs-code-block language="json" [code]="doneEventSnippet" />
     </section>
 
-    <div class="callout callout-info">
-      <strong>HTTP headers for SSE:</strong> Your backend endpoint must set
-      <code>Content-Type: text/event-stream</code>, <code>Cache-Control: no-cache</code>, and
-      <code>X-Accel-Buffering: no</code> (for Nginx). Disable any response buffering middleware for this route.
-    </div>
+    <section class="sse-note" aria-labelledby="sse-headers-title">
+      <div class="sse-note-head">
+        <span class="sse-note-badge">Streaming</span>
+        <h2 id="sse-headers-title">HTTP headers for SSE</h2>
+      </div>
+      <p class="sse-note-copy">
+        Your backend endpoint should return these headers on the streaming route:
+      </p>
+      <div class="sse-header-list">
+        <code>Content-Type: text/event-stream</code>
+        <code>Cache-Control: no-cache</code>
+        <code>X-Accel-Buffering: no</code>
+      </div>
+      <p class="sse-note-foot">
+        Use <code>X-Accel-Buffering: no</code> when you are serving SSE through Nginx, and disable any
+        response buffering middleware for this route so chunks flush immediately.
+      </p>
+    </section>
   `,
   styles: [`
     :host { display: block; }
@@ -292,6 +305,68 @@ data: {
       line-height: 1.65;
       margin: 0 0 0.75rem;
     }
+    .sse-note {
+      margin-top: 2rem;
+      padding: 1.1rem 1.15rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border, #e2e8f0);
+      background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--accent, #4f46e5) 10%, transparent) 0%, transparent 24%),
+        linear-gradient(180deg, color-mix(in srgb, var(--bg-subtle, #ffffff) 96%, transparent 4%), color-mix(in srgb, var(--bg-muted, #f8fafc) 92%, transparent 8%));
+      box-shadow: var(--shadow-sm, none);
+    }
+    .sse-note-head {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.55rem;
+    }
+    .sse-note-head h2 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text, #0f172a);
+      border: none;
+      padding: 0;
+    }
+    .sse-note-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.22rem 0.62rem;
+      border-radius: 999px;
+      background: var(--accent-light, rgba(99,102,241,0.12));
+      border: 1px solid var(--border-strong, rgba(99,102,241,0.28));
+      color: var(--accent-text, #4338ca);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .sse-note-copy,
+    .sse-note-foot {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: var(--text, #334155);
+    }
+    .sse-header-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin: 0.9rem 0 0.85rem;
+    }
+    .sse-header-list code {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 0.42rem 0.72rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border, #dbe4f0) 85%, transparent 15%);
+      background: color-mix(in srgb, var(--bg-card-solid, #ffffff) 88%, var(--accent-light, rgba(99,102,241,0.12)) 12%);
+      color: var(--text, #0f172a);
+      box-shadow: var(--shadow-sm, none);
+    }
     a { color: #1d4ed8; }
     code {
       font-family: 'Fira Code', monospace;
@@ -300,8 +375,45 @@ data: {
       padding: 0.1rem 0.3rem;
       border-radius: 4px;
     }
-    :root[data-resolved-theme="dark"] .callout-info { background: rgba(30,58,138,0.2); border-color: rgba(30,58,138,0.4); color: #93c5fd; }
-    :root[data-resolved-theme="dark"] code { background: #1e293b; }
+    :host-context([data-resolved-theme="dark"]) .callout-info,
+    :host-context([data-theme="dark"]) .callout-info {
+      background: rgba(30,58,138,0.2);
+      border-color: rgba(30,58,138,0.4);
+      color: #93c5fd;
+    }
+    :host-context([data-resolved-theme="dark"]) code,
+    :host-context([data-theme="dark"]) code {
+      background: #1e293b;
+    }
+    :host-context([data-resolved-theme="dark"]) .sse-note,
+    :host-context([data-theme="dark"]) .sse-note {
+      background:
+        radial-gradient(circle at top right, rgba(91, 140, 255, 0.14) 0%, transparent 24%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.98));
+      border-color: rgba(91, 140, 255, 0.24);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    }
+    :host-context([data-resolved-theme="dark"]) .sse-note-head h2,
+    :host-context([data-theme="dark"]) .sse-note-head h2,
+    :host-context([data-resolved-theme="dark"]) .sse-note-copy,
+    :host-context([data-theme="dark"]) .sse-note-copy,
+    :host-context([data-resolved-theme="dark"]) .sse-note-foot,
+    :host-context([data-theme="dark"]) .sse-note-foot {
+      color: #d6deee;
+    }
+    :host-context([data-resolved-theme="dark"]) .sse-note-badge,
+    :host-context([data-theme="dark"]) .sse-note-badge {
+      background: rgba(91, 140, 255, 0.14);
+      border-color: rgba(91, 140, 255, 0.3);
+      color: #c5d4ff;
+    }
+    :host-context([data-resolved-theme="dark"]) .sse-header-list code,
+    :host-context([data-theme="dark"]) .sse-header-list code {
+      background: rgba(30, 41, 59, 0.96);
+      border-color: rgba(91, 140, 255, 0.28);
+      color: #e8eefc;
+      box-shadow: none;
+    }
   `],
 })
 export class BackendContractDocComponent {

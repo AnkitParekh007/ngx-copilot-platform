@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, computed, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   CopilotMessage,
@@ -27,6 +27,8 @@ interface FlatNode {
   node: FileNode;
   depth: number;
 }
+
+type ResizeHandle = 'left' | 'right';
 
 const TAB_SUMMARIES: Record<string, string> = {
   dashboard: 'Operating snapshot for catalog throughput, review load, and channel readiness.',
@@ -109,8 +111,12 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
         }
       </section>
 
-      <section class="workspace-main-grid codebase-main-grid">
-        <article class="workspace-panel">
+      <section
+        #workspaceTriad
+        class="workspace-triad"
+        [class.is-resizing]="activeResizeHandle() !== null"
+        [style.grid-template-columns]="workspaceTriadColumns()">
+        <article class="workspace-panel workspace-panel-resizable product-panel">
           <div class="workspace-section-head">
             <div>
               <div class="workspace-section-eyebrow">Product workspace</div>
@@ -332,12 +338,19 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
           </div>
         </article>
 
-        <article class="workspace-panel repo-panel">
+        <div
+          class="panel-resize-handle"
+          aria-hidden="true"
+          (pointerdown)="startResize($event, 'left')">
+          <span></span>
+        </div>
+
+        <article class="workspace-panel workspace-panel-resizable repo-panel explorer-panel">
           <div class="workspace-section-head">
             <div>
               <div class="workspace-section-eyebrow">Repository navigator</div>
               <h2>Inspect the files behind the answer</h2>
-              <p>The file tree, code preview, and prompt results are aligned so the copilot feels auditable.</p>
+              <p>The explorer stays synced with grounded prompts so the workspace feels auditable.</p>
             </div>
             <div class="repo-meta-stack">
               <span class="workspace-pill">retailops-pxm-web</span>
@@ -345,42 +358,60 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
             </div>
           </div>
 
-          <div class="repo-grid">
-            <section class="workspace-panel-muted explorer-card">
-              <div class="repo-card-head">
-                <strong>File explorer</strong>
-                <span>Mock Angular workspace tree</span>
-              </div>
-              <div class="file-tree" role="tree" aria-label="Project file tree">
-                @for (flat of flatNodes; track flat.node.name + flat.depth) {
-                  @if (flat.node.type === 'folder') {
-                    <div class="tree-folder" [style.padding-left.px]="flat.depth * 14 + 12">
-                      <span class="folder-icon">></span>
-                      <span class="tree-name">{{ flat.node.name }}</span>
-                    </div>
-                  } @else {
-                    <button
-                      type="button"
-                      class="tree-file"
-                      [class.selected]="selectedFile()?.name === flat.node.name"
-                      [style.padding-left.px]="flat.depth * 14 + 12"
-                      (click)="selectFile(flat.node)">
-                      <span class="file-icon">{{ getFileIcon(flat.node.name) }}</span>
-                      <span class="tree-name">{{ flat.node.name }}</span>
-                    </button>
-                  }
+          <section class="workspace-panel-muted explorer-card">
+            <div class="repo-card-head">
+              <strong>Workspace tree</strong>
+              <span>{{ flatNodes.length }} visible nodes</span>
+            </div>
+            <div class="file-tree" role="tree" aria-label="Project file tree">
+              @for (flat of flatNodes; track flat.node.name + flat.depth) {
+                @if (flat.node.type === 'folder') {
+                  <div class="tree-folder" [style.padding-left.px]="flat.depth * 14 + 12">
+                    <span class="folder-icon">></span>
+                    <span class="tree-name">{{ flat.node.name }}</span>
+                  </div>
+                } @else {
+                  <button
+                    type="button"
+                    class="tree-file"
+                    [class.selected]="selectedFile()?.name === flat.node.name"
+                    [style.padding-left.px]="flat.depth * 14 + 12"
+                    (click)="selectFile(flat.node)">
+                    <span class="file-icon">{{ getFileIcon(flat.node.name) }}</span>
+                    <span class="tree-name">{{ flat.node.name }}</span>
+                  </button>
                 }
-              </div>
-            </section>
+              }
+            </div>
+          </section>
+        </article>
 
-            <section class="workspace-panel-muted code-card">
-              <div class="repo-card-head">
-                <strong>{{ selectedFile()?.name ?? 'Select a file' }}</strong>
-                <span>{{ selectedFile() ? 'Grounding preview' : 'Choose a node from the explorer' }}</span>
-              </div>
-              <pre class="code-block">{{ selectedFile() ? getSnippet(selectedFile()!) : emptySnippet }}</pre>
-            </section>
+        <div
+          class="panel-resize-handle"
+          aria-hidden="true"
+          (pointerdown)="startResize($event, 'right')">
+          <span></span>
+        </div>
+
+        <article class="workspace-panel workspace-panel-resizable code-panel">
+          <div class="workspace-section-head">
+            <div>
+              <div class="workspace-section-eyebrow">Select a file</div>
+              <h2>{{ selectedFile()?.name ?? 'Choose a node from the explorer' }}</h2>
+              <p>{{ selectedFile() ? 'Grounding preview for the currently selected Angular file.' : 'Pick a file in the middle panel to inspect the cited implementation snippet.' }}</p>
+            </div>
+            @if (selectedFile()) {
+              <span class="workspace-tag">{{ getFileIcon(selectedFile()!.name) }}</span>
+            }
           </div>
+
+          <section class="workspace-panel-muted code-card">
+            <div class="repo-card-head">
+              <strong>{{ selectedFile()?.name ?? 'Select a file' }}</strong>
+              <span>{{ selectedFile() ? 'Grounding preview' : 'Choose a node from the explorer' }}</span>
+            </div>
+            <pre class="code-block">{{ selectedFile() ? getSnippet(selectedFile()!) : emptySnippet }}</pre>
+          </section>
         </article>
       </section>
 
@@ -458,8 +489,63 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       padding: 1.8rem 1.25rem 3rem;
     }
 
-    .codebase-main-grid {
-      grid-template-columns: minmax(0, 1.18fr) minmax(360px, 0.82fr);
+    .workspace-triad {
+      display: grid;
+      gap: 0;
+      align-items: stretch;
+      min-height: 760px;
+    }
+
+    .workspace-triad.is-resizing {
+      user-select: none;
+      cursor: col-resize;
+    }
+
+    .workspace-panel-resizable {
+      min-width: 0;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .product-panel {
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      border-radius: 1.45rem 0 0 1.45rem;
+      border-right: none;
+    }
+
+    .explorer-panel {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      border-right: none;
+      border-left: none;
+    }
+
+    .code-panel {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      border-radius: 0 1.45rem 1.45rem 0;
+      border-left: none;
+    }
+
+    .panel-resize-handle {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: col-resize;
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--bg-muted) 82%, transparent 18%), color-mix(in srgb, var(--bg-card-solid) 90%, transparent 10%));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-resize-handle span {
+      width: 4px;
+      height: 56px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--border-strong), color-mix(in srgb, var(--accent) 58%, var(--border-strong) 42%));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-light) 50%, transparent 50%);
     }
 
     .workspace-surface-stage {
@@ -495,10 +581,45 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
     }
 
     .tabs-row {
+      align-self: start;
       overflow-x: auto;
       flex-wrap: nowrap;
-      padding-bottom: 0.2rem;
+      gap: 0.65rem;
+      padding: 0.15rem 0 0.35rem;
       scrollbar-width: thin;
+    }
+
+    .tabs-row .workspace-chip {
+      border-radius: 0.9rem;
+      padding: 0.78rem 1rem;
+      min-width: 144px;
+      justify-content: center;
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--bg-card-solid) 94%, transparent 6%), color-mix(in srgb, var(--bg-muted) 88%, transparent 12%));
+      border-color: color-mix(in srgb, var(--border) 88%, transparent 12%);
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-align: center;
+      box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-subtle) 72%, transparent 28%);
+    }
+
+    .tabs-row .workspace-chip:hover {
+      border-color: color-mix(in srgb, var(--accent) 36%, var(--border-strong) 64%);
+      color: var(--text);
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--accent-light) 36%, var(--bg-card-solid) 64%), color-mix(in srgb, var(--accent-light) 18%, var(--bg-muted) 82%));
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px color-mix(in srgb, var(--accent) 12%, transparent 88%);
+    }
+
+    .tabs-row .workspace-chip.active,
+    .tabs-row .workspace-chip[aria-selected='true'] {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 16px 32px color-mix(in srgb, var(--accent) 24%, transparent 76%);
     }
 
     .repo-meta-stack {
@@ -650,25 +771,20 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
       align-content: start;
     }
 
-    .repo-grid {
-      display: grid;
-      grid-template-rows: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
-      gap: 0.95rem;
-      min-height: 640px;
-    }
-
     .explorer-card,
     .code-card {
       overflow: hidden;
       display: grid;
       grid-template-rows: auto 1fr;
-      padding: 0.95rem;
+      padding: 1rem;
       gap: 0.85rem;
+      height: 100%;
     }
 
     .file-tree {
       overflow: auto;
       padding: 0.2rem 0;
+      min-height: 0;
     }
 
     .tree-folder,
@@ -808,15 +924,25 @@ function flattenTree(nodes: FileNode[], depth = 0): FlatNode[] {
     }
 
     @media (max-width: 1199px) {
-      .codebase-main-grid {
-        grid-template-columns: 1fr;
+      .workspace-triad {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+        min-height: 0;
       }
 
-      .repo-grid,
+      .product-panel,
+      .explorer-panel,
+      .code-panel {
+        border-radius: 1.45rem;
+        border: 1px solid var(--border);
+      }
+
+      .panel-resize-handle {
+        display: none;
+      }
+
       .bulk-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: none;
-        min-height: 0;
       }
     }
 
@@ -870,12 +996,29 @@ export class EnterpriseCodebaseShowcaseComponent {
   readonly codbasePrompts = CODEBASE_PROMPTS;
   readonly emptySnippet = `// Select a file from the explorer to inspect the snippet
 // Retrieval citations in the copilot point back to these workspace paths.`;
+  readonly workspaceTriadRef = viewChild<ElementRef<HTMLElement>>('workspaceTriad');
 
   selectedTab = signal<FeatureTab>(FEATURE_TABS[0]);
   selectedFile = signal<FileNode | null>(null);
   selectedPrompt = signal<CodebasePrompt | null>(null);
+  productPanelWidth = signal(33.34);
+  explorerPanelWidth = signal(33.33);
+  codePanelWidth = signal(33.33);
+  activeResizeHandle = signal<ResizeHandle | null>(null);
+
+  private resizeState: {
+    handle: ResizeHandle;
+    startX: number;
+    containerWidth: number;
+    productStart: number;
+    explorerStart: number;
+    codeStart: number;
+  } | null = null;
 
   readonly activeTabSummary = computed(() => TAB_SUMMARIES[this.selectedTab().id] ?? '');
+  readonly workspaceTriadColumns = computed(() => {
+    return `${this.productPanelWidth()}% 12px ${this.explorerPanelWidth()}% 12px ${this.codePanelWidth()}%`;
+  });
 
   messages = computed<CopilotMessage[]>(() => {
     const prompt = this.selectedPrompt();
@@ -966,6 +1109,60 @@ export class EnterpriseCodebaseShowcaseComponent {
     }
   }
 
+  startResize(event: PointerEvent, handle: ResizeHandle): void {
+    const container = this.workspaceTriadRef()?.nativeElement;
+    if (!container || window.innerWidth < 1200) {
+      return;
+    }
+
+    const bounds = container.getBoundingClientRect();
+    this.resizeState = {
+      handle,
+      startX: event.clientX,
+      containerWidth: bounds.width,
+      productStart: this.productPanelWidth(),
+      explorerStart: this.explorerPanelWidth(),
+      codeStart: this.codePanelWidth(),
+    };
+    this.activeResizeHandle.set(handle);
+    event.preventDefault();
+  }
+
+  @HostListener('window:pointermove', ['$event'])
+  onPointerMove(event: PointerEvent): void {
+    if (!this.resizeState) {
+      return;
+    }
+
+    const deltaPercent = ((event.clientX - this.resizeState.startX) / this.resizeState.containerWidth) * 100;
+    const minProduct = 28;
+    const minExplorer = 18;
+    const minCode = 24;
+
+    if (this.resizeState.handle === 'left') {
+      const nextProduct = clamp(this.resizeState.productStart + deltaPercent, minProduct, 100 - minExplorer - minCode);
+      const productDelta = nextProduct - this.resizeState.productStart;
+      const nextExplorer = clamp(this.resizeState.explorerStart - productDelta, minExplorer, 100 - nextProduct - minCode);
+      this.productPanelWidth.set(round2(nextProduct));
+      this.explorerPanelWidth.set(round2(nextExplorer));
+      this.codePanelWidth.set(round2(100 - nextProduct - nextExplorer));
+      return;
+    }
+
+    const nextExplorer = clamp(this.resizeState.explorerStart + deltaPercent, minExplorer, 100 - this.resizeState.productStart - minCode);
+    const explorerDelta = nextExplorer - this.resizeState.explorerStart;
+    const nextCode = clamp(this.resizeState.codeStart - explorerDelta, minCode, 100 - this.resizeState.productStart - minExplorer);
+    this.productPanelWidth.set(round2(this.resizeState.productStart));
+    this.explorerPanelWidth.set(round2(nextExplorer));
+    this.codePanelWidth.set(round2(100 - this.resizeState.productStart - nextExplorer));
+  }
+
+  @HostListener('window:pointerup')
+  onPointerUp(): void {
+    this.resizeState = null;
+    this.activeResizeHandle.set(null);
+  }
+
   getSnippet(node: FileNode): string {
     if (!node.snippetKey) return `// No preview available for ${node.name}`;
     return CODE_SNIPPETS[node.snippetKey] ?? `// No snippet for ${node.snippetKey}`;
@@ -978,4 +1175,12 @@ export class EnterpriseCodebaseShowcaseComponent {
     if (name.endsWith('.model.ts')) return 'mdl';
     return 'ts';
   }
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
+
+function round2(value: number): number {
+  return Math.round(value * 100) / 100;
 }

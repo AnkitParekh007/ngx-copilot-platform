@@ -22,7 +22,7 @@ import { SIDEBAR_NAV } from './docs-data';
         </svg>
         <span class="sidebar-brand-name">ngx-copilot-sdk</span>
       </div>
-      <span class="sidebar-brand-version">v0.1.0</span>
+      <span class="sidebar-brand-version">v0.1.1</span>
     </div>
 
     <!-- Nav sections -->

@@ -21,6 +21,7 @@
     "test": "turbo test",
     "lint": "turbo lint",
     "dev": "turbo dev --parallel",
+    "docs:dev": "corepack pnpm --filter demo-app dev",
     "build:sdk": "pnpm --filter @ankit-parekh-007/ngx-copilot-sdk build",
     "build:demo": "pnpm --filter demo-app build",
     "build:admin": "pnpm --filter admin-ui build",
