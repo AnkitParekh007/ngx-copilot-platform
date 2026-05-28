@@ -60,6 +60,13 @@ jobs:
       - name: Test backend contracts
         run: pnpm --filter @ngx-copilot/backend test
 
+      - name: Build example consumer
+        run: pnpm --filter example-consumer build
+        env:
+          # Stub env vars so Angular build doesn't fail without runtime config
+          NG_APP_API_URL: https://stub.example.com
+          NG_APP_API_KEY: stub-key
+
       - name: Build backend
         run: pnpm --filter @ngx-copilot/backend build
         env:

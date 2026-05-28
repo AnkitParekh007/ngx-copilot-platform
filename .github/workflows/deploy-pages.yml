@@ -1,6 +1,11 @@
 name: Deploy to GitHub Pages
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/demo-app/**'
+      - 'packages/sdk/**'
   workflow_dispatch:
 
 permissions:

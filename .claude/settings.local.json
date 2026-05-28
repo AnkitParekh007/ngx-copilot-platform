@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:ankitparekh007.github.io)",
+      "Bash(gh repo:*)",
+      "Bash(gh release:*)",
+      "Bash(gh issue:*)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); b=d['projects']['demo-app']['architect']['build']; print\\(json.dumps\\(b.get\\('configurations',{}\\), indent=2\\)\\)\")"
+    ]
+  }
+}
