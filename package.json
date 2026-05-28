@@ -36,7 +36,7 @@
     "smoke:backend": "node scripts/smoke-platform-backend.mjs"
   },
   "devDependencies": {
-    "turbo": "^2.5.4"
+    "turbo": "^2.9.16"
   },
   "packageManager": "pnpm@9.15.0"
 }
