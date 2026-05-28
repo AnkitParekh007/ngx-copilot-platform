@@ -5,6 +5,8 @@ import { CopilotShellComponent } from '../../src/lib/components/copilot-shell/co
 
 test('CopilotShellComponent renders with manual inputs', async () => {
   const fixture = await createComponent(CopilotShellComponent);
+  // useService=false so passed [messages] are used directly, not from CopilotService
+  fixture.componentInstance.useService = false;
   fixture.componentInstance.context = { route: '/demo' };
   fixture.componentInstance.messages = [
     {
@@ -18,4 +20,16 @@ test('CopilotShellComponent renders with manual inputs', async () => {
 
   assert.match(fixture.nativeElement.textContent, /Hi/);
   assert.match(fixture.nativeElement.textContent, /Reset session/);
+});
+
+test('CopilotShellComponent defaults useService to true', async () => {
+  const fixture = await createComponent(CopilotShellComponent);
+  fixture.detectChanges();
+  assert.equal(fixture.componentInstance.useService, true);
+});
+
+test('CopilotShellComponent context defaults to empty route', async () => {
+  const fixture = await createComponent(CopilotShellComponent);
+  fixture.detectChanges();
+  assert.equal(fixture.componentInstance.context.route, '');
 });

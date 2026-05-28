@@ -15,6 +15,12 @@ export interface CopilotConfig {
   enableRagSources: boolean;
   enableToolTimeline: boolean;
   statusLabel?: string;
+  /**
+   * How many times to retry a failed stream before surfacing the error to the UI.
+   * Retries use exponential back-off (1s, 2s, …). Defaults to 2.
+   * Set to 0 to disable automatic retry.
+   */
+  streamRetryCount?: number;
 }
 
 /**
@@ -31,6 +37,7 @@ export const DEFAULT_COPILOT_CONFIG: CopilotConfig = {
   enableRagSources: true,
   enableToolTimeline: true,
   statusLabel: 'Experimental architecture reference',
+  streamRetryCount: 2,
 };
 
 export function normalizeCopilotConfig(config: CopilotConfigInput = {}): CopilotConfig {

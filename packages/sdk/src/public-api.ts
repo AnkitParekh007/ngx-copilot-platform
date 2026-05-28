@@ -1,5 +1,6 @@
 export * from './lib/tokens/copilot-config.token';
 export * from './lib/tokens/copilot-backend-adapter.token';
+export * from './lib/tokens/copilot-markdown-renderer.token';
 export * from './lib/models/copilot-config.model';
 export * from './lib/models/copilot-context.model';
 export * from './lib/models/copilot-message.model';

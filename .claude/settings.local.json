@@ -13,7 +13,10 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('properties',{}\\).get\\('assets', 'NOT FOUND'\\), indent=2\\)\\); print\\('---'\\); print\\(json.dumps\\(d.get\\('properties',{}\\).get\\('publicDir', 'NOT FOUND'\\), indent=2\\)\\)\")",
       "Bash(pnpm build:*)",
       "Bash(gh run:*)",
-      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); b=d['projects']['demo-app']['architect']['build']['configurations']['production']; print\\(json.dumps\\(b, indent=2\\)\\)\")"
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); b=d['projects']['demo-app']['architect']['build']['configurations']['production']; print\\(json.dumps\\(b, indent=2\\)\\)\")",
+      "Bash(pnpm --filter @ankit-parekh-007/ngx-copilot-sdk build)",
+      "Bash(pnpm --filter @ankit-parekh-007/ngx-copilot-sdk test)",
+      "Bash(node:*)"
     ]
   }
 }

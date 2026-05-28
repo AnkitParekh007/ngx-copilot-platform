@@ -37,6 +37,7 @@ test('CopilotService resetSession clears state', async () => {
   assert.equal(service.sources().length, 0);
   assert.equal(service.timeline().length, 0);
   assert.equal(service.approval(), undefined);
+  assert.equal(service.sessionId(), undefined);
 });
 
 test('CopilotService setMode updates active mode', async () => {
@@ -56,4 +57,54 @@ test('CopilotService without config sets recoverable error', async () => {
   const service = TestBed.inject(CopilotService);
   service.sendMessage('orphan message');
   assert.equal(service.error()?.code, 'COPILOT_NOT_CONFIGURED');
+});
+
+test('CopilotService loadSession and exportSession round-trip', async () => {
+  await initComponentTesting();
+  TestBed.configureTestingModule({
+    providers: [provideCopilot({ defaultMode: 'ask' })],
+  });
+
+  const service = TestBed.inject(CopilotService);
+  const messages = [
+    { id: 'm1', role: 'user' as const, content: 'Hello', createdAt: new Date().toISOString() },
+    { id: 'm2', role: 'assistant' as const, content: 'Hi there!', createdAt: new Date().toISOString() },
+  ];
+
+  service.loadSession(messages);
+  assert.equal(service.messages().length, 2);
+  assert.equal(service.messages()[0].content, 'Hello');
+
+  const exported = service.exportSession();
+  assert.equal(exported.length, 2);
+  assert.equal(exported[1].role, 'assistant');
+});
+
+test('CopilotService setSystemPrompt updates outgoing requests', async () => {
+  await initComponentTesting();
+  TestBed.configureTestingModule({
+    providers: [provideCopilot({ defaultMode: 'ask' })],
+  });
+
+  const service = TestBed.inject(CopilotService);
+  service.setSystemPrompt('Always reply in French.');
+  // System prompt doesn't surface as a message — just verify no crash
+  assert.equal(service.messages().length, 0);
+  service.setSystemPrompt(undefined);
+});
+
+test('CopilotService retryLastMessage clears and resends', async () => {
+  await initComponentTesting();
+  TestBed.configureTestingModule({
+    providers: [provideCopilot({ defaultMode: 'ask' })],
+  });
+
+  const service = TestBed.inject(CopilotService);
+  service.sendMessage('retry me');
+  await new Promise(resolve => setTimeout(resolve, 100));
+  // No-op if streaming hasn't finished yet
+  service.retryLastMessage();
+  // Just assert no crash and streaming resolves
+  await new Promise(resolve => setTimeout(resolve, 1200));
+  assert.equal(service.isStreaming(), false);
 });

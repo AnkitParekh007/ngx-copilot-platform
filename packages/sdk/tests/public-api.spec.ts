@@ -4,13 +4,16 @@ import assert from 'node:assert/strict';
 
 // Verify every symbol documented in docs/public-api-contract.md is importable.
 import {
-  // Token + provider
+  // Tokens + providers
   COPILOT_CONFIG,
+  COPILOT_BACKEND_ADAPTER,
+  COPILOT_MARKDOWN_RENDERER,
   provideCopilot,
+  providePlatformBackend,
+  provideHttpAdapter,
   // Config model
   normalizeCopilotConfig,
   // Models
-  // (interfaces only — verified by TypeScript, runtime check via import)
   getApprovalTone,
   tokenizePrompt,
   // Services
@@ -19,6 +22,10 @@ import {
   RagAdapterService,
   StreamingAdapterService,
   ToolRegistryService,
+  // Adapters
+  MockCopilotBackendAdapter,
+  HttpCopilotBackendAdapter,
+  NgxCopilotPlatformBackendAdapter,
   // Components
   AgentModeSelectorComponent,
   ApprovalCardComponent,
@@ -31,6 +38,34 @@ import {
 
 test('COPILOT_CONFIG token is defined', () => {
   assert.ok(COPILOT_CONFIG, 'COPILOT_CONFIG should be defined');
+});
+
+test('COPILOT_BACKEND_ADAPTER token is defined', () => {
+  assert.ok(COPILOT_BACKEND_ADAPTER);
+});
+
+test('COPILOT_MARKDOWN_RENDERER token is defined', () => {
+  assert.ok(COPILOT_MARKDOWN_RENDERER);
+});
+
+test('provideHttpAdapter is a function', () => {
+  assert.equal(typeof provideHttpAdapter, 'function');
+});
+
+test('providePlatformBackend is a function', () => {
+  assert.equal(typeof providePlatformBackend, 'function');
+});
+
+test('MockCopilotBackendAdapter is a class', () => {
+  assert.equal(typeof MockCopilotBackendAdapter, 'function');
+});
+
+test('HttpCopilotBackendAdapter is a class', () => {
+  assert.equal(typeof HttpCopilotBackendAdapter, 'function');
+});
+
+test('NgxCopilotPlatformBackendAdapter is a class', () => {
+  assert.equal(typeof NgxCopilotPlatformBackendAdapter, 'function');
 });
 
 test('provideCopilot is a function', () => {

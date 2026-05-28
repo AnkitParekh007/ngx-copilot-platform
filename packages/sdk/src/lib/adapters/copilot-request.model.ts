@@ -6,4 +6,9 @@ export interface CopilotRequest {
   message: string;
   mode: CopilotMode;
   context?: CopilotContext;
+  /**
+   * Optional system-level instruction injected before the user message.
+   * Set via `CopilotService.setSystemPrompt()`. Never exposed to the UI.
+   */
+  systemPrompt?: string;
 }

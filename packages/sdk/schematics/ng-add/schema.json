@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "NgAddSchema",
+  "title": "ng-add options for @ankit-parekh-007/ngx-copilot-sdk",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The name of the project to add the SDK to.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "mode": {
+      "type": "string",
+      "description": "Default copilot conversation mode.",
+      "default": "ask",
+      "enum": ["ask", "chat", "agent"]
+    },
+    "skipInstall": {
+      "type": "boolean",
+      "description": "Skip installing the package after wiring providers.",
+      "default": false
+    }
+  },
+  "required": []
+}

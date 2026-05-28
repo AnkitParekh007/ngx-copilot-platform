@@ -1,11 +1,17 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApprovalRequest, getApprovalTone } from '../../models/approval-request.model';
 
+/**
+ * Renders a pending approval gate with Approve / Reject actions.
+ *
+ * The card color reflects `riskLevel` (`low` → neutral, `medium` → caution, `high` → critical).
+ * Once a `decision` is set on the request the action buttons are hidden and the decision is shown.
+ *
+ * Use `<ng-content>` to project extra content (e.g. diff previews) inside the card.
+ */
 @Component({
   selector: 'ngx-approval-card',
   standalone: true,
-  imports: [CommonModule],
   template: `
     <section class="approval-card" [attr.data-tone]="tone" aria-label="Approval request">
       <div class="approval-header">
@@ -17,24 +23,28 @@ import { ApprovalRequest, getApprovalTone } from '../../models/approval-request.
       </div>
       <p>{{ request.reason }}</p>
       <p class="summary">{{ request.actionSummary }}</p>
-      <div class="actions" *ngIf="!request.decision">
-        <button
-          type="button"
-          [disabled]="disabled"
-          [attr.aria-label]="'Approve ' + request.title"
-          (click)="approve.emit(request.id)">
-          Approve
-        </button>
-        <button
-          type="button"
-          class="secondary"
-          [disabled]="disabled"
-          [attr.aria-label]="'Reject ' + request.title"
-          (click)="reject.emit(request.id)">
-          Reject
-        </button>
-      </div>
-      <p *ngIf="request.decision" class="decision" role="status">Decision: {{ request.decision }}</p>
+      <ng-content />
+      @if (!request.decision) {
+        <div class="actions">
+          <button
+            type="button"
+            [disabled]="disabled"
+            [attr.aria-label]="'Approve ' + request.title"
+            (click)="approve.emit(request.id)">
+            Approve
+          </button>
+          <button
+            type="button"
+            class="secondary"
+            [disabled]="disabled"
+            [attr.aria-label]="'Reject ' + request.title"
+            (click)="reject.emit(request.id)">
+            Reject
+          </button>
+        </div>
+      } @else {
+        <p class="decision" role="status">Decision: {{ request.decision }}</p>
+      }
     </section>
   `,
   styles: [`

@@ -1,23 +1,40 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CopilotMode } from '../../models/copilot-config.model';
 
+/**
+ * Mode-switcher chip bar. Renders one chip per allowed mode.
+ *
+ * **Inputs:**
+ * - `modes` — subset of modes to display (default: all four).
+ * - `activeMode` — currently active mode.
+ * - `disabled` — disables all chips (e.g. during streaming).
+ * - `modeLabels` — optional display label overrides per mode.
+ *
+ * @example
+ * ```html
+ * <ngx-agent-mode-selector
+ *   [modes]="['ask', 'plan']"
+ *   [activeMode]="copilot.activeMode()"
+ *   [modeLabels]="{ ask: 'Chat', plan: 'Planner' }"
+ *   (modeChange)="copilot.setMode($event)" />
+ * ```
+ */
 @Component({
   selector: 'ngx-agent-mode-selector',
   standalone: true,
-  imports: [CommonModule],
   template: `
     <nav class="mode-selector" aria-label="Copilot modes">
-      <button
-        *ngFor="let mode of modes"
-        type="button"
-        class="mode-chip"
-        [class.active]="mode === activeMode"
-        [attr.aria-pressed]="mode === activeMode"
-        [disabled]="disabled"
-        (click)="modeChange.emit(mode)">
-        {{ mode }}
-      </button>
+      @for (mode of modes; track mode) {
+        <button
+          type="button"
+          class="mode-chip"
+          [class.active]="mode === activeMode"
+          [attr.aria-pressed]="mode === activeMode"
+          [disabled]="disabled"
+          (click)="modeChange.emit(mode)">
+          {{ modeLabels[mode] ?? mode }}
+        </button>
+      }
     </nav>
   `,
   styles: [`
@@ -55,5 +72,11 @@ export class AgentModeSelectorComponent {
   @Input() modes: CopilotMode[] = ['ask', 'plan', 'execute', 'debug'];
   @Input() activeMode: CopilotMode = 'ask';
   @Input() disabled = false;
+  /**
+   * Optional display labels keyed by mode.
+   * Missing modes fall back to the raw mode string.
+   * @example `{ ask: 'Chat', plan: 'Planning', execute: 'Agent', debug: 'Debug' }`
+   */
+  @Input() modeLabels: Partial<Record<CopilotMode, string>> = {};
   @Output() readonly modeChange = new EventEmitter<CopilotMode>();
 }

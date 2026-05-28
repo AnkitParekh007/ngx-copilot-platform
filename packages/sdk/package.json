@@ -41,11 +41,14 @@
   "peerDependencies": {
     "@angular/common": "^20.0.0",
     "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/platform-browser": "^20.0.0",
     "rxjs": "^7.8.0"
   },
   "dependencies": {
     "tslib": "^2.6.0"
   },
+  "schematics": "./schematics/collection.json",
   "sideEffects": false,
   "scripts": {
     "build": "ng-packagr -p ng-package.json && node scripts/strip-publish-dir.mjs",

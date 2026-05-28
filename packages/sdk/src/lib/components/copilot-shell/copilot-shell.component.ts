@@ -1,4 +1,4 @@
-import { CommonModule, JsonPipe } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, computed, inject, signal } from '@angular/core';
 import { CopilotMode } from '../../models/copilot-config.model';
 import { CopilotContext } from '../../models/copilot-context.model';
@@ -13,11 +13,60 @@ import { RagSourceCardComponent } from '../rag-source-card/rag-source-card.compo
 import { ToolCallTimelineComponent } from '../tool-call-timeline/tool-call-timeline.component';
 import { ApprovalCardComponent } from '../approval-card/approval-card.component';
 
+/**
+ * All-in-one copilot workspace: chat panel, context inspector, RAG citations,
+ * tool execution timeline, approval gate, and mode selector.
+ *
+ * **Minimal setup (service-wired — recommended):**
+ * ```html
+ * <ngx-copilot-shell [context]="{ route: router.url }" />
+ * ```
+ * `useService` defaults to `true`. The shell reads all state from `CopilotService`.
+ *
+ * **Controlled mode (manual data binding):**
+ * ```html
+ * <ngx-copilot-shell
+ *   [useService]="false"
+ *   [messages]="myMessages"
+ *   [isStreaming]="myIsStreaming"
+ *   (messageSent)="onSend($event)" />
+ * ```
+ *
+ * **Multi-instance (component-level scope):**
+ * Add `CopilotService` to the host component's `providers` array so each shell
+ * instance gets its own independent state:
+ * ```ts
+ * @Component({ providers: [CopilotService] })
+ * export class MyCopilotPage {}
+ * ```
+ *
+ * **ng-content slots:**
+ * - `[slot='shell-header']` — extra content in the header row (e.g. export button)
+ * - `[slot='shell-footer']` — content below the mode selector
+ *
+ * **CSS custom properties (full list):**
+ * - `--bg-card-solid` — panel card backgrounds
+ * - `--bg-muted` — subtle section backgrounds
+ * - `--bg-card` — inner card backgrounds (semi-transparent)
+ * - `--text` — primary text
+ * - `--text-muted` — secondary text
+ * - `--text-subtle` — metadata / label text
+ * - `--accent` — primary brand color (blue)
+ * - `--accent-2` — secondary brand color (purple)
+ * - `--accent-light` — tinted accent background
+ * - `--accent-text` — text color on accent backgrounds
+ * - `--border` — default border color
+ * - `--border-strong` — emphasized border color
+ * - `--shadow-sm` — card box-shadow
+ * - `--callout-danger-bg/text/border` — error callout colors
+ * - `--callout-warning-bg/text/border` — approval warning colors
+ * - `--callout-success-bg/text/border` — success state colors
+ * - `--code-bg` / `--code-text` — Markdown code block colors
+ */
 @Component({
   selector: 'ngx-copilot-shell',
   standalone: true,
   imports: [
-    CommonModule,
     JsonPipe,
     AgentModeSelectorComponent,
     CopilotChatComponent,
@@ -33,9 +82,12 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
           <h2>{{ title }}</h2>
           <p>{{ subtitle }}</p>
         </div>
-        <button type="button" class="reset" (click)="onReset()" [disabled]="isStreaming">
-          Reset session
-        </button>
+        <div class="hero-end">
+          <ng-content select="[slot='shell-header']" />
+          <button type="button" class="reset" (click)="onReset()" [disabled]="isStreaming">
+            Reset session
+          </button>
+        </div>
       </header>
 
       <div class="grid">
@@ -52,42 +104,59 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
             (send)="messageSent.emit($event)" />
         </section>
 
-        <aside class="panel panel-context">
-          <h3>Context panel</h3>
-          <pre>{{ context | json }}</pre>
-        </aside>
+        @if (showContext) {
+          <aside class="panel panel-context">
+            <h3>Context</h3>
+            <pre>{{ context | json }}</pre>
+          </aside>
+        }
       </div>
 
-      <div class="grid grid-secondary" *ngIf="showSources || showTimeline">
-        <section class="panel" *ngIf="showSources">
-          <h3>RAG sources</h3>
-          <p *ngIf="!resolvedSources().length" class="muted">No sources yet.</p>
-          <div class="cards">
-            <ngx-rag-source-card *ngFor="let source of resolvedSources()" [source]="source" />
-          </div>
-        </section>
+      @if (showSources || showTimeline) {
+        <div class="grid grid-secondary">
+          @if (showSources) {
+            <section class="panel">
+              <h3>RAG sources</h3>
+              @if (!resolvedSources().length) {
+                <p class="muted">No sources yet.</p>
+              } @else {
+                <div class="cards">
+                  @for (source of resolvedSources(); track source.id) {
+                    <ngx-rag-source-card [source]="source" />
+                  }
+                </div>
+              }
+            </section>
+          }
 
-        <section class="panel" *ngIf="showTimeline">
-          <h3>Tool timeline</h3>
-          <ngx-tool-call-timeline [items]="resolvedTimeline()" />
-        </section>
-      </div>
+          @if (showTimeline) {
+            <section class="panel">
+              <h3>Tool timeline</h3>
+              <ngx-tool-call-timeline [items]="resolvedTimeline()" />
+            </section>
+          }
+        </div>
+      }
 
-      <section class="panel" *ngIf="resolvedApproval() as approvalRequest">
-        <h3>Approval</h3>
-        <ngx-approval-card
-          [request]="approvalRequest"
-          [disabled]="isStreaming"
-          (approve)="onApprove($event)"
-          (reject)="onReject($event)" />
-      </section>
+      @if (resolvedApproval(); as approvalRequest) {
+        <section class="panel">
+          <h3>Approval required</h3>
+          <ngx-approval-card
+            [request]="approvalRequest"
+            [disabled]="isStreaming"
+            (approve)="onApprove($event)"
+            (reject)="onReject($event)" />
+        </section>
+      }
 
       <footer class="footer">
         <ngx-agent-mode-selector
           [modes]="modes"
+          [modeLabels]="modeLabels"
           [activeMode]="resolvedMode()"
           [disabled]="isStreaming"
           (modeChange)="onModeChange($event)" />
+        <ng-content select="[slot='shell-footer']" />
       </footer>
     </section>
   `,
@@ -107,6 +176,12 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
       justify-content: space-between;
       gap: 1rem;
       align-items: start;
+      flex-wrap: wrap;
+    }
+    .hero-end {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       flex-wrap: wrap;
     }
     .eyebrow {
@@ -150,6 +225,8 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
     .footer {
       border-top: 1px solid var(--border, #dbe4f0);
       padding-top: 0.75rem;
+      display: grid;
+      gap: 0.5rem;
     }
     .reset {
       border: 1px solid var(--border, #cbd5e1);
@@ -158,6 +235,7 @@ import { ApprovalCardComponent } from '../approval-card/approval-card.component'
       border-radius: 999px;
       padding: 0.45rem 0.9rem;
       cursor: pointer;
+      white-space: nowrap;
     }
     .reset:disabled { opacity: 0.55; cursor: not-allowed; }
     @media (max-width: 900px) {
@@ -170,8 +248,10 @@ export class CopilotShellComponent {
   @Input() subtitle = 'Unified workspace for chat, context, citations, tools, and approvals.';
   @Input() statusLabel = 'ngx-copilot SDK';
   @Input() modes: CopilotMode[] = ['ask', 'plan', 'execute', 'debug'];
+  @Input() modeLabels: Partial<Record<CopilotMode, string>> = {};
   @Input() activeMode: CopilotMode = 'ask';
-  @Input() context!: CopilotContext;
+  /** Context passed to each message sent via the service. Defaults to an empty root context. */
+  @Input() context: CopilotContext = { route: '' };
   @Input() messages: CopilotMessage[] = [];
   @Input() sources: RagResult[] = [];
   @Input() timeline: ToolTimelineItem[] = [];
@@ -179,7 +259,13 @@ export class CopilotShellComponent {
   @Input() showComposer = true;
   @Input() showSources = true;
   @Input() showTimeline = true;
-  @Input() useService = false;
+  /** Show the context JSON inspector panel. Useful for debugging; hide in production. */
+  @Input() showContext = false;
+  /**
+   * When `true` (default), all state is read from and written to `CopilotService`.
+   * Set to `false` for fully controlled mode where you pass data via inputs.
+   */
+  @Input() useService = true;
 
   @Output() readonly modeChange = new EventEmitter<CopilotMode>();
   @Output() readonly approve = new EventEmitter<string>();
@@ -203,9 +289,7 @@ export class CopilotShellComponent {
     this.useService && this.copilot ? this.copilot.approval() : this.approval,
   );
   readonly resolvedMode = computed(() => {
-    if (this.useService && this.copilot) {
-      return this.copilot.activeMode();
-    }
+    if (this.useService && this.copilot) return this.copilot.activeMode();
     return this.localMode() ?? this.activeMode;
   });
 
@@ -214,18 +298,14 @@ export class CopilotShellComponent {
   }
 
   streamingContent(): string {
-    if (!this.useService || !this.copilot) {
-      return '';
-    }
+    if (!this.useService || !this.copilot) return '';
     const messages = this.copilot.messages();
     const last = messages[messages.length - 1];
     return last?.role === 'assistant' && this.copilot.isStreaming() ? last.content : '';
   }
 
   errorMessage(): string | undefined {
-    if (!this.useService || !this.copilot) {
-      return undefined;
-    }
+    if (!this.useService || !this.copilot) return undefined;
     return this.copilot.error()?.message;
   }
 
@@ -239,23 +319,17 @@ export class CopilotShellComponent {
   }
 
   onApprove(requestId: string): void {
-    if (this.useService && this.copilot) {
-      this.copilot.approve(requestId);
-    }
+    if (this.useService && this.copilot) this.copilot.approve(requestId);
     this.approve.emit(requestId);
   }
 
   onReject(requestId: string): void {
-    if (this.useService && this.copilot) {
-      this.copilot.reject(requestId);
-    }
+    if (this.useService && this.copilot) this.copilot.reject(requestId);
     this.reject.emit(requestId);
   }
 
   onReset(): void {
-    if (this.useService && this.copilot) {
-      this.copilot.resetSession();
-    }
+    if (this.useService && this.copilot) this.copilot.resetSession();
     this.sessionReset.emit();
   }
 }

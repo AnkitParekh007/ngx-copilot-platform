@@ -1,28 +1,50 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { RagResult } from '../../models/rag-result.model';
 
+/**
+ * Renders a single RAG citation card showing title, confidence score, code path info, snippet, and tags.
+ *
+ * **CSS custom properties (theme via host or global stylesheet):**
+ * - `--border` — card border color
+ * - `--bg-card-solid` — card background
+ * - `--text` — primary text
+ * - `--text-subtle` — metadata text
+ * - `--text-muted` — snippet text
+ * - `--bg-muted` — tag background
+ * - `--accent` — link and score highlight color
+ */
 @Component({
   selector: 'ngx-rag-source-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [DecimalPipe],
   template: `
     <article class="source-card">
       <div class="source-meta">
         <span class="source-type">{{ source.sourceType ?? 'knowledge-base' }}</span>
-        <span class="source-score">{{ source.score | number: '1.0-2' }}</span>
+        <span class="source-score" aria-label="Relevance score {{ source.score | number:'1.0-2' }}">
+          {{ source.score | number:'1.0-2' }}
+        </span>
       </div>
       <h4>{{ source.title }}</h4>
-      <p *ngIf="source.repo || source.branch || source.filePath" class="path-line">
-        <ng-container *ngIf="source.repo">{{ source.repo }}</ng-container
-        ><ng-container *ngIf="source.branch"> · {{ source.branch }}</ng-container
-        ><ng-container *ngIf="source.filePath"> — {{ source.filePath }}</ng-container>
-      </p>
+      @if (source.repo || source.branch || source.filePath) {
+        <p class="path-line">
+          @if (source.repo) { {{ source.repo }} }
+          @if (source.branch) { &nbsp;·&nbsp;{{ source.branch }} }
+          @if (source.filePath) { &nbsp;—&nbsp;{{ source.filePath }} }
+        </p>
+      }
       <p class="snippet">{{ source.snippet }}</p>
-      <p *ngIf="source.tags?.length" class="tags">
-        <span *ngFor="let tag of source.tags" class="tag">{{ tag }}</span>
-      </p>
-      <a *ngIf="source.sourceUrl" [href]="source.sourceUrl" target="_blank" rel="noreferrer">Open source</a>
+      @if (source.tags?.length) {
+        <p class="tags">
+          @for (tag of source.tags!; track tag) {
+            <span class="tag">{{ tag }}</span>
+          }
+        </p>
+      }
+      @if (source.sourceUrl) {
+        <a [href]="source.sourceUrl" target="_blank" rel="noreferrer">Open source ↗</a>
+      }
     </article>
   `,
   styles: [`
@@ -42,6 +64,7 @@ import { RagResult } from '../../models/rag-result.model';
       color: var(--text-subtle, #475569);
       font-size: 0.85rem;
     }
+    .source-score { font-variant-numeric: tabular-nums; }
     h4 { margin: 0; font-size: 1rem; }
     .path-line {
       margin: 0;
@@ -59,7 +82,8 @@ import { RagResult } from '../../models/rag-result.model';
       background: var(--bg-muted, #f1f5f9);
       color: var(--text-subtle, #475569);
     }
-    a { color: var(--accent, #1d4ed8); text-decoration: none; }
+    a { color: var(--accent, #1d4ed8); text-decoration: none; font-size: 0.88rem; }
+    a:hover { text-decoration: underline; }
   `],
 })
 export class RagSourceCardComponent {
