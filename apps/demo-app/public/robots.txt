@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ankitparekh007.github.io/ngx-copilot-platform/sitemap.xml

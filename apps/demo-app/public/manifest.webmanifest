@@ -1,0 +1,17 @@
+{
+  "name": "ngx-copilot-sdk — AI Copilot SDK for Angular",
+  "short_name": "ngx-copilot",
+  "description": "Production-ready Angular SDK for embedding agentic AI copilots — streaming chat, grounded RAG citations, tool timelines, and approval gates.",
+  "start_url": "/ngx-copilot-platform/",
+  "display": "standalone",
+  "background_color": "#05060a",
+  "theme_color": "#5b8cff",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -13,6 +13,13 @@ import { CopilotContext, CopilotShellComponent } from '@ankit-parekh-007/ngx-cop
         <span class="eyebrow-chip">Open-source</span>
         <span class="eyebrow-chip">Angular 20</span>
         <span class="eyebrow-chip eyebrow-preview">0.1.0 Preview</span>
+        <span class="eyebrow-chip eyebrow-mock" title="No real AI calls are made — responses are scripted mock data for demonstration purposes">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style="vertical-align:-1px">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Mock demo — no real AI
+        </span>
       </div>
       <h1 class="hero-title">
         AI Copilot UI for<br><span class="accent-text">Angular Enterprise Apps</span>
@@ -233,6 +240,16 @@ import { CopilotContext, CopilotShellComponent } from '@ankit-parekh-007/ngx-cop
       background: rgba(99,102,241,0.2);
       border-color: rgba(99,102,241,0.4);
       color: #a5b4fc;
+    }
+
+    .eyebrow-mock {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: rgba(245,158,11,0.12);
+      border-color: rgba(245,158,11,0.35);
+      color: #fcd34d;
+      cursor: help;
     }
 
     .hero-title {
