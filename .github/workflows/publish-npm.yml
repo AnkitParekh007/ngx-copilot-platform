@@ -37,16 +37,26 @@ jobs:
     # environment: npm-publish  # Uncomment to add approval gate
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - name: Set up Node.js 22
-        uses: actions/setup-node@v4
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - name: Upgrade npm for Trusted Publishing
+        run: npm install --global npm@^11.5.1
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
+
+      - name: Show tool versions
+        run: |
+          node --version
+          npm --version
+          pnpm --version
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -63,13 +73,4 @@ jobs:
 
       - name: Publish to npm
         working-directory: dist/sdk
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -n "${NODE_AUTH_TOKEN}" ]; then
-            echo "Publishing with NPM_TOKEN fallback"
-            npm publish --access public
-          else
-            echo "Publishing with npm Trusted Publishing"
-            npm publish --provenance --access public
-          fi
+        run: npm publish --provenance --access public
