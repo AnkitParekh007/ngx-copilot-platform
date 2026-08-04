@@ -6,6 +6,8 @@
 [![npm](https://img.shields.io/npm/v/@ankit-parekh-007/ngx-copilot-sdk.svg)](https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
+**[Live demo](https://ankitparekh007.github.io/ngx-copilot-platform/)**
+
 `ngx-copilot-platform` is a full-stack Angular AI workspace built around one core idea:
 
 **the UI should feel native, the backend should stay in control, and every answer should be inspectable.**
