@@ -19,9 +19,14 @@ function url(relative) {
   const context = await browser.newContext({ viewport, colorScheme: 'light', reducedMotion: 'reduce' });
   const page = await context.newPage();
 
-  async function open(target) {
+  async function open(target, waitForFailureLab = false) {
     const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    await page.waitForTimeout(800);
+    if (waitForFailureLab) {
+      await page.getByRole('tab', { name: /^SSE disconnect/i }).waitFor({ state: 'visible', timeout: 30000 });
+    } else {
+      await page.locator('body').waitFor({ state: 'visible', timeout: 30000 });
+      await page.waitForTimeout(500);
+    }
     return response;
   }
 
@@ -32,14 +37,14 @@ function url(relative) {
   }
 
   async function failureScenario(name, matcher, retry = false) {
-    const response = await open(url('failure-lab'));
+    const response = await open(url('failure-lab'), true);
     const control = page.getByRole('tab', { name: matcher }).first();
-    if (!(await control.count())) throw new Error(`No failure-lab tab matched ${matcher}`);
+    await control.waitFor({ state: 'visible', timeout: 10000 });
     await control.click();
     await page.waitForTimeout(300);
     if (retry) {
       const retryButton = page.getByRole('button', { name: /retry from request boundary/i }).first();
-      if (!(await retryButton.count())) throw new Error('Retry button unavailable for SSE disconnect');
+      await retryButton.waitFor({ state: 'visible', timeout: 10000 });
       await retryButton.click();
       await page.waitForTimeout(400);
     }
@@ -48,7 +53,7 @@ function url(relative) {
 
   let response = await open(baseUrl);
   await shot('platform-main-demo', response);
-  response = await open(url('failure-lab'));
+  response = await open(url('failure-lab'), true);
   await shot('platform-failure-lab-default', response);
   await failureScenario('failure-retrieval-unavailable', /^Retrieval failure/i);
   await failureScenario('failure-approval-rejected', /^Approval rejected/i);
