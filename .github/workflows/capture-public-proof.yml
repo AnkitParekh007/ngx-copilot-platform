@@ -55,16 +55,16 @@ jobs:
           out='docs/assets/public-proof/platform-failure-lab.gif'
           mkdir -p "$(dirname "$out")"
           frames=()
-          for name in platform-main-demo platform-failure-lab-default failure-retrieval-unavailable failure-approval-rejected failure-sse-disconnect failure-tool-policy-disabled; do
+          for name in platform-main-demo platform-failure-lab-default failure-retrieval-unavailable failure-approval-rejected failure-sse-disconnect failure-sse-recovered failure-tool-policy-disabled; do
             if [[ -s "$captures/$name.png" ]]; then frames+=("$captures/$name.png"); fi
           done
-          if (( ${#frames[@]} < 5 )); then
-            echo "Need at least five real platform frames; got ${#frames[@]}" >&2
+          if (( ${#frames[@]} < 6 )); then
+            echo "Need at least six real platform frames; got ${#frames[@]}" >&2
             cat "$captures/manifest.json" >&2
             exit 1
           fi
-          convert -delay 125 -loop 0 "${frames[@]}" -resize '960x960>' -layers Optimize "$out"
-          gifsicle -O3 --colors 160 "$out" -o "$out"
+          convert -delay 125 -loop 0 "${frames[@]}" -resize '960x600>' -layers Optimize "$out"
+          gifsicle -O3 --colors 128 "$out" -o "$out"
           test -s "$out"
           test "$(stat -c%s "$out")" -lt 8000000
 
