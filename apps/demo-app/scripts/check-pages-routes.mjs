@@ -28,6 +28,7 @@ const routes = [
   '/docs/production-checklist',
   '/docs/backend-contract',
   '/showcase',
+  '/failure-lab',
   '/samples/enterprise-codebase',
   '/samples/enterprise-docs',
 ];
