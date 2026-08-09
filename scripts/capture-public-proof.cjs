@@ -8,19 +8,20 @@ const viewport = { width: 1440, height: 900 };
 fs.mkdirSync(outputDir, { recursive: true });
 
 const manifest = [];
+let browser;
 
 function url(relative) {
   return new URL(relative, baseUrl).toString();
 }
 
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport, colorScheme: 'light', reducedMotion: 'reduce' });
   const page = await context.newPage();
 
   async function open(target) {
     const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    await page.waitForTimeout(1200);
+    await page.waitForTimeout(800);
     return response;
   }
 
@@ -35,12 +36,12 @@ function url(relative) {
     const control = page.getByRole('tab', { name: matcher }).first();
     if (!(await control.count())) throw new Error(`No failure-lab tab matched ${matcher}`);
     await control.click();
-    await page.waitForTimeout(350);
+    await page.waitForTimeout(300);
     if (retry) {
       const retryButton = page.getByRole('button', { name: /retry from request boundary/i }).first();
       if (!(await retryButton.count())) throw new Error('Retry button unavailable for SSE disconnect');
       await retryButton.click();
-      await page.waitForTimeout(450);
+      await page.waitForTimeout(400);
     }
     await shot(name, response);
   }
@@ -56,8 +57,9 @@ function url(relative) {
   await failureScenario('failure-tool-policy-disabled', /^Tool disabled/i);
 
   fs.writeFileSync(path.join(outputDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-  await browser.close();
 })().catch((error) => {
   console.error(error);
   process.exitCode = 1;
+}).finally(async () => {
+  if (browser) await browser.close();
 });
