@@ -40,12 +40,17 @@ type ShowcaseState =
   template: `
     <section class="showcase">
       <nav class="sample-links" aria-label="Enterprise mock samples">
+        <a routerLink="/failure-lab">End-to-end failure lab</a>
+        <span class="dot">·</span>
         <a routerLink="/samples/enterprise-codebase">Codebase showcase</a>
         <span class="dot">·</span>
         <a routerLink="/samples/enterprise-docs">Documentation site</a>
       </nav>
       <h2>Component showcase</h2>
-      <p class="lead">Preview SDK UI states for local visual review (no hosted Storybook).</p>
+      <p class="lead">
+        Preview isolated SDK UI states here, then open the failure lab to inspect complete deterministic
+        recovery flows built from the same public SDK contracts.
+      </p>
 
       <div class="picker" role="tablist" aria-label="Showcase states">
         @for (option of states; track option.id) {
@@ -106,7 +111,7 @@ type ShowcaseState =
     .sample-links a { color: var(--accent, #1d4ed8); text-decoration: none; }
     .sample-links a:hover { text-decoration: underline; }
     .dot { margin: 0 0.35rem; color: var(--text-subtle, #94a3b8); }
-    .lead { margin: 0; color: var(--text-muted, #475569); }
+    .lead { margin: 0; color: var(--text-muted, #475569); line-height: 1.55; }
     .picker { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .picker button {
       border: 1px solid var(--border, #cbd5e1);
