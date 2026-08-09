@@ -4,6 +4,7 @@ const { chromium } = require('playwright');
 
 const baseUrl = process.env.CAPTURE_BASE_URL || 'https://ankitparekh007.github.io/ngx-copilot-platform/';
 const outputDir = process.env.CAPTURE_OUTPUT_DIR || path.join(process.cwd(), 'public-proof-captures');
+const viewport = { width: 1440, height: 900 };
 fs.mkdirSync(outputDir, { recursive: true });
 
 const manifest = [];
@@ -14,7 +15,7 @@ function url(relative) {
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light', reducedMotion: 'reduce' });
+  const context = await browser.newContext({ viewport, colorScheme: 'light', reducedMotion: 'reduce' });
   const page = await context.newPage();
 
   async function open(target) {
@@ -23,33 +24,36 @@ function url(relative) {
     return response;
   }
 
-  async function capture(name, target) {
-    const response = await open(target);
+  async function shot(name, response) {
     const file = path.join(outputDir, `${name}.png`);
-    await page.screenshot({ path: file, fullPage: true });
-    manifest.push({ name, file: path.basename(file), url: page.url(), status: response ? response.status() : null });
+    await page.screenshot({ path: file, fullPage: false });
+    manifest.push({ name, file: path.basename(file), url: page.url(), status: response ? response.status() : null, viewport });
   }
 
-  async function failureScenario(name, matcher) {
+  async function failureScenario(name, matcher, retry = false) {
     const response = await open(url('failure-lab'));
-    const control = page.getByRole('button', { name: matcher }).first();
-    if (!(await control.count())) {
-      manifest.push({ name, skipped: true, reason: `No button matched ${matcher}` });
-      return;
-    }
+    const control = page.getByRole('tab', { name: matcher }).first();
+    if (!(await control.count())) throw new Error(`No failure-lab tab matched ${matcher}`);
     await control.click();
-    await page.waitForTimeout(900);
-    const file = path.join(outputDir, `${name}.png`);
-    await page.screenshot({ path: file, fullPage: true });
-    manifest.push({ name, file: path.basename(file), url: page.url(), status: response ? response.status() : null });
+    await page.waitForTimeout(350);
+    if (retry) {
+      const retryButton = page.getByRole('button', { name: /retry from request boundary/i }).first();
+      if (!(await retryButton.count())) throw new Error('Retry button unavailable for SSE disconnect');
+      await retryButton.click();
+      await page.waitForTimeout(450);
+    }
+    await shot(name, response);
   }
 
-  await capture('platform-main-demo', baseUrl);
-  await capture('platform-failure-lab-default', url('failure-lab'));
-  await failureScenario('failure-sse-disconnect', /(sse disconnect|disconnect)/i);
-  await failureScenario('failure-retrieval-unavailable', /(retrieval unavailable|retrieval)/i);
-  await failureScenario('failure-approval-rejected', /(approval rejected|reject.*approval)/i);
-  await failureScenario('failure-tool-policy-disabled', /(policy|tool disabled)/i);
+  let response = await open(baseUrl);
+  await shot('platform-main-demo', response);
+  response = await open(url('failure-lab'));
+  await shot('platform-failure-lab-default', response);
+  await failureScenario('failure-retrieval-unavailable', /^Retrieval failure/i);
+  await failureScenario('failure-approval-rejected', /^Approval rejected/i);
+  await failureScenario('failure-sse-disconnect', /^SSE disconnect/i);
+  await failureScenario('failure-sse-recovered', /^SSE disconnect/i, true);
+  await failureScenario('failure-tool-policy-disabled', /^Tool disabled/i);
 
   fs.writeFileSync(path.join(outputDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   await browser.close();
