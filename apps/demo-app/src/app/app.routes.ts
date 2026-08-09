@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LiveDemoComponent } from './live-demo/live-demo.component';
 import { ShowcaseComponent } from './showcase/showcase.component';
+import { FailureLabComponent } from './failure-lab/failure-lab.component';
 import { EnterpriseCodebaseShowcaseComponent } from './samples/enterprise-codebase-showcase/enterprise-codebase-showcase.component';
 import { EnterpriseDocsWebsiteComponent } from './samples/enterprise-docs-website/enterprise-docs-website.component';
 import { DocsLayoutComponent } from './docs/docs-layout.component';
@@ -19,6 +20,7 @@ import { BackendContractDocComponent } from './docs/backend-contract-doc.compone
 export const routes: Routes = [
   { path: '', component: LiveDemoComponent },
   { path: 'showcase', component: ShowcaseComponent },
+  { path: 'failure-lab', component: FailureLabComponent },
   { path: 'samples/enterprise-codebase', component: EnterpriseCodebaseShowcaseComponent },
   { path: 'samples/enterprise-docs', component: EnterpriseDocsWebsiteComponent },
   {

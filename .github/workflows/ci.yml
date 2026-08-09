@@ -48,6 +48,9 @@ jobs:
       - name: Dry-run pack SDK
         run: cd dist/sdk && npm publish --dry-run
 
+      - name: Test demo app contracts
+        run: pnpm --filter demo-app test -- --watch=false --browsers=ChromeHeadless
+
       - name: Build demo app
         run: pnpm --filter demo-app build
 
@@ -63,14 +66,12 @@ jobs:
       - name: Build example consumer
         run: pnpm --filter example-consumer build
         env:
-          # Stub env vars so Angular build doesn't fail without runtime config
           NG_APP_API_URL: https://stub.example.com
           NG_APP_API_KEY: stub-key
 
       - name: Build backend
         run: pnpm --filter @ngx-copilot/backend build
         env:
-          # Stub env vars so Next.js build doesn't fail without real credentials
           NEXT_PUBLIC_SUPABASE_URL: https://stub.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: stub-anon-key
           SUPABASE_SERVICE_ROLE_KEY: stub-service-role-key
