@@ -6,6 +6,7 @@ on:
     paths:
       - 'apps/demo-app/**'
       - 'packages/sdk/**'
+      - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -47,7 +48,7 @@ jobs:
       - name: Build demo app (GitHub Pages)
         run: pnpm --filter demo-app build:gh-pages
 
-      - name: Verify SPA fallback (404.html)
+      - name: Verify SPA fallback and public routes
         run: node apps/demo-app/scripts/check-pages-routes.mjs
 
       - name: Detect output directory
@@ -77,3 +78,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Smoke test published showcase
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 5 "$PAGE_URL" >/dev/null
