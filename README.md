@@ -18,6 +18,12 @@
 - Open the **failure lab** to see SDK/backend contracts remain truthful when retrieval, approvals, policies, or streaming fail.
 - Use [Public Proof](docs/public-proof.md) for a 30-second / 3-minute / 15-minute review path and the exact evidence matrix.
 
+<p align="center">
+  <img src="docs/assets/public-proof/platform-failure-lab.gif" alt="ngx-copilot-platform main demo and deterministic Failure Lab walkthrough" width="960" />
+</p>
+
+<p align="center"><em>Real branch-build capture: main demo → Failure Lab → retrieval failure → approval rejection → SSE disconnect/recovery → policy-disabled tool. The scenarios are deterministic public proof, not production incidents.</em></p>
+
 The platform is intentionally more than a chat UI:
 
 `Angular UX → typed SDK events → backend policy boundary → RAG / approvals / tools / audit`
