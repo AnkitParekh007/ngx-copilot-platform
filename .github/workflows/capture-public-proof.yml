@@ -2,26 +2,38 @@ name: Capture Public Proof
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ['Deploy to GitHub Pages']
-    types: [completed]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
 
 jobs:
   capture:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build SDK
+        run: pnpm --filter @ankit-parekh-007/ngx-copilot-sdk build
+      - name: Start exact branch demo locally
+        shell: bash
+        run: |
+          pnpm --filter demo-app exec ng serve --host 127.0.0.1 --port 4203 > /tmp/ngx-copilot-demo.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:4203/ >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/ngx-copilot-demo.log
+          exit 1
       - name: Install isolated Playwright runtime
         run: |
           mkdir -p /tmp/public-proof-playwright
@@ -29,18 +41,36 @@ jobs:
           npm init -y
           npm install --no-audit --no-fund playwright@1.54.2
           npx playwright install --with-deps chromium
-
-      - name: Capture deployed proof surfaces
+      - name: Install GIF tooling
+        run: sudo apt-get update && sudo apt-get install -y imagemagick gifsicle
+      - name: Capture exact branch proof states
         env:
           NODE_PATH: /tmp/public-proof-playwright/node_modules
-          CAPTURE_BASE_URL: https://ankitparekh007.github.io/ngx-copilot-platform/
+          CAPTURE_BASE_URL: http://127.0.0.1:4203/
           CAPTURE_OUTPUT_DIR: ${{ runner.temp }}/public-proof-captures
         run: node scripts/capture-public-proof.cjs
-
-      - name: Upload public proof captures
+      - name: Rebuild and compare optimized platform walkthrough GIF
+        shell: bash
+        run: |
+          set -euo pipefail
+          captures='${{ runner.temp }}/public-proof-captures'
+          rendered='${{ runner.temp }}/platform-failure-lab.gif'
+          frames=()
+          for name in platform-main-demo platform-failure-lab-default failure-retrieval-unavailable failure-approval-rejected failure-sse-disconnect failure-sse-recovered failure-tool-policy-disabled; do
+            test -s "$captures/$name.png"
+            frames+=("$captures/$name.png")
+          done
+          convert -delay 125 -loop 0 "${frames[@]}" -resize '960x600>' -layers Optimize "$rendered"
+          gifsicle -O3 --colors 128 "$rendered" -o "$rendered"
+          test -s "$rendered"
+          test "$(stat -c%s "$rendered")" -lt 8000000
+          test -s docs/assets/public-proof/platform-failure-lab.gif
+      - name: Upload proof captures
         uses: actions/upload-artifact@v4
         with:
           name: ngx-copilot-platform-public-proof
-          path: ${{ runner.temp }}/public-proof-captures
+          path: |
+            ${{ runner.temp }}/public-proof-captures
+            ${{ runner.temp }}/platform-failure-lab.gif
           if-no-files-found: error
           retention-days: 30

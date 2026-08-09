@@ -4,6 +4,10 @@
 
 ## 30-second review
 
+![Main demo and deterministic Failure Lab walkthrough](assets/public-proof/platform-failure-lab.gif)
+
+The animation is generated from the exact branch build at a 1440×900 recruiter viewport. It shows the reusable platform surface and deterministic failure-contract states without implying live provider, retrieval, or tool incidents.
+
 Open:
 
 1. [Live demo](https://ankitparekh007.github.io/ngx-copilot-platform/)
