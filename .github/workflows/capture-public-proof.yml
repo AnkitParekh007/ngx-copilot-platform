@@ -2,9 +2,6 @@ name: Capture Public Proof
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ['Deploy to GitHub Pages']
-    types: [completed]
   push:
     branches: ['agent/final-visual-proof']
     paths:
@@ -16,18 +13,35 @@ permissions:
 
 jobs:
   capture:
-    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'push' && github.ref_name || github.event.repository.default_branch }}
 
       - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build SDK
+        run: pnpm --filter @ankit-parekh-007/ngx-copilot-sdk build
+
+      - name: Start exact branch demo locally
+        shell: bash
+        run: |
+          pnpm --filter demo-app start -- --host 127.0.0.1 --port 4203 > /tmp/ngx-copilot-demo.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:4203/ >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/ngx-copilot-demo.log
+          exit 1
 
       - name: Install isolated Playwright runtime
         run: |
@@ -40,10 +54,10 @@ jobs:
       - name: Install GIF tooling
         run: sudo apt-get update && sudo apt-get install -y imagemagick gifsicle
 
-      - name: Capture deployed proof surfaces
+      - name: Capture exact branch proof states
         env:
           NODE_PATH: /tmp/public-proof-playwright/node_modules
-          CAPTURE_BASE_URL: https://ankitparekh007.github.io/ngx-copilot-platform/
+          CAPTURE_BASE_URL: http://127.0.0.1:4203/
           CAPTURE_OUTPUT_DIR: ${{ runner.temp }}/public-proof-captures
         run: node scripts/capture-public-proof.cjs
 
@@ -56,19 +70,15 @@ jobs:
           mkdir -p "$(dirname "$out")"
           frames=()
           for name in platform-main-demo platform-failure-lab-default failure-retrieval-unavailable failure-approval-rejected failure-sse-disconnect failure-sse-recovered failure-tool-policy-disabled; do
-            if [[ -s "$captures/$name.png" ]]; then frames+=("$captures/$name.png"); fi
+            test -s "$captures/$name.png"
+            frames+=("$captures/$name.png")
           done
-          if (( ${#frames[@]} < 6 )); then
-            echo "Need at least six real platform frames; got ${#frames[@]}" >&2
-            cat "$captures/manifest.json" >&2
-            exit 1
-          fi
           convert -delay 125 -loop 0 "${frames[@]}" -resize '960x600>' -layers Optimize "$out"
           gifsicle -O3 --colors 128 "$out" -o "$out"
           test -s "$out"
           test "$(stat -c%s "$out")" -lt 8000000
 
-      - name: Upload public proof captures
+      - name: Upload proof captures
         uses: actions/upload-artifact@v4
         with:
           name: ngx-copilot-platform-public-proof
