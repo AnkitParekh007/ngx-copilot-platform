@@ -1,25 +1,35 @@
 # ngx-copilot-platform
 
-> Build Angular copilots that feel product-grade: streaming chat, grounded retrieval, approval gates, and a backend boundary that keeps model credentials off the browser.
+> Build Angular copilots that feel product-grade: streaming chat, grounded retrieval, approval gates, explicit failure/recovery, and a backend boundary that keeps model credentials off the browser.
 
 [![CI](https://github.com/AnkitParekh007/ngx-copilot-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/AnkitParekh007/ngx-copilot-platform/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@ankit-parekh-007/ngx-copilot-sdk.svg)](https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**[Live demo](https://ankitparekh007.github.io/ngx-copilot-platform/)**
+**[Live demo](https://ankitparekh007.github.io/ngx-copilot-platform/)** · **[Failure lab](https://ankitparekh007.github.io/ngx-copilot-platform/failure-lab)** · **[Public proof](docs/public-proof.md)** · **[npm package](https://www.npmjs.com/package/@ankit-parekh-007/ngx-copilot-sdk)**
 
 `ngx-copilot-platform` is a full-stack Angular AI workspace built around one core idea:
 
-**the UI should feel native, the backend should stay in control, and every answer should be inspectable.**
+**the UI should feel native, the backend should stay in control, and every answer, action, rejection, and failure should be inspectable.**
+
+## Review This Repo In 30 Seconds
+
+- Open the **live demo** to see the product-grade Angular copilot surface.
+- Open the **failure lab** to see SDK/backend contracts remain truthful when retrieval, approvals, policies, or streaming fail.
+- Use [Public Proof](docs/public-proof.md) for a 30-second / 3-minute / 15-minute review path and the exact evidence matrix.
+
+The platform is intentionally more than a chat UI:
+
+`Angular UX → typed SDK events → backend policy boundary → RAG / approvals / tools / audit`
 
 This repository packages that idea into three layers:
 
 - `packages/sdk`
-  `@ankit-parekh-007/ngx-copilot-sdk`, an Angular SDK for copilot UI, streaming events, citations, approval cards, and adapter-driven integration.
+  `@ankit-parekh-007/ngx-copilot-sdk`, an Angular SDK for copilot UI, streaming events, citations, approval cards, adapter errors, tool timelines, and adapter-driven integration.
 - `packages/backend`
-  a Next.js backend that owns auth, retrieval, ingestion, API-key lifecycle, SSE streaming, and approval boundaries.
+  a Next.js backend that owns auth, retrieval, ingestion, API-key lifecycle, SSE streaming, semantic failure responses, and approval boundaries.
 - `apps/*` and `examples/*`
-  demo, admin, and sample surfaces kept in the repo for development, documentation, and showcase flows, not as the direct public product deployment target.
+  demo, admin, failure-lab, and sample surfaces kept in the repo for development, documentation, and showcase flows, not as the direct public product deployment target.
 
 ## Why this repo exists
 
@@ -33,15 +43,31 @@ That means:
 - retrieval-backed answers with visible grounding
 - step-by-step tool timeline UI
 - approval checkpoints for consequential actions
+- recoverable adapter errors and explicit non-success terminal states
 - backend-owned auth and provider orchestration
 - a launch-safe separation between production surfaces and demo surfaces
+
+## Failure Lab
+
+The public `/failure-lab` route is a deterministic proof of the SDK/backend failure contract. It does not require model, retrieval, or tool credentials.
+
+It demonstrates:
+
+- recoverable SSE disconnect with request-context-preserving retry
+- retrieval failure that suppresses citations and tool planning
+- approval rejection recorded as terminal non-executed work
+- policy-disabled tools staying visible as skipped/non-executed
+- backend semantic failures instead of false-success responses
+
+The lab is built from the same public SDK contract vocabulary used by consumers: `CopilotEvent`, `CopilotAdapterError`, `RagResult`, `ToolTimelineItem`, and `ApprovalRequest`.
 
 ## Current status
 
 The platform is in a strong integration state for SDK + backend work:
 
 - the SDK builds and its test suite passes
-- the backend builds, typechecks, and exposes aligned platform contracts
+- the demo failure-contract browser tests pass
+- the backend builds, typechecks, and exposes aligned platform/failure contracts
 - public API auth is standardized on `Authorization: Bearer cpk_*` for SDK/API-key clients
 - admin API-key lifecycle routes support create, list, rotate, revoke, and metadata updates
 - legacy approval mutation routes are removed; approval resolution is authenticated through `/api/copilot/approvals/:id/resolve`
@@ -71,6 +97,7 @@ The backend owns:
 - streaming response delivery
 - approval workflows
 - ingestion and audit boundaries
+- provider credentials and execution policy
 
 That split is deliberate. It keeps provider credentials and execution policy out of the browser while still giving the frontend a clean, typed event stream.
 
@@ -151,25 +178,35 @@ Before public rollout:
 
 ## Verification
 
-These commands currently pass in the repository:
+The CI pipeline validates:
 
 ```bash
+corepack pnpm --filter @ankit-parekh-007/ngx-copilot-sdk build
+corepack pnpm --filter @ankit-parekh-007/ngx-copilot-sdk lint
+corepack pnpm --filter @ankit-parekh-007/ngx-copilot-sdk test:coverage
+corepack pnpm --filter demo-app test -- --watch=false --browsers=ChromeHeadless
+corepack pnpm --filter demo-app build
+corepack pnpm --filter admin-ui build
 corepack pnpm --filter @ngx-copilot/backend typecheck
 corepack pnpm --filter @ngx-copilot/backend test
-corepack pnpm --filter @ngx-copilot/backend build
-corepack pnpm --filter @ankit-parekh-007/ngx-copilot-sdk test
 corepack pnpm --filter example-consumer build
-corepack pnpm --filter admin-ui build
+corepack pnpm --filter @ngx-copilot/backend build
 ```
 
 ## CI/CD
 
 | Workflow | Trigger | Purpose |
 |---|---|---|
-| `ci.yml` | Every push and PR | SDK tests, backend typecheck/tests, workspace builds |
+| `ci.yml` | Every push and PR | SDK tests, demo failure contracts, backend typecheck/tests, workspace builds |
 | `deploy-pages.yml` | Push to `main` (demo-app/sdk paths) or manual | Builds and publishes the demo app to GitHub Pages |
 | `release-readiness.yml` | Manual or Release | Smokes a deployed backend using release secrets before public rollout |
 | `publish-npm.yml` | GitHub Release | Publishes `@ankit-parekh-007/ngx-copilot-sdk` |
+
+## Ecosystem Path
+
+**Learn → Pattern → Run → Platform → Govern → Operate**
+
+[AI Tools Cheatsheets](https://github.com/AnkitParekh007/ai-tools-cheatsheets) → [Frontend AI Patterns](https://github.com/AnkitParekh007/frontend-ai-patterns) → [Angular AI Copilot Starter](https://github.com/AnkitParekh007/angular-ai-copilot-starter) → **ngx-copilot-platform** → [Agent Studio](https://github.com/AnkitParekh007/agent-studio) → [Org AI Force](https://github.com/AnkitParekh007/org-ai-force)
 
 ## Repo philosophy
 
@@ -178,6 +215,7 @@ This codebase is opinionated about AI product quality:
 - answers should be grounded
 - actions should be inspectable
 - approvals should be explicit
+- failures should remain failures until recovery succeeds
 - browser clients should stay thin
 - backend contracts should be typed and testable
 
