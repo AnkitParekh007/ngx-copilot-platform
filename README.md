@@ -12,6 +12,16 @@
 
 **the UI should feel native, the backend should stay in control, and every answer, action, rejection, and failure should be inspectable.**
 
+## Architecture decision brief for hiring managers
+
+**Problem:** An embedded Angular copilot must stream responses, show retrieval evidence and gate consequential actions without putting provider credentials or authorization decisions in the browser.
+
+**Decisions and tradeoffs:** A typed Angular SDK separates host applications from backend adapters; SSE supports inspectable streaming but requires explicit disconnect/retry semantics; retrieval, approvals, auth and API-key lifecycle remain backend-owned rather than trusting frontend state. A deterministic Failure Lab makes failure contracts reproducible, but it is not proof of production reliability.
+
+**Review evidence:** [Public proof](docs/public-proof.md) · [CI workflow](.github/workflows/ci.yml) · [Live demo](https://ankitparekh007.github.io/ngx-copilot-platform/) · [Failure Lab](https://ankitparekh007.github.io/ngx-copilot-platform/failure-lab).
+
+**Validation boundary:** README-reported build and test success should be independently confirmed against current CI runs and commit SHA. Public Pages routes are showcase surfaces, not a production deployment. No production-scale load, security certification or customer adoption is claimed here.
+
 ## Review This Repo In 30 Seconds
 
 - Open the **live demo** to see the product-grade Angular copilot surface.
